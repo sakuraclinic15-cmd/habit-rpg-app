@@ -382,7 +382,7 @@ export default function App() {
           
           <input 
             type="password" 
-            placeholder="PINコード (1234)"
+            placeholder="PINコード (5454)"
             className="p-3 text-center text-xl tracking-widest pixel-border w-48 mb-2 focus:outline-none"
             value={pinInput}
             onChange={(e) => {
@@ -538,19 +538,6 @@ export default function App() {
           </button>
         </div>
       </div>
-
-      <div className="bg-gray-200 p-4 pixel-border mb-6">
-        <h3 className="font-bold mb-2 flex items-center gap-2">
-          <Calendar size={18} /> デバッグ（時間操作）
-        </h3>
-        <div className="flex gap-2">
-          <button onClick={() => advanceDay(1)} className="flex-1 bg-white text-gray-800 p-2 pixel-border text-sm flex items-center justify-center gap-1 active:bg-gray-100">
-            <ArrowRight size={14} /> 1日進める
-          </button>
-          <button onClick={advanceMonth} className="flex-1 bg-white text-gray-800 p-2 pixel-border text-sm flex items-center justify-center gap-1 active:bg-gray-100">
-            <ArrowRight size={14} /> 翌月1日へ
-          </button>
-        </div>
       </div>
     </div>
   );
