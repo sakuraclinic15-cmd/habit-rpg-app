@@ -382,7 +382,7 @@ export default function App() {
           
           <input 
             type="password" 
-            placeholder="PINコード (5454)"
+            placeholder="PINコード (1234)"
             className="p-3 text-center text-xl tracking-widest pixel-border w-48 mb-2 focus:outline-none"
             value={pinInput}
             onChange={(e) => {
@@ -394,7 +394,7 @@ export default function App() {
           
           <button 
             onClick={() => {
-              if (pinInput === '1234') { setParentUnlocked(true); setPinInput(''); } 
+              if (pinInput === '5454') { setParentUnlocked(true); setPinInput(''); } 
               else { setPinError('暗証番号が違います'); }
             }}
             className="bg-gray-800 text-white px-8 py-3 pixel-border hover:bg-black w-48"
