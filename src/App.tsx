@@ -228,33 +228,43 @@ export default function App() {
   // --- Views ---
   const renderHome = () => (
     <div className="flex flex-col h-full overflow-y-auto pb-24 bg-gray-100 text-gray-800">
-      <div className="bg-blue-900 text-white p-4 pixel-border m-4 shadow-lg">
-        <div className="flex items-center gap-4 mb-2">
-          <Avatar rank={currentRank} size="large" />
-          <div className="flex-1">
-            <div className="text-sm text-blue-300 mb-1">{currentDate}</div>
-            <div className="text-xl font-bold">{currentRank.name}</div>
-            <div className="text-sm flex items-center gap-2">
-              <span>累計 EXP: {exp}</span>
-              {boostActive && <span className="bg-red-600 text-white text-[10px] px-1 animate-bounce">報酬1.5倍中!</span>}
+      {/* 左右分割にしたステータスエリア */}
+      <div className="bg-blue-900 text-white p-3 pixel-border m-4 shadow-lg">
+        <div className="flex items-start gap-4">
+          <div className="flex flex-col items-center">
+            <Avatar rank={currentRank} size="large" />
+            <div className="text-lg font-bold mt-1 text-center w-full bg-blue-800 rounded pixel-border py-0.5 shadow-inner">
+              {currentRank.name}
+            </div>
+          </div>
+          <div className="flex-1 flex flex-col justify-between h-[120px]">
+            <div className="flex justify-between items-start">
+              <div className="text-sm text-blue-300 font-bold">{currentDate}</div>
+              {boostActive && <span className="bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded animate-bounce font-bold shadow-md">1.5倍!</span>}
+            </div>
+            
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-sm font-bold text-yellow-300">EXP: {exp}</span>
+            </div>
+
+            {nextRank && (
+              <div className="mt-1">
+                <div className="flex justify-between text-[11px] mb-1 text-gray-300">
+                  <span>Next: {nextRank.name}</span>
+                  <span>{nextRank.exp - exp}EXP</span>
+                </div>
+                <div className="w-full bg-gray-800 h-2.5 rounded-full overflow-hidden pixel-border border-2 shadow-inner">
+                  <div className="bg-yellow-400 h-full" style={{ width: `${progressPercent}%` }}></div>
+                </div>
+              </div>
+            )}
+
+            <div className="bg-black text-white p-2 pixel-border text-[11px] flex items-center relative mt-3 flex-1 shadow-inner">
+              <div className="absolute -top-2 left-2 bg-blue-600 px-1 text-[9px] font-bold tracking-wider">SYSTEM</div>
+              <p className="leading-snug mt-1 text-gray-200">「{getRandomMsg()}」</p>
             </div>
           </div>
         </div>
-        <div className="bg-black text-white p-3 pixel-border text-sm min-h-[60px] flex items-center relative mt-2">
-          <div className="absolute -top-3 left-2 bg-blue-600 px-2 text-xs">System</div>
-          <p>「{getRandomMsg()}」</p>
-        </div>
-        {nextRank && (
-          <div className="mt-3">
-            <div className="flex justify-between text-xs mb-1">
-              <span>Next: {nextRank.name}</span>
-              <span>{nextRank.exp - exp} EXP</span>
-            </div>
-            <div className="w-full bg-gray-700 h-3 rounded-full overflow-hidden pixel-border border-2">
-              <div className="bg-yellow-400 h-full" style={{ width: `${progressPercent}%` }}></div>
-            </div>
-          </div>
-        )}
       </div>
 
       <div className="px-4 mb-4 space-y-2">
@@ -274,15 +284,15 @@ export default function App() {
             </div>
           </div>
         </div>
-        <div className="bg-yellow-50 p-3 pixel-border border-yellow-300 flex justify-around text-sm">
+        <div className="bg-yellow-50 p-2.5 pixel-border border-yellow-300 flex justify-around text-sm shadow-inner">
           <div className="flex items-center gap-1.5 font-bold text-yellow-800">
             <Ticket size={20} className="text-yellow-600" />
-            <span>復活: {tickets}枚</span>
+            <span>復活: {tickets}</span>
           </div>
-          <div className="border-l border-yellow-300"></div>
+          <div className="border-l-2 border-yellow-300"></div>
           <div className="flex items-center gap-1.5 font-bold text-red-800">
             <Award size={20} className="text-red-600" />
-            <span>ブースト: {boostTickets}枚</span>
+            <span>ブースト: {boostTickets}</span>
           </div>
         </div>
       </div>
@@ -292,12 +302,13 @@ export default function App() {
           <h3 className="text-xl font-bold flex items-center gap-2">
             <CheckSquare size={24} /> 本日の業務
           </h3>
-          <button onClick={() => { setEditingTasks([...tasks]); setNewTaskName(''); setIsEditModalOpen(true); }} className="text-sm bg-gray-800 text-white px-3 py-1.5 pixel-border hover:bg-black flex items-center gap-1">
+          <button onClick={() => { setEditingTasks([...tasks]); setNewTaskName(''); setIsEditModalOpen(true); }} className="text-sm bg-gray-800 text-white px-3 py-1.5 pixel-border hover:bg-black flex items-center gap-1 shadow-md">
             <Edit3 size={16} /> タスク編集
           </button>
         </div>
 
-        <div className="space-y-4">
+        {/* タスクボタンをさらに巨大化・見やすく調整 */}
+        <div className="space-y-4 mt-2">
           {tasks.map(task => {
             const displayReward = boostActive ? Math.floor(task.reward * 1.5) : task.reward;
             return (
@@ -305,28 +316,28 @@ export default function App() {
                 key={task.id}
                 onClick={() => completeTask(task.id)}
                 disabled={task.done}
-                className={`w-full text-left p-5 pixel-border shadow-sm flex items-center justify-between transition-all min-h-[80px] ${task.done ? 'bg-gray-200 opacity-60' : 'bg-white active:bg-blue-50'}`}
+                className={`w-full text-left p-6 pixel-border shadow-md flex items-center justify-between transition-all min-h-[90px] ${task.done ? 'bg-gray-200 opacity-60' : 'bg-white active:bg-blue-50 hover:bg-gray-50'}`}
               >
-                <div className="flex items-center gap-4">
-                  <div className={`w-8 h-8 flex items-center justify-center pixel-border ${task.done ? 'bg-green-500' : 'bg-white'}`}>
-                    {task.done && <UserCheck size={24} className="text-white" />}
+                <div className="flex items-center gap-5">
+                  <div className={`w-10 h-10 flex items-center justify-center pixel-border shadow-inner ${task.done ? 'bg-green-500' : 'bg-white'}`}>
+                    {task.done && <UserCheck size={28} className="text-white drop-shadow-md" />}
                   </div>
-                  <span className={`text-lg ${task.done ? 'line-through text-gray-500' : 'font-bold text-gray-800'}`}>
+                  <span className={`text-xl ${task.done ? 'line-through text-gray-500' : 'font-bold text-gray-800'}`}>
                     {task.name}
                   </span>
                 </div>
-                <div className="text-right">
-                  <div className="text-lg font-bold text-orange-600 flex items-center gap-1 justify-end">
+                <div className="text-right flex flex-col justify-center">
+                  <div className="text-xl font-bold text-orange-600 flex items-center gap-1 justify-end">
                     {boostActive && <span className="text-sm line-through text-gray-400 font-normal">{task.reward}円</span>}
                     <span>{displayReward}円</span>
                   </div>
-                  <div className="text-sm text-blue-600 font-bold">+10 EXP</div>
+                  <div className="text-sm text-blue-600 font-bold mt-1">+10 EXP</div>
                 </div>
               </button>
             );
           })}
           {tasks.length === 0 && (
-            <div className="text-center text-gray-500 py-8 border-2 border-dashed border-gray-300 rounded bg-white text-lg font-bold">
+            <div className="text-center text-gray-500 py-10 border-4 border-dashed border-gray-300 rounded-lg bg-white text-lg font-bold shadow-sm">
               タスクがありません。<br/>「タスク編集」から追加してください。
             </div>
           )}
@@ -339,14 +350,14 @@ export default function App() {
     if (!parentUnlocked) {
       return (
         <div className="flex flex-col items-center justify-center h-full p-6 text-center bg-gray-100">
-          <Lock size={64} className="text-gray-400 mb-6" />
+          <Lock size={64} className="text-gray-400 mb-6 drop-shadow-md" />
           <h2 className="text-2xl font-bold mb-3 text-gray-800">保護者管理システム</h2>
           <p className="text-base text-gray-600 mb-8">ここから先は親専用の画面です。<br/>出金や投資、チケット給与の設定を行います。</p>
-          <input type="password" placeholder="PINコードを入力" className="p-4 text-center text-2xl tracking-widest pixel-border w-64 mb-3 focus:outline-none"
+          <input type="password" placeholder="PINコードを入力" className="p-4 text-center text-2xl tracking-widest pixel-border w-64 mb-3 focus:outline-none shadow-inner"
             value={pinInput} onChange={(e) => { setPinInput(e.target.value); setPinError(''); }} />
           {pinError && <p className="text-red-500 text-base font-bold mb-4">{pinError}</p>}
           <button onClick={() => { if (pinInput === '5454') { setParentUnlocked(true); setPinInput(''); } else { setPinError('パスワードが違います'); } }}
-            className="bg-gray-800 text-white px-10 py-4 pixel-border font-bold text-lg w-64"
+            className="bg-gray-800 text-white px-10 py-4 pixel-border font-bold text-lg w-64 shadow-md active:translate-y-1"
           >
             ロック解除
           </button>
@@ -357,37 +368,37 @@ export default function App() {
       <div className="flex flex-col h-full overflow-y-auto pb-24 p-4 bg-gray-100 text-gray-800">
         <div className="flex justify-between items-center mb-6 border-b-2 border-gray-800 pb-2">
           <h2 className="text-xl font-bold flex items-center gap-2"><Lock size={20} className="text-red-600" /> 管理メニュー</h2>
-          <button onClick={() => setParentUnlocked(false)} className="text-sm bg-gray-200 px-3 py-1 pixel-border font-bold">ロックする</button>
+          <button onClick={() => setParentUnlocked(false)} className="text-sm bg-gray-200 px-3 py-1 pixel-border font-bold shadow-sm">ロックする</button>
         </div>
 
         <div className="bg-white p-5 pixel-border mb-6 shadow-md border-t-4 border-t-orange-500">
           <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><Wallet size={20}/> お小遣いの精算（月初）</h3>
           <p className="text-sm text-gray-600 mb-4">現在の財布の残高を現金として子供に渡し、アプリの財布を0円にリセットします。</p>
-          <div className="flex justify-between items-center bg-gray-100 p-4 mb-4">
+          <div className="flex justify-between items-center bg-gray-100 p-4 mb-4 rounded shadow-inner">
             <span className="font-bold">現在の財布残高:</span>
             <span className="text-2xl font-bold text-orange-600">{wallet} 円</span>
           </div>
           <button onClick={() => { addMessage(`財布から ${wallet}円 を出金しました。`); setWallet(0); }} disabled={wallet === 0}
-            className={`w-full py-4 pixel-border font-bold text-lg ${wallet > 0 ? 'bg-orange-500 text-white' : 'bg-gray-300 text-gray-500'}`}
+            className={`w-full py-4 pixel-border font-bold text-lg shadow-sm ${wallet > 0 ? 'bg-orange-500 text-white active:translate-y-1' : 'bg-gray-300 text-gray-500'}`}
           >{wallet}円 を出金してリセット</button>
         </div>
 
         <div className="bg-white p-5 pixel-border mb-6 shadow-md border-t-4 border-t-blue-500">
           <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><TrendingUp size={20}/> 投資口座の管理</h3>
-          <div className="flex justify-between items-center bg-gray-100 p-4 mb-5">
+          <div className="flex justify-between items-center bg-gray-100 p-4 mb-5 rounded shadow-inner">
             <span className="font-bold">現在の投資残高:</span>
             <span className="text-2xl font-bold text-blue-700">{invest} 円</span>
           </div>
           <div className="space-y-5">
             <div className="flex gap-2">
-              <input type="number" placeholder="出金額を入力" className="flex-1 p-3 pixel-border text-right text-lg" value={investWithdrawAmount} onChange={e => setInvestWithdrawAmount(e.target.value)} />
+              <input type="number" placeholder="出金額を入力" className="flex-1 p-3 pixel-border text-right text-lg shadow-inner" value={investWithdrawAmount} onChange={e => setInvestWithdrawAmount(e.target.value)} />
               <button onClick={() => { const amt = parseInt(investWithdrawAmount); if (amt > 0 && amt <= invest) { setInvest(p => p - amt); addMessage(`投資から ${amt}円 出金しました。`); setInvestWithdrawAmount(''); } else { addMessage("正しい金額を入力してください"); } }}
-                className="bg-gray-800 text-white px-5 py-3 pixel-border font-bold">出金する</button>
+                className="bg-gray-800 text-white px-5 py-3 pixel-border font-bold shadow-sm active:translate-y-1">出金する</button>
             </div>
             <div className="flex gap-2">
-              <input type="number" placeholder="入金額を入力" className="flex-1 p-3 pixel-border text-right text-lg" value={investDepositAmount} onChange={e => setInvestDepositAmount(e.target.value)} />
+              <input type="number" placeholder="入金額を入力" className="flex-1 p-3 pixel-border text-right text-lg shadow-inner" value={investDepositAmount} onChange={e => setInvestDepositAmount(e.target.value)} />
               <button onClick={() => { const amt = parseInt(investDepositAmount); if (amt > 0) { setInvest(p => p + amt); addMessage(`投資に ${amt}円 入金しました！`); setInvestDepositAmount(''); } else { addMessage("正しい金額を入力してください"); } }}
-                className="bg-blue-600 text-white px-5 py-3 pixel-border font-bold">入金する</button>
+                className="bg-blue-600 text-white px-5 py-3 pixel-border font-bold shadow-sm active:translate-y-1">入金する</button>
             </div>
           </div>
         </div>
@@ -396,11 +407,11 @@ export default function App() {
           <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><Ticket size={20}/> ご褒美チケットの支給</h3>
           <div className="flex items-center gap-3 mb-5">
             <label className="text-base font-bold">枚数:</label>
-            <input type="number" min="1" className="p-2 pixel-border w-24 text-center text-lg" value={parentTicketAmount} onChange={e => setParentTicketAmount(Math.max(1, parseInt(e.target.value) || 1))} />
+            <input type="number" min="1" className="p-2 pixel-border w-24 text-center text-lg shadow-inner" value={parentTicketAmount} onChange={e => setParentTicketAmount(Math.max(1, parseInt(e.target.value) || 1))} />
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <button onClick={() => { setTickets(p => p + parentTicketAmount); addMessage(`復活チケットを ${parentTicketAmount}枚 付与しました！`); }} className="bg-yellow-500 text-white p-3 pixel-border font-bold">復活チケット付与</button>
-            <button onClick={() => { setBoostTickets(p => p + parentTicketAmount); addMessage(`ブーストチケットを ${parentTicketAmount}枚 付与しました！`); }} className="bg-red-500 text-white p-3 pixel-border font-bold">ブースト付与</button>
+            <button onClick={() => { setTickets(p => p + parentTicketAmount); addMessage(`復活チケットを ${parentTicketAmount}枚 付与しました！`); }} className="bg-yellow-500 text-white p-3 pixel-border font-bold shadow-sm active:translate-y-1">復活チケット付与</button>
+            <button onClick={() => { setBoostTickets(p => p + parentTicketAmount); addMessage(`ブーストチケットを ${parentTicketAmount}枚 付与しました！`); }} className="bg-red-500 text-white p-3 pixel-border font-bold shadow-sm active:translate-y-1">ブースト付与</button>
           </div>
         </div>
       </div>
@@ -411,27 +422,27 @@ export default function App() {
     <div className="flex flex-col h-full overflow-y-auto pb-24 p-4 bg-gray-100 text-gray-800">
       <h2 className="text-2xl font-bold mb-5 border-b-2 border-gray-300 pb-2 flex items-center gap-2"><Settings size={24} /> 設定とお助け</h2>
 
-      <div className="bg-yellow-50 p-5 pixel-border mb-6 border-yellow-200">
+      <div className="bg-yellow-50 p-5 pixel-border mb-6 border-yellow-200 shadow-sm">
         <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-yellow-800"><Ticket size={20} /> チケットお助けシステム</h3>
         
-        <div className="bg-white p-4 pixel-border mb-4 border-yellow-300">
+        <div className="bg-white p-4 pixel-border mb-4 border-yellow-300 shadow-sm">
           <div className="flex justify-between items-center mb-3">
             <h4 className="font-bold text-base">タイムリープ（連続補填）</h4>
             <span className="text-sm bg-yellow-100 text-yellow-800 px-3 py-1 font-bold rounded">消費: 1枚</span>
           </div>
           <button onClick={() => { if (tickets >= 1) { setTickets(p => p - 1); setConsecutiveDays(p => p + 1); addMessage("タイムリープ発動！連続記録を復活しました！"); } else { addMessage("復活チケットがありません！"); } }}
-            className="w-full bg-yellow-500 text-white py-3 pixel-border text-sm font-bold active:bg-yellow-600"
+            className="w-full bg-yellow-500 text-white py-3 pixel-border text-sm font-bold shadow-sm active:translate-y-1"
           >タイムリープを使う (所持: {tickets}枚)</button>
         </div>
 
-        <div className="bg-white p-4 pixel-border border-red-300">
+        <div className="bg-white p-4 pixel-border border-red-300 shadow-sm">
           <div className="flex justify-between items-center mb-3">
             <h4 className="font-bold text-base text-red-800">報酬1.5倍ブースト</h4>
             <span className="text-sm bg-red-100 text-red-800 px-3 py-1 font-bold rounded">消費: 1枚</span>
           </div>
           <button onClick={() => { if (boostActive) { addMessage("すでに発動しています！"); return; } if (boostTickets >= 1) { setBoostTickets(p => p - 1); setBoostActive(true); addMessage("報酬1.5倍ブースト発動！本日の報酬がアップ！"); } else { addMessage("ブーストチケットがありません！"); } }}
             disabled={boostActive}
-            className={`w-full py-3 pixel-border text-sm font-bold text-white ${boostActive ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500 active:bg-red-600'}`}
+            className={`w-full py-3 pixel-border text-sm font-bold text-white shadow-sm ${boostActive ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500 active:translate-y-1'}`}
           >{boostActive ? "ブースト適用中" : `ブーストを使う (所持: ${boostTickets}枚)`}</button>
         </div>
       </div>
@@ -448,24 +459,28 @@ export default function App() {
         .pixel-nav-item.active { background-color: #2d3748; color: white; box-shadow: inset 4px 4px 0px rgba(0,0,0,0.5); }
       `}</style>
       <div className="max-w-md mx-auto h-screen bg-gray-100 flex flex-col dot-font text-gray-800 relative select-none">
-        <header className="bg-gray-800 text-white p-4 flex justify-between items-center shadow-md z-10">
+        <header className="bg-gray-800 text-white p-4 flex justify-between items-center shadow-md z-10 relative">
           <h1 className="text-xl font-bold tracking-wider">Habit RPG</h1>
           <div className="flex gap-3 text-sm">
-            <div className="bg-black px-2 py-1.5 rounded pixel-border border-gray-600 border-2">通算連続: {consecutiveDays}日</div>
-            <div className="bg-blue-900 px-2 py-1.5 rounded pixel-border border-blue-700 border-2">今月ログ: {monthlyLogins}日</div>
+            <div className="bg-black px-2 py-1.5 rounded pixel-border border-gray-600 border-2">通算: {consecutiveDays}日</div>
+            <div className="bg-blue-900 px-2 py-1.5 rounded pixel-border border-blue-700 border-2">今月: {monthlyLogins}日</div>
           </div>
         </header>
+
+        {/* トーストメッセージをヘッダーのすぐ下に配置 */}
+        <div className="absolute top-[80px] left-0 right-0 flex flex-col items-center pointer-events-none z-50 px-4 space-y-2">
+          {messages.map(m => (
+            <div key={m.id} className="bg-black text-white px-5 py-4 rounded text-base font-bold w-full shadow-[0_4px_15px_rgba(0,0,0,0.5)] border-2 border-white animate-pulse pointer-events-auto">{m.text}</div>
+          ))}
+        </div>
+
         <main className="flex-1 overflow-hidden relative">
           {activeTab === 'home' && renderHome()}
           {activeTab === 'parent' && renderParent()}
           {activeTab === 'settings' && renderSettings()}
-          <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center pointer-events-none z-50 px-4 space-y-2">
-            {messages.map(m => (
-              <div key={m.id} className="bg-black text-white px-5 py-4 rounded text-base font-bold w-full shadow-[0_4px_15px_rgba(0,0,0,0.5)] border-2 border-white animate-pulse pointer-events-auto">{m.text}</div>
-            ))}
-          </div>
         </main>
-        <nav className="bg-gray-300 border-t-4 border-gray-800 flex absolute bottom-0 w-full h-20 z-20">
+
+        <nav className="bg-gray-300 border-t-4 border-gray-800 flex absolute bottom-0 w-full h-20 z-20 shadow-[0_-4px_10px_rgba(0,0,0,0.1)]">
           <button onClick={() => setActiveTab('home')} className={`flex-1 flex flex-col items-center justify-center pixel-nav-item ${activeTab === 'home' ? 'active' : ''}`}>
             <Home size={28} className="mb-1" /><span className="text-xs font-bold">ホーム</span>
           </button>
@@ -479,24 +494,24 @@ export default function App() {
 
         {showLoginPopup && loginPopupData && (
           <div className="absolute inset-0 bg-black/80 flex items-center justify-center p-6 z-50">
-            <div className="bg-blue-900 border-4 border-yellow-400 text-white w-full max-w-sm p-6 pixel-border relative text-center">
-              <div className="text-yellow-400 text-3xl font-bold mb-4 animate-bounce">✨ LOGIN BONUSES ✨</div>
+            <div className="bg-blue-900 border-4 border-yellow-400 text-white w-full max-w-sm p-6 pixel-border relative text-center shadow-2xl">
+              <div className="text-yellow-400 text-3xl font-bold mb-4 animate-bounce drop-shadow-md">✨ LOGIN BONUSES ✨</div>
               {loginPopupData.isHundredBonus && (
                 <div className="bg-red-600 text-white p-4 pixel-border font-bold mb-5 border-2 border-yellow-300 animate-pulse">
                   🎊 祝！通算 {loginPopupData.streak} 日達成 🎊<br/><span className="text-sm">継続の達人！特別ボーナス支給！</span>
                 </div>
               )}
-              <div className="bg-black/40 p-5 rounded pixel-border border-blue-700 mb-5 space-y-4">
-                <div className="text-xl">連続記録：<span className="text-yellow-400 text-3xl font-bold"> {loginPopupData.streak} </span> 日</div>
-                <div className="text-base text-gray-300 border-t border-blue-800 pt-3">今月のログ：<span className="text-blue-300 font-bold text-xl"> {loginPopupData.monthlyCount} </span> 日</div>
+              <div className="bg-black/40 p-5 rounded pixel-border border-blue-700 mb-5 space-y-4 shadow-inner">
+                <div className="text-xl">連続記録：<span className="text-yellow-400 text-3xl font-bold drop-shadow-md"> {loginPopupData.streak} </span> 日</div>
+                <div className="text-base text-gray-300 border-t border-blue-800 pt-3">今月のログ：<span className="text-blue-300 font-bold text-xl drop-shadow-md"> {loginPopupData.monthlyCount} </span> 日</div>
               </div>
               {loginPopupData.interest > 0 && (
-                <div className="bg-blue-800 text-white p-4 pixel-border mb-5 border-2 border-blue-400">
-                  📈 投資アップデート<br/><div className="text-2xl text-yellow-300 font-bold mt-2">利息 +{loginPopupData.interest} 円！</div>
+                <div className="bg-blue-800 text-white p-4 pixel-border mb-5 border-2 border-blue-400 shadow-md">
+                  📈 投資アップデート<br/><div className="text-2xl text-yellow-300 font-bold mt-2 drop-shadow-md">利息 +{loginPopupData.interest} 円！</div>
                 </div>
               )}
               {loginPopupData.rewardAmt > 0 ? (
-                <div className="bg-yellow-500 text-black p-4 pixel-border font-bold mb-5">
+                <div className="bg-yellow-500 text-black p-4 pixel-border font-bold mb-5 shadow-md">
                   🎉 ボーナス発生！ 🎉<div className="text-2xl mt-1">お小遣い +{loginPopupData.rewardAmt} 円</div>
                   {loginPopupData.isHundredBonus ? ( <div className="text-sm mt-2 text-red-950 font-bold">「復活」「ブースト」各1枚ゲット！</div>
                   ) : loginPopupData.gotTicket ? ( <div className="text-sm mt-2 text-red-950 font-bold">「{loginPopupData.ticketType}チケット」ゲット！</div>
@@ -508,7 +523,7 @@ export default function App() {
               <div className="text-2xl mb-5 text-yellow-300 flex flex-col items-center gap-4">
                 <Avatar rank={currentRank} size="large" /><span>「今日もいい仕事にしよう！」</span>
               </div>
-              <button onClick={() => setShowLoginPopup(false)} className="w-full bg-yellow-400 hover:bg-yellow-500 text-black py-4 pixel-border font-bold text-xl">
+              <button onClick={() => setShowLoginPopup(false)} className="w-full bg-yellow-400 hover:bg-yellow-500 text-black py-4 pixel-border font-bold text-xl shadow-md active:translate-y-1">
                 了解（仕事開始）
               </button>
             </div>
@@ -517,19 +532,19 @@ export default function App() {
 
         {isEditModalOpen && (
           <div className="absolute inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-            <div className="bg-white w-full max-w-sm p-5 pixel-border flex flex-col max-h-[90vh]">
+            <div className="bg-white w-full max-w-sm p-5 pixel-border flex flex-col max-h-[90vh] shadow-2xl">
               <div className="flex justify-between items-center mb-5 border-b-2 border-gray-800 pb-2">
                 <h3 className="font-bold text-xl flex items-center gap-2"><Edit3 size={24} /> タスク編集</h3>
                 <button onClick={() => setIsEditModalOpen(false)}><X size={28} /></button>
               </div>
               <div className="flex-1 overflow-y-auto space-y-3 mb-5 pr-1">
                 {editingTasks.map((t) => (
-                  <div key={t.id} className="p-3 border-2 border-gray-800 flex items-center justify-between gap-3 bg-gray-50">
+                  <div key={t.id} className="p-3 border-2 border-gray-800 flex items-center justify-between gap-3 bg-gray-50 shadow-sm">
                     <div className="flex-1 min-w-0">
                       <div className="font-bold text-lg truncate">{t.name}</div>
                       <div className="text-sm text-orange-600 font-bold mt-1">{t.reward}円 ({t.reward === 100 ? 'ハード' : 'ノーマル'})</div>
                     </div>
-                    <button onClick={() => setEditingTasks(editingTasks.filter(x => x.id !== t.id))} className="p-2 bg-red-100 text-red-600 pixel-border border-red-300 hover:bg-red-200">
+                    <button onClick={() => setEditingTasks(editingTasks.filter(x => x.id !== t.id))} className="p-2 bg-red-100 text-red-600 pixel-border border-red-300 hover:bg-red-200 active:translate-y-1 shadow-sm">
                       <Trash2 size={20} />
                     </button>
                   </div>
@@ -537,23 +552,23 @@ export default function App() {
               </div>
               <div className="border-t-2 border-gray-800 pt-4 space-y-4">
                 <div className="text-sm font-bold">新規タスク追加 (最大5個)</div>
-                <input type="text" placeholder="タスクを入力" className="w-full p-3 pixel-border text-base focus:outline-none" value={newTaskName} onChange={e => setNewTaskName(e.target.value)} />
+                <input type="text" placeholder="タスクを入力" className="w-full p-3 pixel-border text-base focus:outline-none shadow-inner" value={newTaskName} onChange={e => setNewTaskName(e.target.value)} />
                 <div className="flex justify-between items-center gap-2">
                   <span className="text-sm font-bold">難易度：</span>
                   <div className="flex gap-2">
-                    <button type="button" onClick={() => setNewTaskReward(50)} className={`px-4 py-2 text-sm font-bold pixel-border ${newTaskReward === 50 ? 'bg-orange-500 text-white' : 'bg-gray-100'}`}>ノーマル (50円)</button>
-                    <button type="button" onClick={() => setNewTaskReward(100)} className={`px-4 py-2 text-sm font-bold pixel-border ${newTaskReward === 100 ? 'bg-red-600 text-white' : 'bg-gray-100'}`}>ハード (100円)</button>
+                    <button type="button" onClick={() => setNewTaskReward(50)} className={`px-4 py-2 text-sm font-bold pixel-border shadow-sm ${newTaskReward === 50 ? 'bg-orange-500 text-white' : 'bg-gray-100'}`}>ノーマル (50円)</button>
+                    <button type="button" onClick={() => setNewTaskReward(100)} className={`px-4 py-2 text-sm font-bold pixel-border shadow-sm ${newTaskReward === 100 ? 'bg-red-600 text-white' : 'bg-gray-100'}`}>ハード (100円)</button>
                   </div>
                 </div>
                 <button onClick={() => { if(newTaskName.trim() && editingTasks.length < 5) { setEditingTasks([...editingTasks, { id: Date.now(), name: newTaskName, reward: newTaskReward, done: false }]); setNewTaskName(''); } }} 
                   disabled={editingTasks.length >= 5 || !newTaskName.trim()}
-                  className={`w-full py-3.5 pixel-border font-bold text-lg ${editingTasks.length >= 5 || !newTaskName.trim() ? 'bg-gray-300 text-gray-500' : 'bg-green-600 text-white'}`}>
+                  className={`w-full py-3.5 pixel-border font-bold text-lg shadow-sm ${editingTasks.length >= 5 || !newTaskName.trim() ? 'bg-gray-300 text-gray-500' : 'bg-green-600 text-white active:translate-y-1'}`}>
                   リストに追加
                 </button>
               </div>
               <div className="border-t-2 border-gray-800 pt-4 mt-4 flex gap-3">
-                <button onClick={() => setIsEditModalOpen(false)} className="flex-1 py-3 bg-gray-200 pixel-border font-bold text-lg">キャンセル</button>
-                <button onClick={() => { setTasks(editingTasks); setIsEditModalOpen(false); addMessage("タスクを更新しました！"); }} className="flex-1 py-3 bg-gray-800 text-white pixel-border font-bold text-lg">保存する</button>
+                <button onClick={() => setIsEditModalOpen(false)} className="flex-1 py-3 bg-gray-200 pixel-border font-bold text-lg shadow-sm active:translate-y-1">キャンセル</button>
+                <button onClick={() => { setTasks(editingTasks); setIsEditModalOpen(false); addMessage("タスクを更新しました！"); }} className="flex-1 py-3 bg-gray-800 text-white pixel-border font-bold text-lg shadow-sm active:translate-y-1">保存する</button>
               </div>
             </div>
           </div>
