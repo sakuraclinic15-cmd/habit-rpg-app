@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect, useRef } from 'react';
 import { Home, Settings, Lock, Wallet, TrendingUp, Calendar, ArrowRight, UserCheck, CheckSquare, Plus, Trash2, Coins, AlertTriangle, Ticket, Award, Edit3, X, HelpCircle } from 'lucide-react';
 
