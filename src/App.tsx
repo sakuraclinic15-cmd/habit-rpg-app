@@ -74,6 +74,16 @@ export default function App() {
   const messageIdRef = useRef(0);
   const isLoaded = useRef(false);
 
+  // --- Tailwind CSS 自動読み込み（デザイン崩れ防止） ---
+  useEffect(() => {
+    if (!document.getElementById('tailwind-script')) {
+      const script = document.createElement('script');
+      script.id = 'tailwind-script';
+      script.src = 'https://cdn.tailwindcss.com';
+      document.head.appendChild(script);
+    }
+  }, []);
+
   // --- データロード ---
   useEffect(() => {
     const saved = localStorage.getItem('habit_rpg_save');
