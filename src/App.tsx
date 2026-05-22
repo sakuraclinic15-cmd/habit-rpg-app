@@ -69,7 +69,7 @@ const WARRIOR_DIARY: string[] = [
   "イノシシ突進強すぎ！ 二人まとめて吹っ飛ばされて川に落ちた。防具が重くて溺れかけたぞ。",
   "作戦勝ち！ 俺が囮になって、カイルが横から一閃。仕留めた肉で作ったステーキ、人生で一番美味い！",
   "街に戻ったら、商人から「荷馬車の護衛」を頼まれた。カイルと二人、初めての指名依頼だ。",
-  "護衛中、カイルが「腹が減った」とうるさい。お前の胃袋はブラックホールか。俺の干し肉を分ける。",
+  "護衛中, カイルが「腹が減った」とうるさい。お前の胃袋はブラックホールか。俺の干し肉を分ける。",
   "夜襲だ！ 盗賊団が現れたが、今の俺たちなら負けない。カイルと背中を合わせて戦うの、悪くないな。",
   "無事に護衛完了。商人のおっちゃんからボーナスを貰った。カイルと「これで美味いもん食おう」と堅い握手。",
   "ギルドから「近郊の洞窟ダンジョン」の調査依頼が来た。ついに、本当のダンジョンアタックだ！",
@@ -105,7 +105,7 @@ const WARRIOR_DIARY: string[] = [
   "俺の対戦相手は、盾使いのベテラン。鉄壁の防御をどう崩すか……おっさんとの修行を思い出すんだ。",
   "力を抜いて、相手の呼吸を読んで……一閃！ 盾の隙間を突いて、木刀を喉元に突きつけた。勝った、俺の勝ちだ！",
   "カイルも大苦戦の末に勝利。あいつ、最後は剣を放り投げてタックルで勝ってた。戦士というか、野生児だな。",
-  "ついにDランクに昇格！ 銀色の新しいギルドプレートが眩しい。これで少しは「一人前」に近づできたか？",
+  "ついにDランクに昇格！ 銀色の新しいギルドプレートが眩しい。これで少しは「一人前」に近づけたか？",
   "Dランクになった途端、受けられる依頼の質が変わった。「隣国国境付近での魔物間引き」。遠征任務だ。",
   "初めて乗る乗合馬車。ガタガタ揺れて、カイルが派手に馬車酔いしている。大剣使いの弱点が乗り物とはな。",
   "国境の村に到着。空気がピリピリしている。街の周りとは、魔物の凶暴さが一段階違う気がするぞ。",
@@ -122,7 +122,7 @@ const WARRIOR_DIARY: string[] = [
   "遺跡の最奥で、巨大な魔法陣を発見。何も起きなかったけど、なんだか不気味だ。調査報告のために紙に記録。",
   "地上への帰り道、カイルが「迷った」と言い出した。行きに目印の傷をつけたらしいが……これ、ただの引っかき傷だろ！",
   "なんとか生還！ ギルド長に報告したら「素晴らしい手際だ」って。貰った報酬で、今日はちょっと良い宿に泊まろう。",
-  "遺跡の宝石が高く売れて大儲け。カイルの奴、その金でいきなり高級な大剣を買いやがった。計画性ゼロかよ。",
+  "遺跡の宝石が高く売れて大儲け. カイルの奴、その金でいきなり高級な大剣を買いやがった。計画性ゼロかよ。",
   "「お前も防具買えよ」って言われたけど、俺は宿代や飯代のために貯金したいんだ。こういうところで意見が合わない。",
   "今日受けた「オーク討伐」の依頼中、カイルが新しい剣を振り回して突っ込みすぎ、囲まれて大ピンチになった。",
   "「無茶しすぎだ！」「新しい剣を試したかっただけだろ！」宿屋でカイルと大喧嘩。あいつの顔、もう見たくない。",
@@ -133,7 +133,7 @@ const WARRIOR_DIARY: string[] = [
   "谷の奥で、案の定仲間に見捨てられて魔物に囲まれるカイルを発見！「バカカイル！」って叫びながら、俺は飛び込んだ。",
   "二人で背中を合わせ、死に物狂いで魔物を撃退。泥だらけのまま「助けにくるのが遅い」「うるせえ」と、笑い合った。",
   "街への帰り道。お互い「悪かった」って、ボソボソ言い訳。でも、これで前よりずっと相棒になれた気がする。",
-  "カイルが新しい大剣の使い方を俺に見せてくれた。大振りだけど、俺が隙を埋めれば最強の武器になる。",
+  "カイルが新しい大剣の使い方を俺見せてくれた。大振りだけど、俺が隙を埋めれば最強の武器になる。",
   "ギルドの受付嬢さんに「仲直りできて良かったですね」とニヤニヤされた。全部バレてた。恥ずかしすぎる。",
   "二人での連携を再特訓。俺が盾で敵の体勢を崩し、カイルが叩き斬る。阿吽の呼吸って、こういうのを言うんだな。",
   "街の子供に「戦士のお兄ちゃんたち、カッコいい！」と言われた。今度は転ばずに、バシッとポーズを決めたぞ。",
@@ -150,7 +150,7 @@ const INITIAL_TASKS: Task[] = [
   { id: 3, name: "プリント取込", reward: 50 }
 ];
 
-// --- 💡対策その1: タイムゾーン（Asia/Tokyo）を明示的に指定して、日付文字列をズレなく取得 ---
+// --- 日本時間（JST）を確実に取得する関数 ---
 const getLocalDateString = (): string => {
   try {
     const formatter = new Intl.DateTimeFormat('ja-JP', {
@@ -166,25 +166,40 @@ const getLocalDateString = (): string => {
     if (year && month && day) {
       return `${year}-${month}-${day}`;
     }
-  } catch (e) {
-    // 万が一のフォールバック
-  }
-  // 念のためのフォールバックコード
+  } catch (e) {}
   const d = new Date();
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const date = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${date}`;
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 };
 
-// --- 文字列からローカルタイム基準で日付を生成する安全な関数 ---
-const parseLocalDate = (dateStr: string): Date => {
-  if (!dateStr) return new Date();
-  const parts = dateStr.split('-');
-  return parts.length === 3 ? new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10)) : new Date();
+// ==========================================
+// 💡 【超強力・解決の核】Cookieによる二重防衛処理
+// ==========================================
+
+// クッキーに今日の完了タスクを即座に固定書き込み（1日間有効）
+const setCompletedCookie = (key: string): void => {
+  if (typeof document !== 'undefined') {
+    document.cookie = `${encodeURIComponent(key)}=true; max-age=86400; path=/; SameSite=Lax`;
+  }
 };
 
-// --- LocalStorageから素直に読み出す関数 ---
+// クッキーから今日完了した全スタンプを取得
+const getCompletedFromCookies = (): string[] => {
+  if (typeof document === 'undefined') return [];
+  const cookies = document.cookie.split(';');
+  const completed: string[] = [];
+  const todayStr = getLocalDateString();
+  for (let c of cookies) {
+    const [name, value] = c.trim().split('=');
+    const decodedName = decodeURIComponent(name);
+    // 今日の日付で始まっており、値がtrueのもの
+    if (decodedName.startsWith(todayStr) && value === 'true') {
+      completed.push(decodedName);
+    }
+  }
+  return completed;
+};
+
+// LocalStorageからデータを読み出し、クッキーのスタンプとも強制マージする
 const loadDataFromLocalStorage = (): AppState => {
   if (typeof window === 'undefined') {
     return { tasks: INITIAL_TASKS, wallet: 0, invest: 0, exp: 0, level: 1, cumulativeDays: 1, monthlyLogins: 1, treasureTickets: 0, lastLoginDate: getLocalDateString(), completedTasksLog: [], taskHistory: [] };
@@ -192,16 +207,17 @@ const loadDataFromLocalStorage = (): AppState => {
 
   const saved = localStorage.getItem('warrior_rpg_save');
   const todayStr = getLocalDateString();
+  const cookieLogs = getCompletedFromCookies(); // クッキーから確実に残っているスタンプを取り出す
   
   if (saved) {
     try {
       const data = JSON.parse(saved);
-      
-      // 💡対策その2: 【超重要】読み出しの瞬間に、「今日の日付で始まらない古い履歴」だけを除去。
-      // これを挟むことで、万が一ログイン日付の自動クリア処理が誤作動しても、
-      // ユーザーの画面に保存されている「今日のクリアログ」が消えてしまうのを2重に防ぎます！
       const rawLogs = Array.isArray(data.completedTasksLog) ? data.completedTasksLog : [];
-      const filteredCompletedLog = rawLogs.filter((log: string) => log.startsWith(todayStr));
+      
+      // 💡 LocalStorageの履歴と、クッキーの履歴をガッチャンコして重複を削除！
+      // これにより「リロードされてLocalStorageが一瞬前の状態にロールバック」してもクッキーが守ります！
+      const mergedLogs = Array.from(new Set([...rawLogs, ...cookieLogs]));
+      const filteredCompletedLog = mergedLogs.filter((log: string) => log.startsWith(todayStr));
 
       return {
         tasks: Array.isArray(data.tasks) ? data.tasks : INITIAL_TASKS,
@@ -213,17 +229,19 @@ const loadDataFromLocalStorage = (): AppState => {
         monthlyLogins: typeof data.monthlyLogins === 'number' ? data.monthlyLogins : 1,
         treasureTickets: typeof data.treasureTickets === 'number' ? data.treasureTickets : 0,
         lastLoginDate: data.lastLoginDate || todayStr,
-        completedTasksLog: filteredCompletedLog, // 常に今日の日付分だけ安全に保持
+        completedTasksLog: filteredCompletedLog, 
         taskHistory: Array.isArray(data.taskHistory) ? data.taskHistory : []
       };
     } catch (e) {}
   }
-  return { tasks: INITIAL_TASKS, wallet: 0, invest: 0, exp: 0, level: 1, cumulativeDays: 1, monthlyLogins: 1, treasureTickets: 0, lastLoginDate: todayStr, completedTasksLog: [], taskHistory: [] };
+  return { tasks: INITIAL_TASKS, wallet: 0, invest: 0, exp: 0, level: 1, cumulativeDays: 1, monthlyLogins: 1, treasureTickets: 0, lastLoginDate: todayStr, completedTasksLog: cookieLogs, taskHistory: [] };
 };
 
 const saveDataToLocalStorage = (data: AppState): void => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('warrior_rpg_save', JSON.stringify(data));
+    // 💡【おまじない】書き込んだ直後にダミーの読み出しを行い、iOS Safariにディスクへ強制保存させます
+    localStorage.getItem('warrior_rpg_save');
   }
 };
 
@@ -307,7 +325,7 @@ export default function App() {
         setTimeout(() => addMessage(`⚔️ 冒険日誌 ${nextCumulative}日目の朝が来た！`), 800);
       }
 
-      // 💡対策その3: ログイン判定処理が走った際にも、今日のスタンプ以外の過去のログだけをクリーンアップし、今日のログは安全に残します。
+      // 過去のスタンプをフィルタリング
       const filteredCompletedLog = current.completedTasksLog.filter((log: string) => log.startsWith(todayStr));
 
       const updated: AppState = {
@@ -355,6 +373,8 @@ export default function App() {
 
   const completeTask = (taskId: number): void => {
     const todayStr = getLocalDateString();
+    
+    // 💡 実行前にLocalStorageから「本当に最新の状態」を再読み出し
     const current = loadDataFromLocalStorage();
     
     const targetTask = current.tasks.find(t => t.id === taskId);
@@ -362,17 +382,22 @@ export default function App() {
     
     const completedKey = `${todayStr}_${targetTask.name}`;
     
-    if (current.completedTasksLog.includes(completedKey)) {
+    // 💡【二重ガード】Cookieにスタンプがあるか、stateにあるか、両方をがっちりチェック！
+    const cookieLogs = getCompletedFromCookies();
+    if (current.completedTasksLog.includes(completedKey) || cookieLogs.includes(completedKey)) {
       addMessage(`[防衛] すでに完了として記録されています。`);
       return;
     }
+
+    // 💡【超即座の防衛】スマホのディスク書き込みの前に、まずはCookieにスタンプを刻み込む
+    setCompletedCookie(completedKey);
 
     const reward = targetTask.reward;
     const nextExp = current.exp + 10;
     const nextLevel = Math.floor(nextExp / 100) + 1;
     const isLevelUp = nextLevel > current.level;
 
-    const updatedCompletedLog = [...current.completedTasksLog, completedKey];
+    const updatedCompletedLog = Array.from(new Set([...current.completedTasksLog, completedKey]));
 
     let overflowLogs: HistoryLog[] = [];
     let moneyState = addMoneyAtState(current, reward, overflowLogs);
@@ -454,33 +479,4 @@ export default function App() {
       let overflowLogs: HistoryLog[] = [];
       let moneyState = addMoneyAtState(postDrawCurrent, winAmount, overflowLogs);
       const now = new Date();
-      const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-
-      let historyLogs: HistoryLog[] = [
-        { id: Date.now() + Math.random(), time: timeStr, text: `宝箱を開けた (${textResult})`, change: winAmount > 0 ? `+${winAmount}円` : "0円" },
-        ...overflowLogs
-      ];
-
-      const updated: AppState = {
-        ...postDrawCurrent,
-        wallet: moneyState.wallet,
-        invest: moneyState.invest,
-        taskHistory: [...historyLogs, ...postDrawCurrent.taskHistory].slice(0, 50)
-      };
-
-      saveDataToLocalStorage(updated);
-      setState(updated);
-      setIsDrawing(false);
-    }, 1500);
-  };
-
-  const resetChestGame = (): void => {
-    setChestStates(['closed', 'closed', 'closed']);
-    setChestResult(null);
-    setIsDrawing(false);
-    setShowChestGame(false);
-  };
-
-  const renderHome = () => {
-    const diaryIndex = Math.max(0, state.cumulativeDays - 1);
-    const todayDiaryText = WARRIOR_DIARY[diaryIndex] || "最強の戦士としての日常は続く！今日もさらなる高みへ！";
+      const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinut
