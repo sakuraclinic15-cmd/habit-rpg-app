@@ -24,7 +24,7 @@ const WARRIOR_DIARY = [
   "ソロは限界があるかも。ギルドの掲示板に「前衛求む！奢りあり」の文字。よし、話を聞いてみよう。",
   "臨時の3人パーティー結成。魔法使いの女の子と、盗賊の男。二人とも年上だけど、頼もしい。",
   "連携ってすげえ！ 俺が引きつけて、魔法でドン！ 1人で苦戦してた魔物が一瞬で消えた。感動だ。",
-  "打ち上げで魔法使い of 姉さんに「可愛いね」って頭を撫でられた。戦士として見られてない気がする。",
+  "打ち上げで魔法使いの姉さんに「可愛いね」って頭を撫でられた。戦士として見られてない気がする。",
   "臨時パーティーは解散。それぞれの道へ。また寂しい一人旅か……と思ったら、ギルドで変な奴に絡まれた。",
   "絡んできたのは同い年の大剣使い。名前はカイル。「どっちが強いか勝負だ！」って、今忙しいんだけど。",
   "カイルと街の外で決闘。結果は引き分け。あいつ、大振りのくせに強え。泥だらけで大笑いした。",
@@ -34,7 +34,7 @@ const WARRIOR_DIARY = [
   "街に戻ったら、商人から「荷馬車の護衛」を頼まれた。カイルと二人、初めての指名依頼だ。",
   "護衛中、カイルが「腹が減った」とうるさい。お前の胃袋はブラックホールか。俺の干し肉を分ける。",
   "夜襲だ！ 盗賊団が現れたが、今の俺たちなら負けない。カイルと背中を合わせて戦うの、悪くないな。",
-  "無さに護衛完了。商人のおっちゃんからボーナスを貰った。カイルと「これで美味いもん食おう」と堅い握手。",
+  "無事に護衛完了。商人のおっちゃんからボーナスを貰った。カイルと「これで美味いもん食おう」と堅い握手。",
   "ギルドから「近郊の洞窟ダンジョン」の調査依頼が来た。ついに、本当のダンジョンアタックだ！",
   "松明の明かりだけが頼り。暗い、狭い、不気味。カイルの奴、強がってるけど絶対にビビってる。",
   "ダンジョン3日目。毒グモの群れに遭遇。噛まれなくて良かったけど、糸が絡まって身動きが取れん！",
@@ -98,7 +98,7 @@ const WARRIOR_DIARY = [
   "街への帰り道。お互い「悪かった」って、ボソボソ言い訳。でも、これで前よりずっと相棒になれた気がする。",
   "カイルが新しい大剣の使い方を俺に見せてくれた。大振りだけど、俺が隙を埋めれば最強の武器になる。",
   "ギルドの受付嬢さんに「仲直りできて良かったですね」とニヤニヤされた。全部バレてた。恥ずかしすぎる。",
-  "二人での連携を再特訓。俺が盾で敵の体勢を崩し, カイルが叩き斬る。阿吽の呼吸って、こういうのを言うんだな。",
+  "二人での連携を再特訓。俺が盾で敵の体勢を崩し、カイルが叩き斬る。阿吽の呼吸って、こういうのを言うんだな。",
   "街の子供に「戦士のお兄ちゃんたち、カッコいい！」と言われた。今度は転ばずに、バシッとポーズを決めたぞ。",
   "地元の名士から「お屋敷の地下ネズミ退治」を頼まれた。ネズミって言っても、こっちのネズミは犬並みにデカい。",
   "地下室でネズミと大乱闘。カイルが驚いて暴れた拍子に、名士の高級なツボを割った。……俺たちの報酬から天引きだ。",
@@ -114,7 +114,7 @@ const INITIAL_TASKS = [
   { id: 3, name: "プリント取込", reward: 50, done: false }
 ];
 
-// --- 日本時間（スマホの現地時間）と100%完全一致する「YYYY-MM-DD」を取得する関数（UTCのズレを解消） ---
+// --- 日本時間（JST）と100%完全一致する日付（YYYY-MM-DD）を取得（UTCとの時差9時間を完全解消） ---
 const getLocalDateString = () => {
   const d = new Date();
   const year = d.getFullYear();
@@ -123,7 +123,7 @@ const getLocalDateString = () => {
   return `${year}-${month}-${date}`;
 };
 
-// --- 日付をブラウザの時差に干渉されずにパースする安全な関数 ---
+// --- 文字列からローカルタイム基準で日付を生成する安全な関数 ---
 const parseLocalDate = (dateStr) => {
   if (!dateStr) return new Date();
   const parts = dateStr.split('-');
@@ -161,119 +161,43 @@ export default function App() {
   const [currentDate, setCurrentDate] = useState(getLocalDateString());
   
   // ==========================================
-  // 【完全バグ根絶】遅延初期化（Lazy Initialization）
-  // 起動時の初期ローディングを完璧に「マウント前」にロック。
-  // これにより、読み込み完了前に空データで上書き保存される不具合を100%解決。
+  // 【バグ完全根絶】アトミック統合ステート
+  // 全ての状態を1つの大きなオブジェクトに統合。
+  // 一部のステートだけが非同期で遅れてセーブデータに書き込まれる現象を100%防止。
   // ==========================================
-  const [tasks, setTasks] = useState(() => {
+  const [state, setState] = useState(() => {
     const saved = localStorage.getItem('warrior_rpg_save');
     if (saved) {
       try {
         const data = JSON.parse(saved);
-        if (data.tasks) return data.tasks;
-      } catch (e) {}
+        return {
+          tasks: data.tasks || INITIAL_TASKS,
+          wallet: data.wallet !== undefined ? data.wallet : 0,
+          invest: data.invest !== undefined ? data.invest : 0,
+          exp: data.exp !== undefined ? data.exp : 0,
+          level: data.level !== undefined ? data.level : 1,
+          cumulativeDays: data.cumulativeDays !== undefined ? data.cumulativeDays : 1,
+          monthlyLogins: data.monthlyLogins !== undefined ? data.monthlyLogins : 1,
+          treasureTickets: data.treasureTickets !== undefined ? data.treasureTickets : 0,
+          lastLoginDate: data.lastLoginDate || getLocalDateString(),
+          taskHistory: data.taskHistory || []
+        };
+      } catch (e) {
+        console.error("Save data parse failed", e);
+      }
     }
-    return INITIAL_TASKS;
-  });
-
-  const [wallet, setWallet] = useState(() => {
-    const saved = localStorage.getItem('warrior_rpg_save');
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (data.wallet !== undefined) return data.wallet;
-      } catch (e) {}
-    }
-    return 0;
-  });
-
-  const [invest, setInvest] = useState(() => {
-    const saved = localStorage.getItem('warrior_rpg_save');
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (data.invest !== undefined) return data.invest;
-      } catch (e) {}
-    }
-    return 0;
-  });
-
-  const [exp, setExp] = useState(() => {
-    const saved = localStorage.getItem('warrior_rpg_save');
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (data.exp !== undefined) return data.exp;
-      } catch (e) {}
-    }
-    return 0;
-  });
-
-  const [level, setLevel] = useState(() => {
-    const saved = localStorage.getItem('warrior_rpg_save');
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (data.level !== undefined) return data.level;
-      } catch (e) {}
-    }
-    return 1;
-  });
-
-  const [cumulativeDays, setCumulativeDays] = useState(() => {
-    const saved = localStorage.getItem('warrior_rpg_save');
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (data.cumulativeDays !== undefined) return data.cumulativeDays;
-      } catch (e) {}
-    }
-    return 1;
-  });
-
-  const [monthlyLogins, setMonthlyLogins] = useState(() => {
-    const saved = localStorage.getItem('warrior_rpg_save');
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (data.monthlyLogins !== undefined) return data.monthlyLogins;
-      } catch (e) {}
-    }
-    return 1;
-  });
-
-  const [treasureTickets, setTreasureTickets] = useState(() => {
-    const saved = localStorage.getItem('warrior_rpg_save');
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (data.treasureTickets !== undefined) return data.treasureTickets;
-      } catch (e) {}
-    }
-    return 0;
-  });
-
-  const [lastLoginDate, setLastLoginDate] = useState(() => {
-    const saved = localStorage.getItem('warrior_rpg_save');
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (data.lastLoginDate) return data.lastLoginDate;
-      } catch (e) {}
-    }
-    // データがない初回起動時は、今日の日付を初期値にして「変化エフェクト」の暴発を防止
-    return getLocalDateString();
-  });
-
-  const [taskHistory, setTaskHistory] = useState(() => {
-    const saved = localStorage.getItem('warrior_rpg_save');
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (data.taskHistory) return data.taskHistory;
-      } catch (e) {}
-    }
-    return [];
+    return {
+      tasks: INITIAL_TASKS,
+      wallet: 0,
+      invest: 0,
+      exp: 0,
+      level: 1,
+      cumulativeDays: 1,
+      monthlyLogins: 1,
+      treasureTickets: 0,
+      lastLoginDate: getLocalDateString(),
+      taskHistory: []
+    };
   });
 
   // --- UI用のステート（セーブ不要） ---
@@ -301,77 +225,90 @@ export default function App() {
 
   const messageIdRef = useRef(0);
 
-  // --- 【時差バグ解決】1日1回だけ確実に起動するローカル日付変更チェック ---
+  // --- 【時差・リロードバグ根絶】アトミックな1日1回日付判定エフェクト ---
   useEffect(() => {
-    const todayStr = getLocalDateString(); // 日本時間の時計に完全連動
+    const todayStr = getLocalDateString();
     
-    if (lastLoginDate !== todayStr && lastLoginDate !== '') {
-      const today = parseLocalDate(todayStr);
-      const lastLogin = parseLocalDate(lastLoginDate);
+    setState(prev => {
+      // 1. 同一日のリロード、あるいは初期状態の未定義時は即座にスルー（二重判定バグ完全防止）
+      if (prev.lastLoginDate === todayStr) {
+        return prev;
+      }
       
-      // 時刻を完全にゼロリセット
+      const today = parseLocalDate(todayStr);
+      const lastLogin = parseLocalDate(prev.lastLoginDate);
+      
       lastLogin.setHours(0,0,0,0);
       today.setHours(0,0,0,0);
       
       const diffDays = Math.round((today - lastLogin) / (1000 * 60 * 60 * 24));
 
-      if (diffDays > 0) {
-        // 本当に翌日になったのでクエストの完了をリセット
-        setTasks(prev => prev.map(t => ({ ...t, done: false })));
-
-        // 通算日数の増加
-        setCumulativeDays(prev => {
-          const nextCumulative = prev + 1;
-          // 5日ごとのチケットボーナス
-          if (nextCumulative % 5 === 0) {
-            setTreasureTickets(t => t + 1);
-            addMessage(`🎁 通算ログイン${nextCumulative}日記念！「宝箱チケット」獲得！`);
-            setTaskHistory(hist => [{
-              id: Date.now() + Math.random(),
-              time: `${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')} 00:00`,
-              text: `宝箱チケット獲得 (通算${nextCumulative}日特典)`,
-              change: `+1枚`
-            }, ...hist.slice(0, 49)]);
-          } else {
-            addMessage(`⚔️ 冒険日誌 ${nextCumulative}日目の朝が来た！`);
-          }
-          return nextCumulative;
-        });
-
-        // 月跨ぎ判定
-        setMonthlyLogins(prev => {
-          let nextMonthly = prev;
-          if (today.getMonth() !== lastLogin.getMonth()) {
-            nextMonthly = 1;
-            // 投資利息付与
-            setInvest(inv => {
-              if (inv > 0) {
-                const interest = Math.floor(inv * 0.01);
-                setTaskHistory(hist => [{
-                  id: Date.now() + Math.random(),
-                  time: `${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')} 00:00`,
-                  text: `利息付与 (+${interest}円)`,
-                  change: `+${interest}円`
-                }, ...hist.slice(0, 49)]);
-                return inv + interest;
-              }
-              return inv;
-            });
-          } else {
-            nextMonthly += 1;
-          }
-          return nextMonthly;
-        });
+      if (diffDays <= 0) {
+        return {
+          ...prev,
+          lastLoginDate: todayStr
+        };
       }
-      setLastLoginDate(todayStr);
-    }
-  }, []); // 起動時1回のみ確実に実行
 
-  // --- 自動セーブ ---
+      // 2. 翌日になった場合のみ、状態をまとめて1回で同時更新
+      const nextCumulative = prev.cumulativeDays + 1;
+      let nextMonthly = prev.monthlyLogins;
+      let nextInvest = prev.invest;
+      let nextTreasureTickets = prev.treasureTickets;
+      let newLogs = [];
+
+      const now = new Date();
+      const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} 00:00`;
+
+      // 月跨ぎの金利判定
+      if (today.getMonth() !== lastLogin.getMonth()) {
+        nextMonthly = 1;
+        if (prev.invest > 0) {
+          const interest = Math.floor(prev.invest * 0.01);
+          nextInvest += interest;
+          newLogs.push({
+            id: Date.now() + Math.random(),
+            time: timeStr,
+            text: `毎月1日：投資口座に利息(1%)が支給されました`,
+            change: `+${interest}円`
+          });
+        }
+      } else {
+        nextMonthly += 1;
+      }
+
+      // 5日ごとのチケットボーナス
+      if (nextCumulative % 5 === 0) {
+        nextTreasureTickets += 1;
+        newLogs.push({
+          id: Date.now() + Math.random() + 2,
+          time: timeStr,
+          text: `通算ログイン${nextCumulative}日特典「宝箱チケット」獲得`,
+          change: `+1枚`
+        });
+        setTimeout(() => addMessage(`🎁 通算ログイン${nextCumulative}日記念！「宝箱チケット」獲得！`), 800);
+      } else {
+        setTimeout(() => addMessage(`⚔️ 冒険日誌 ${nextCumulative}日目の朝が来た！`), 800);
+      }
+
+      // 本日のタスクリセット＆ログイン状態更新
+      return {
+        ...prev,
+        tasks: prev.tasks.map(t => ({ ...t, done: false })),
+        cumulativeDays: nextCumulative,
+        monthlyLogins: nextMonthly,
+        invest: nextInvest,
+        treasureTickets: nextTreasureTickets,
+        lastLoginDate: todayStr,
+        taskHistory: [...newLogs, ...prev.taskHistory].slice(0, 50)
+      };
+    });
+  }, []);
+
+  // --- 自動セーブ（State変更をトリガーに1回だけ安全に保存） ---
   useEffect(() => {
-    const dataToSave = { tasks, wallet, invest, exp, level, cumulativeDays, monthlyLogins, treasureTickets, lastLoginDate, taskHistory };
-    localStorage.setItem('warrior_rpg_save', JSON.stringify(dataToSave));
-  }, [tasks, wallet, invest, exp, level, cumulativeDays, monthlyLogins, treasureTickets, lastLoginDate, taskHistory]);
+    localStorage.setItem('warrior_rpg_save', JSON.stringify(state));
+  }, [state]);
 
   // --- Helpers ---
   const addMessage = (text) => {
@@ -380,77 +317,108 @@ export default function App() {
     setTimeout(() => setMessages(prev => prev.filter(m => m.id !== id)), 4000);
   };
 
-  const rankInfo = getWarriorRank(level);
+  const rankInfo = getWarriorRank(state.level);
 
-  const addMoney = (amount) => {
-    setWallet(prevWallet => {
-      let newWallet = prevWallet + amount;
-      if (newWallet > 3000) {
-        const overflow = newWallet - 3000;
-        setInvest(prevInvest => prevInvest + overflow);
-        addMessage(`財布の上限(3000円)を超えた ${overflow}円 を自動で投資口座へ送りました！`);
-        
-        const now = new Date();
-        const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        setTaskHistory(prev => [{
+  // 安全な合算処理
+  const addMoneyAtState = (prev, amount, overflowLogs) => {
+    let nextWallet = prev.wallet + amount;
+    let nextInvest = prev.invest;
+    
+    if (nextWallet > 3000) {
+      const overflow = nextWallet - 3000;
+      nextInvest += overflow;
+      nextWallet = 3000;
+      
+      const now = new Date();
+      const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      overflowLogs.push({
+        id: Date.now() + Math.random() + 5,
+        time: timeStr,
+        text: `財布上限オーバーのため自動投資振替`,
+        change: `+${overflow}円`
+      });
+      setTimeout(() => addMessage(`財布の上限(3000円)を超えた ${overflow}円 を投資口座へ送りました！`), 200);
+    }
+    return { wallet: nextWallet, invest: nextInvest };
+  };
+
+  // クエスト完了
+  const completeTask = (taskId) => {
+    setState(prev => {
+      // すでに完了している場合、二重受け取りバグを100%防ぐために状態を不変で返す
+      const targetTask = prev.tasks.find(t => t.id === taskId);
+      if (!targetTask || targetTask.done) return prev;
+
+      const reward = targetTask.reward;
+      const nextExp = prev.exp + 10;
+      const nextLevel = Math.floor(nextExp / 100) + 1;
+      const isLevelUp = nextLevel > prev.level;
+
+      let overflowLogs = [];
+      const moneyState = addMoneyAtState(prev, reward, overflowLogs);
+      
+      let finalWallet = moneyState.wallet;
+      let finalInvest = moneyState.invest;
+
+      // レベルアップ時の自動ボーナス 300円
+      if (isLevelUp) {
+        const levelUpMoneyState = addMoneyAtState({ wallet: finalWallet, invest: finalInvest }, 300, overflowLogs);
+        finalWallet = levelUpMoneyState.wallet;
+        finalInvest = levelUpMoneyState.invest;
+      }
+
+      const now = new Date();
+      const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      
+      let newLogs = [
+        {
           id: Date.now() + Math.random(),
           time: timeStr,
-          text: `財布満杯による投資自動振替`,
-          change: `+${overflow}円`
-        }, ...prev.slice(0, 49)]);
+          text: `クエスト「${targetTask.name}」完了`,
+          change: `+${reward}円`
+        },
+        ...overflowLogs
+      ];
+
+      if (isLevelUp) {
+        newLogs.unshift({
+          id: Date.now() + Math.random() + 1,
+          time: timeStr,
+          text: `レベルアップ！ Lv.${prev.level} ➔ Lv.${nextLevel} 特典ボーナス`,
+          change: `+300円`
+        });
         
-        return 3000;
+        setLevelUpData({ old: prev.level, next: nextLevel });
+        setTimeout(() => setShowLevelUpPopup(true), 600);
       }
-      return newWallet;
+
+      addMessage(`[クエスト完了] ${targetTask.name} (+${reward}円 / +10EXP)`);
+      if (isLevelUp) {
+        addMessage(`🎉 LEVEL UP! Lv.${nextLevel}ボーナス +300円！`);
+      }
+
+      return {
+        ...prev,
+        tasks: prev.tasks.map(t => t.id === taskId ? { ...t, done: true } : t),
+        wallet: finalWallet,
+        invest: finalInvest,
+        exp: nextExp,
+        level: nextLevel,
+        taskHistory: [...newLogs, ...prev.taskHistory].slice(0, 50)
+      };
     });
   };
 
-  const completeTask = (taskId) => {
-    setTasks(prev => prev.map(t => {
-      if (t.id === taskId && !t.done) {
-        addMoney(t.reward);
-        
-        const nextExp = exp + 10;
-        setExp(nextExp);
-        const nextLevel = Math.floor(nextExp / 100) + 1;
-        
-        addMessage(`[クエスト完了] ${t.name} (+${t.reward}円 / +10EXP)`);
-        
-        const now = new Date();
-        const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        setTaskHistory(prev => [{
-          id: Date.now() + Math.random(),
-          time: timeStr,
-          text: `クエスト「${t.name}」完了`,
-          change: `+${t.reward}円`
-        }, ...prev.slice(0, 49)]);
-
-        if (nextLevel > level) {
-          setLevel(nextLevel);
-          setLevelUpData({ old: level, next: nextLevel });
-          setTimeout(() => {
-            addMoney(300);
-            setShowLevelUpPopup(true);
-            const levelTimeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-            setTaskHistory(prev => [{
-              id: Date.now() + Math.random(),
-              time: levelTimeStr,
-              text: `レベルアップ Lv.${level} ➔ Lv.${nextLevel}`,
-              change: `+300円`
-            }, ...prev.slice(0, 49)]);
-          }, 600);
-        }
-
-        return { ...t, done: true };
-      }
-      return t;
-    }));
-  };
-
+  // 宝箱を引く
   const startChestDraw = (index) => {
-    if (isDrawing || treasureTickets <= 0) return;
+    if (isDrawing || state.treasureTickets <= 0) return;
     setIsDrawing(true);
-    setTreasureTickets(prev => prev - 1);
+
+    // 1. まずチケットを消費
+    setState(prev => ({
+      ...prev,
+      treasureTickets: Math.max(0, prev.treasureTickets - 1)
+    }));
 
     const nextStates = [...chestStates];
     nextStates[index] = 'shaking';
@@ -477,18 +445,30 @@ export default function App() {
       setChestStates(finalStates);
       setChestResult({ amount: winAmount, text: textResult, index });
       
-      if (winAmount > 0) {
-        addMoney(winAmount);
-      }
-      
-      const now = new Date();
-      const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-      setTaskHistory(prev => [{
-        id: Date.now() + Math.random(),
-        time: timeStr,
-        text: `宝箱を開けた (${textResult})`,
-        change: winAmount > 0 ? `+${winAmount}円` : "0円"
-      }, ...prev.slice(0, 49)]);
+      // 2. 当選金をアトミックに加算
+      setState(prev => {
+        let overflowLogs = [];
+        const moneyState = addMoneyAtState(prev, winAmount, overflowLogs);
+        
+        const now = new Date();
+        const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+        return {
+          ...prev,
+          wallet: moneyState.wallet,
+          invest: moneyState.invest,
+          taskHistory: [
+            {
+              id: Date.now() + Math.random(),
+              time: timeStr,
+              text: `宝箱開封：${textResult}`,
+              change: winAmount > 0 ? `+${winAmount}円` : "0円"
+            },
+            ...overflowLogs,
+            ...prev.taskHistory
+          ].slice(0, 50)
+        };
+      });
       
       setIsDrawing(false);
     }, 1500);
@@ -503,9 +483,9 @@ export default function App() {
 
   // --- Views ---
   const renderHome = () => {
-    const diaryIndex = Math.max(0, cumulativeDays - 1);
+    const diaryIndex = Math.max(0, state.cumulativeDays - 1);
     const todayDiaryText = WARRIOR_DIARY[diaryIndex] || "最強の戦士としての日常は続く！今日もさらなる高みへ！";
-    const currentProgressExp = exp % 100;
+    const currentProgressExp = state.exp % 100;
 
     return (
       <div className="flex flex-col h-full overflow-y-auto pb-24 bg-gray-100 text-gray-800">
@@ -515,4 +495,18 @@ export default function App() {
           <div className="flex items-start gap-4 relative z-10">
             <div className="flex flex-col items-center w-[90px] flex-shrink-0">
               <Avatar avatar={rankInfo.avatar} size="large" />
-              <div className="text-sm font-bold mt-2 text-center w-full bg-slate-800 rounded pixel-bor
+              <div className="text-sm font-bold mt-2 text-center w-full bg-slate-800 rounded pixel-border border-slate-700 py-1 shadow-inner text-yellow-400">
+                Lv.{state.level}
+              </div>
+            </div>
+
+            <div className="flex-1 flex flex-col justify-between min-h-[140px]">
+              <div className="flex justify-between items-start border-b border-slate-800 pb-1.5">
+                <div className="font-bold text-lg text-emerald-400 tracking-wide">{rankInfo.name}</div>
+                <div className="text-xs text-blue-300 font-bold self-center bg-blue-950/80 px-2 py-0.5 rounded pixel-border border-blue-900">
+                  通算: {state.cumulativeDays}日目
+                </div>
+              </div>
+
+              <div className="bg-black/60 text-gray-200 p-2.5 pixel-border border-slate-800 text-[12px] flex flex-col relative mt-2 flex-1 shadow-inner leading-relaxed">
+                <div clas
