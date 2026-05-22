@@ -13,7 +13,7 @@ const WARRIOR_DIARY = [
   "スライムと格闘した筋肉痛が酷い。今日は宿で大人しく武器の手入れをする。砥石で研ぐと剣が生き返るんだ。",
   "ギルドで少し強そうなパーティーに誘われた。コボルト討伐だ。足を引っ張らないように気を引き締めないと。",
   "コボルトとの初陣。仲間の背中を守る役割に徹した。最後の一撃は俺が！ ……少しだけ、自信がついたかも。",
-  "討伐報酬で新しい革 of 小手を買った。防具の重要性を身をもって知ったからな。見た目も、少し強そうになったかな？",
+  "討伐報酬で新しい革の小手を買った。防具の重要性を身をもって知ったからな。見た目も、少し強そうになったかな？",
   "ランクが上がったとギルド受付嬢に言われた。まだ一番下だけど、看板の名前を見るたび胸が高鳴る。頑張るぞ！",
   "ちょっといい依頼を見つけた。「街道のゴブリン退治」。これなら俺も主力として張れるはずだ。",
   "ゴブリンの癖に罠を使うなんて卑怯だぞ！ 穴に落ちて丸一日無駄にした。お尻が痛い……。",
@@ -22,14 +22,14 @@ const WARRIOR_DIARY = [
   "調子に乗って少し強い魔物に挑んだら、防具を噛みちぎられて半泣きで逃げ帰った。死ぬかと思った。",
   "昨日の恐怖で足が震える。宿の裏手で、ただひたすらに素振り。基本が一番大事って、本当だな。",
   "ソロは限界があるかも。ギルドの掲示板に「前衛求む！奢りあり」の文字。よし、話を聞いてみよう。",
-  "臨時の3人パーティー結成。魔法使いの女の子と、盗賊の男。二人とも年上だけど、頼もしい。",
+  "臨時の3人パーティー結成。魔法使いの女の子と、盗賊 of 男。二人とも年上だけど、頼もしい。",
   "連携ってすげえ！ 俺が引きつけて、魔法でドン！ 1人で苦戦してた魔物が一瞬で消えた。感動だ。",
   "打ち上げで魔法使いの姉さんに「可愛いね」って頭を撫でられた。戦士として見られてない気がする。",
   "臨時パーティーは解散。それぞれの道へ。また寂しい一人旅か……と思ったら、ギルドで変な奴に絡まれた。",
   "絡んできたのは同い年の大剣使い。名前はカイル。「どっちが強いか勝負だ！」って、今忙しいんだけど。",
   "カイルと街の外で決闘。結果は引き分け。あいつ、大振りのくせに強え。泥だらけで大笑いした。",
   "気がついたらカイルと即席コンビを組むことに。依頼は「巨大イノシシの狩猟」。肉、美味そうだな。",
-  "イノシシ突進強すぎ！ 二人まとめて吹っ飛ばされて川に落ちた. 防具が重くて溺れかけたぞ。",
+  "イノシシ突進強すぎ！ 二人まとめて吹っ飛ばされて川に落ちた。防具が重くて溺れかけたぞ。",
   "作戦勝ち！ 俺が囮になって、カイルが横から一閃。仕留めた肉で作ったステーキ、人生で一番美味い！",
   "街に戻ったら、商人から「荷馬車の護衛」を頼まれた。カイルと二人、初めての指名依頼だ。",
   "護衛中、カイルが「腹が減った」とうるさい。お前の胃袋はブラックホールか。俺の干し肉を分ける。",
@@ -51,7 +51,7 @@ const WARRIOR_DIARY = [
   "昨日買った新品の剣を自慢したくて、街をうろつく。誰か「いい剣だね」って話しかけてくれないかな。",
   "カイルが「お前の奢りで肉を食わせろ」と毎日つきまとってくる。報酬、もう半分くらいカイルの胃袋だぞ。",
   "ギルドの受付嬢さんに「最近調子に乗ってますね」と冷たい目で言われた。ギクッ。す、すいません……。",
-  "初心に帰ってひやすら素振り。重い剣を、もっと体の一部みたいに扱えるようになりたい。体幹が大事だな。",
+  "初心に帰ってひたすら素振り。重い剣を、もっと体の一部みたいに扱えるようになりたい。体幹が大事だな。",
   "カイルと模擬戦。あいつの怪力、前より増してないか？ 防いだだけで腕の骨がきしむ音がしたぞ。",
   "地元の子供たちに「戦士のお兄ちゃん、技見せて！」と囲まれた。かっこよく型を決めたら、派手に転んだ。",
   "ギルドの掲示板に、一枚の挑戦状。……いや、「ギルド内ランクアップ試験」の告知だ。よし、受けるぞ！",
@@ -63,7 +63,7 @@ const WARRIOR_DIARY = [
   "「お前の剣は力みすぎだ」とおっさん。力を抜いて、風を切るように……。あ、今、少しだけ感覚を掴んだかも。",
   "カイルと二人で、おっさんに挑む。二人係でもボコボコにされたけど、前より長く立っていられたぞ。",
   "おっさんが「もう教えることはねえ。酒持ってこい」と。ぶっきらぼうだけど、少し寂しいな。ありがとな。",
-  "試験前日。カイルと二人で武器を磨く。明日はお互い別々の相手と戦う。絶対に二人で合格するんだ。",
+  "試験前日。カイルと二人で武器を磨く。明日はお互い別々の相手と戦う. 絶対に二人で合格するんだ。",
   "いよいよ試験当日。ギルドの裏の闘技場には、たくさんの見物人が。心臓がうるさい。さあ、行くぞ！",
   "俺の対戦相手は、盾使いのベテラン。鉄壁の防御をどう崩すか……おっさんとの修行を思い出すんだ。",
   "力を抜いて、相手の呼吸を読んで……一閃！ 盾の隙間を突いて、木刀を喉元に突きつけた。勝った、俺の勝ちだ！",
@@ -83,7 +83,7 @@ const WARRIOR_DIARY = [
   "遺跡を警備する古代の動く鎧（ガーディアン）と戦闘。剣が効きにくい！ カイルと息を合わせて関節を狙う。",
   "ガーディアンを何とか撃破。壊れた鎧の中から、綺麗な青い宝石が出てきた。これ、高く売れるやつじゃないか？",
   "遺跡の最奥で、巨大な魔法陣を発見。何も起きなかったけど、なんだか不気味だ。調査報告のために紙に記録。",
-  "地上への帰り道、カイルが「迷った」と言い出した。行きに目印 of 傷をつけたらしいが……これ、ただの引っかき傷だろ！",
+  "地上への帰り道、カイルが「迷った」と言い出した。行きに目印の傷をつけたらしいが……これ、ただの引っかき傷だろ！",
   "なんとか生還！ ギルド長に報告したら「素晴らしい手際だ」って。貰った報酬で、今日はちょっと良い宿に泊まろう。",
   "遺跡の宝石が高く売れて大儲け。カイルの奴、その金でいきなり高級な大剣を買いやがった。計画性ゼロかよ。",
   "「お前も防具買えよ」って言われたけど、俺は宿代や飯代のために貯金したいんだ。こういうところで意見が合わない。",
@@ -91,7 +91,7 @@ const WARRIOR_DIARY = [
   "「無茶しすぎだ！」「新しい剣を試したかっただけだろ！」宿屋でカイルと大喧嘩。あいつの顔、もう見たくない。",
   "今日はカイルを無視して、一人で薬草採取の依頼へ。……なんか、一人だと森がやけに広く感じて落ち着かないな。",
   "ギルドに行ったら、カイルが別の奴らとパーティーを組んでた。べ、別に寂しくなんてないし。フン、勝手にしろ。",
-  "カイルが組んだパーティー、評判の悪いガラの悪い奴らだ。あいつ、騙されて危険な依頼に行かされてないか……？",
+  "カイルが組んだパーティー、評判の悪いガラ悪の奴らだ。あいつ、騙されて危険な依頼に行かされてないか……？",
   "胸騒ぎがして、カイルたちが向かった「這い寄る影の谷」へ走る。あそこはDランクじゃまだ早い危険地帯だぞ！",
   "谷の奥で、案の定仲間に見捨てられて魔物に囲まれるカイルを発見！「バカカイル！」って叫びながら、俺は飛び込んだ。",
   "二人で背中を合わせ、死に物狂いで魔物を撃退。泥だらけのまま「助けにくるのが遅い」「うるせえ」と、笑い合った。",
@@ -99,7 +99,7 @@ const WARRIOR_DIARY = [
   "カイルが新しい大剣の使い方を俺に見せてくれた。大振りだけど、俺が隙を埋めれば最強の武器になる。",
   "ギルドの受付嬢さんに「仲直りできて良かったですね」とニヤニヤされた。全部バレてた。恥ずかしすぎる。",
   "二人での連携を再特訓。俺が盾で敵の体勢を崩し、カイルが叩き斬る。阿吽の呼吸って、こういうのを言うんだな。",
-  "街の子供に「戦士のお兄ちゃんたち、カッコいい！」と言われた。今度は転ばずに、バシッとポーズを決めたぞ。",
+  "街の子供に「戦士のお兄ちゃんたち、カッコいい！」と言われた. 今度は転ばずに、バシッとポーズを決めたぞ。",
   "地元の名士から「お屋敷の地下ネズミ退治」を頼まれた。ネズミって言っても、こっちのネズミは犬並みにデカい。",
   "地下室でネズミと大乱闘。カイルが驚いて暴れた拍子に、名士の高級なツボを割った。……俺たちの報酬から天引きだ。",
   "ツボの弁償で一文無しに。二人で川原で魚を釣って焼いて食う。でも、カイルと食う魚は、なんだか美味い。",
@@ -114,7 +114,7 @@ const INITIAL_TASKS = [
   { id: 3, name: "プリント取込", reward: 50 }
 ];
 
-// --- 日本時間（JST）と100%完全一致する日付（YYYY-MM-DD）を取得（UTCとの時差を完全解消） ---
+// --- スマホ現地時間の「年月日」を完璧に取得する関数（時差バグ完全シャットアウト） ---
 const getLocalDateString = () => {
   const d = new Date();
   const year = d.getFullYear();
@@ -123,17 +123,7 @@ const getLocalDateString = () => {
   return `${year}-${month}-${date}`;
 };
 
-// --- 文字列からローカルタイム基準で日付を生成する安全な関数 ---
-const parseLocalDate = (dateStr) => {
-  if (!dateStr) return new Date();
-  const parts = dateStr.split('-');
-  if (parts.length === 3) {
-    return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-  }
-  return new Date();
-};
-
-// --- 【完全バグ根絶】LocalStorageから安全に、古いゴミを掃除しつつ読み出す関数 ---
+// --- LocalStorageとのやり取りを完全同期化し、古い破損データを自動クリーニングして修復ロードする極上設計 ---
 const loadDataFromLocalStorage = () => {
   const saved = localStorage.getItem('warrior_rpg_save');
   const todayStr = getLocalDateString();
@@ -142,16 +132,11 @@ const loadDataFromLocalStorage = () => {
     try {
       const data = JSON.parse(saved);
       
-      // 1. 旧セーブデータ（tasksオブジェクトの配列）を安全にロード
       const rawTasks = Array.isArray(data.tasks) ? data.tasks : INITIAL_TASKS;
-      
-      // 2. 過去の「完了履歴ログ」の配列を取得
       const loadedLog = Array.isArray(data.completedTasksLog) ? data.completedTasksLog : [];
       const repairedLog = [...loadedLog];
 
-      // 【超重要：古いゴミデータの自動修復】
-      // もし古いセーブデータに「done: true」というプロパティが残っていた場合、
-      // それを検知して新しい「今日の日付_タスク名」形式のスタンプに自動変換してお掃除します。
+      // 旧形式データが残っていた場合、自動お掃除＆新形式スタンプにマッピング
       rawTasks.forEach(t => {
         if (t.done && t.name) {
           const legacyKey = `${todayStr}_${t.name}`;
@@ -161,7 +146,7 @@ const loadDataFromLocalStorage = () => {
         }
       });
 
-      // tasksからはdoneプロパティを完全に排除し、不整合をシャットアウト
+      // タスクデータそのものからは、バグの温床となるdoneフラグを完全排除
       const cleanTasks = rawTasks.map(t => ({
         id: t.id,
         name: t.name,
@@ -176,15 +161,14 @@ const loadDataFromLocalStorage = () => {
         level: typeof data.level === 'number' ? data.level : 1,
         treasureTickets: typeof data.treasureTickets === 'number' ? data.treasureTickets : 0,
         loginDates: Array.isArray(data.loginDates) ? data.loginDates : [todayStr],
-        completedTasksLog: repairedLog, // 修復＆お掃除済みの履歴スタンプ
+        completedTasksLog: repairedLog, // 本物のスタンプ帳
         taskHistory: Array.isArray(data.taskHistory) ? data.taskHistory : []
       };
     } catch (e) {
-      console.error("データの破損を検知したため、安全に修復初期化しました", e);
+      console.error("データの破損を検知したため、安全に初期化しました", e);
     }
   }
   
-  // 初回起動時のデフォルト構造
   return {
     tasks: INITIAL_TASKS,
     wallet: 0,
@@ -198,7 +182,7 @@ const loadDataFromLocalStorage = () => {
   };
 };
 
-// --- 同期的にLocalStorageへ直接書き込む関数 ---
+// --- スマホに直接セーブを刻み込む関数 ---
 const saveDataToLocalStorage = (data) => {
   localStorage.setItem('warrior_rpg_save', JSON.stringify(data));
 };
@@ -230,7 +214,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [currentDate, setCurrentDate] = useState(getLocalDateString());
   
-  // --- 画面表示用のState。初期起動時にお掃除済みのデータを同期的に完全ロード ---
+  // --- 画面描画用のState。マウント前の「初期変数の宣言時」に同期ロードするため、タイムラグは皆無 ---
   const [state, setState] = useState(() => loadDataFromLocalStorage());
 
   // --- UI用のステート（セーブ不要） ---
@@ -258,14 +242,15 @@ export default function App() {
 
   const messageIdRef = useRef(0);
 
-  // --- 【時差・リロードバグ根絶】ログイン日付判定 ---
+  // --- アプリ起動（マウント）時に一度だけ確実に実行される日付更新判定。自動セーブエフェクトは全撤廃 ---
   useEffect(() => {
     const todayStr = getLocalDateString();
-    const current = loadDataFromLocalStorage(); // セーブデータから直接同期読み込み
+    const current = loadDataFromLocalStorage(); // 真実のロード
 
+    // ログイン日付リスト（loginDates）に今日がなければ、真の日替わりログイン
     if (!current.loginDates.includes(todayStr)) {
       const updatedDates = [...current.loginDates, todayStr];
-      const nextCumulative = updatedDates.length; // ユニークなログイン日数が通算日数
+      const nextCumulative = updatedDates.length; // ログインした「実質日数」が通算日数
       
       let nextInvest = current.invest;
       let nextTreasureTickets = current.treasureTickets;
@@ -274,11 +259,11 @@ export default function App() {
       const now = new Date();
       const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} 00:00`;
 
-      // 月跨ぎの金利判定
+      // 月跨ぎ判定
       const lastLoginDateStr = current.loginDates[current.loginDates.length - 1];
       if (lastLoginDateStr) {
-        const lastLogin = parseLocalDate(lastLoginDateStr);
-        const today = parseLocalDate(todayStr);
+        const lastLogin = new Date(lastLoginDateStr.replace(/-/g, '/'));
+        const today = new Date(todayStr.replace(/-/g, '/'));
         if (today.getMonth() !== lastLogin.getMonth()) {
           if (current.invest > 0) {
             const interest = Math.floor(current.invest * 0.01);
@@ -293,7 +278,7 @@ export default function App() {
         }
       }
 
-      // 5日ごとのチケットボーナス
+      // 5日ごとのチケット付与
       if (nextCumulative % 5 === 0) {
         nextTreasureTickets += 1;
         newLogs.push({
@@ -315,8 +300,8 @@ export default function App() {
         taskHistory: [...newLogs, ...current.taskHistory].slice(0, 50)
       };
 
-      saveDataToLocalStorage(updated); // 直接セーブ
-      setState(updated);               // 画面状態を更新
+      saveDataToLocalStorage(updated); // 直接同期保存！
+      setState(updated);               // Stateに同期反映
     }
   }, []);
 
@@ -353,21 +338,21 @@ export default function App() {
   };
 
   // ==========================================
-  // 【バグ完全解決：ユーザー様発案スタンプ履歴ガード】
-  // 1. 同期的に真実のデータをロード
-  // 2. 「今日の日付_タスク名」のスタンプが存在すれば、
-  //    お小遣い増加もレベルアップも100%完璧にスルー
+  // 【ユーザー様発案：完了スタンプ照合ガード】
+  // 1. LocalStorage（真実）からロード
+  // 2. スタンプがあれば金額増加処理を100%遮断
+  // 3. 同期的に直接セーブ
   // ==========================================
   const completeTask = (taskId) => {
     const todayStr = getLocalDateString();
-    const current = loadDataFromLocalStorage(); // 真実のロード
+    const current = loadDataFromLocalStorage(); // 【真実の直接ロード】Stateの非同期ラグを100%封鎖
     
     const targetTask = current.tasks.find(t => t.id === taskId);
     if (!targetTask) return;
     
     const completedKey = `${todayStr}_${targetTask.name}`;
     
-    // 【最強のスタンプガード】すでに今日このタスクの完了履歴スタンプがある場合、絶対に無視する！
+    // 【最強のスタンプガード】すでに今日このタスクのクリアログが存在する場合、即座に全てを無視！
     if (current.completedTasksLog.includes(completedKey)) {
       addMessage(`[防衛作戦] 「${targetTask.name}」は本日すでに完了として記録されています。`);
       return;
@@ -384,7 +369,7 @@ export default function App() {
     let finalWallet = moneyState.wallet;
     let finalInvest = moneyState.invest;
 
-    // レベルアップボーナス
+    // レベルアップボーナス 300円
     if (isLevelUp) {
       const levelUpMoneyState = addMoneyAtState({ wallet: finalWallet, invest: finalInvest }, 300, overflowLogs);
       finalWallet = levelUpMoneyState.wallet;
@@ -421,7 +406,7 @@ export default function App() {
       addMessage(`🎉 LEVEL UP! Lv.${nextLevel}ボーナス +300円！`);
     }
 
-    // 完了ログスタンプを配列に追加して、二度とお金が増えないようにロック
+    // クエスト完了スタンプを「スタンプ帳（completedTasksLog）」に保存して、データを永久ロック！
     const updated = {
       ...current,
       completedTasksLog: [...current.completedTasksLog, completedKey],
@@ -432,8 +417,8 @@ export default function App() {
       taskHistory: [...newLogs, ...current.taskHistory].slice(0, 50)
     };
 
-    saveDataToLocalStorage(updated); // 即座に同期セーブ
-    setState(updated);               // 画面の更新
+    saveDataToLocalStorage(updated); // 同期的に直接セーブ！
+    setState(updated);               // 最後に画面に反映
   };
 
   // 宝箱を引く
@@ -517,7 +502,12 @@ export default function App() {
     const todayStr = getLocalDateString();
 
     return (
-      <div className="flex flex-col h-full overflow-y-auto pb-24 bg-gray-100 text-gray-800">
+      <div className="flex flex-col h-full overflow-y-auto pb-24 bg-gray-100 text-gray-800 animate-fade-in">
         {/* 上部左右分割のステータスエリア */}
         <div className="bg-slate-900 text-white p-4 pixel-border m-4 shadow-xl border-t-4 border-t-blue-500 relative overflow-hidden">
-          <div className="abs
+          <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+          
+          <div className="flex items-start gap-4 relative z-10">
+            <div className="flex flex-col items-center w-[90px] flex-shrink-0">
+              <Avatar avatar={rankInfo.avatar} size="large" />
+            
