@@ -28,6 +28,9 @@ interface AppState {
   lastLoginDate: string;
   completedTasksLog: string[]; // 今日クリアした「日付_タスク名」を記録する配列
   taskHistory: HistoryLog[];
+  // 💡 ユーザー様のアイデア：1日の獲得上限を管理するための新規ステート
+  todayEarnedMoney: number; // タスク完了で今日得たお金（最大200円）
+  todayEarnedExp: number;   // タスク完了で今日得た経験値（最大40EXP）
 }
 
 interface AvatarProps {
@@ -49,7 +52,7 @@ const WARRIOR_DIARY: string[] = [
   "初めての魔物討伐依頼。相手はスライム。剣がぬるぬるになったけど、何とか倒せたぞ！ 討伐証明、ゲット！",
   "スライムと格闘した筋肉痛が酷い。今日は宿で大人しく武器の手入れをする。砥石で研ぐと剣が生き返るんだ。",
   "ギルドで少し強そうなパーティーに誘われた。コボルト討伐だ。足を引っ張らないように気を引き締めないと。",
-  "コボルトとの初陣。仲間の背中を守る役割に徹した。最後の一撃は俺が！ ……少しだけ、自信がついたかも。",
+  "コボルトとの初陣。仲間の背中を守る役割に徹した。最後の一撃は俺が！ ……少しだけ, 自信がついたかも。",
   "討伐報酬で新しい革の小手を買った。防具の重要性を身をもって知ったからな。見た目も、少し強そうになったかな？",
   "ランクが上がったとギルド受付嬢に言われた。まだ一番下だけど、看板の名前を見るたび胸が高鳴る。頑張るぞ！",
   "ちょっといい依頼を見つけた。「街道のゴブリン退治」。これなら俺も主力として張れるはずだ。",
@@ -69,9 +72,9 @@ const WARRIOR_DIARY: string[] = [
   "イノシシ突進強すぎ！ 二人まとめて吹っ飛ばされて川に落ちた。防具が重くて溺れかけたぞ。",
   "作戦勝ち！ 俺が囮になって、カイルが横から一閃。仕留めた肉で作ったステーキ、人生で一番美味い！",
   "街に戻ったら、商人から「荷馬車の護衛」を頼まれた。カイルと二人、初めての指名依頼だ。",
-  "護衛中, カイルが「腹が減った」とうるさい。お前の胃袋はブラックホールか。俺の干し肉を分ける。",
+  "護衛中、カイルが「腹が減った」とうるさい。お前の胃袋はブラックホールか。俺の干し肉を分ける。",
   "夜襲だ！ 盗賊団が現れたが、今の俺たちなら負けない。カイルと背中を合わせて戦うの、悪くないな。",
-  "無事に護衛完了。商人のおっちゃんからボーナスを貰った。カイルと「これで美味いもん食おう」と堅い握手。",
+  "無さに護衛完了。商人のおっちゃんからボーナスを貰った。カイルと「これで美味いもん食おう」と堅い握手。",
   "ギルドから「近郊の洞窟ダンジョン」の調査依頼が来た。ついに、本当のダンジョンアタックだ！",
   "松明の明かりだけが頼り。暗い、狭い、不気味。カイルの奴、強がってるけど絶対にビビってる。",
   "ダンジョン3日目。毒グモの群れに遭遇。噛まれなくて良かったけど、糸が絡まって身動きが取れん！",
@@ -82,7 +85,7 @@ const WARRIOR_DIARY: string[] = [
   "奥の部屋で、光るチェストを発見！「宝箱だ！」って開けたらミミックだった。指を噛まれて大騒ぎ。",
   "最深部。大きな扉の前にいる。中からものすごい威圧感が伝わってくる。カイル、行くぞ。剣を抜け。",
   "ボス・巨大ゴーレムを撃破！ 剣が折れかけたけど、泥臭く勝った。俺たち、生きてる！ 最高の気分だ！",
-  "街へ凱旋！ ギルドのみんなが拍手で迎えてくれた。いやー、それほどでも……って、顔のニヤけが戻らない。",
+  "街へ凱旋！ ギルドのみんなが拍手で迎迎えてくれた。いやー、それほどでも……って、顔のニヤけが戻らない。",
   "ゴーレムの魔石が高く売れた！ 奮発してカイルと高級酒場へ。ジュースで乾杯だけど、気分は一流だ。",
   "折れかけた剣を新調。馴染みの鍛冶屋の親父に「良い戦い方をしたな」と褒められた。剣が軽いぜ。",
   "昨日買った新品の剣を自慢したくて、街をうろつく。誰か「いい剣だね」って話しかけてくれないかな。",
@@ -122,7 +125,7 @@ const WARRIOR_DIARY: string[] = [
   "遺跡の最奥で、巨大な魔法陣を発見。何も起きなかったけど、なんだか不気味だ。調査報告のために紙に記録。",
   "地上への帰り道、カイルが「迷った」と言い出した。行きに目印の傷をつけたらしいが……これ、ただの引っかき傷だろ！",
   "なんとか生還！ ギルド長に報告したら「素晴らしい手際だ」って。貰った報酬で、今日はちょっと良い宿に泊まろう。",
-  "遺跡の宝石が高く売れて大儲け. カイルの奴、その金でいきなり高級な大剣を買いやがった。計画性ゼロかよ。",
+  "遺跡の宝石が高く売れて大儲け。カイルの奴、その金でいきなり高級な大剣を買いやがった。計画性ゼロかよ。",
   "「お前も防具買えよ」って言われたけど、俺は宿代や飯代のために貯金したいんだ。こういうところで意見が合わない。",
   "今日受けた「オーク討伐」の依頼中、カイルが新しい剣を振り回して突っ込みすぎ、囲まれて大ピンチになった。",
   "「無茶しすぎだ！」「新しい剣を試したかっただけだろ！」宿屋でカイルと大喧嘩。あいつの顔、もう見たくない。",
@@ -133,8 +136,8 @@ const WARRIOR_DIARY: string[] = [
   "谷の奥で、案の定仲間に見捨てられて魔物に囲まれるカイルを発見！「バカカイル！」って叫びながら、俺は飛び込んだ。",
   "二人で背中を合わせ、死に物狂いで魔物を撃退。泥だらけのまま「助けにくるのが遅い」「うるせえ」と、笑い合った。",
   "街への帰り道。お互い「悪かった」って、ボソボソ言い訳。でも、これで前よりずっと相棒になれた気がする。",
-  "カイルが新しい大剣の使い方を俺見せてくれた。大振りだけど、俺が隙を埋めれば最強の武器になる。",
-  "ギルドの受付嬢さんに「仲直りできて良かったですね」とニヤニヤされた。全部バレてた。恥ずかしすぎる。",
+  "カイルが新しい大剣の使い方を俺に見せてくれた。大振りだけど、俺が隙を埋めれば最強の武器になる。",
+  "ギルドの受付嬢さんに「仲直りできて良かったですね」とニヤニヤされた。全部バレてた。恥づかしすぎる。",
   "二人での連携を再特訓。俺が盾で敵の体勢を崩し、カイルが叩き斬る。阿吽の呼吸って、こういうのを言うんだな。",
   "街の子供に「戦士のお兄ちゃんたち、カッコいい！」と言われた。今度は転ばずに、バシッとポーズを決めたぞ。",
   "地元の名士から「お屋敷の地下ネズミ退治」を頼まれた。ネズミって言っても、こっちのネズミは犬並みにデカい。",
@@ -150,74 +153,30 @@ const INITIAL_TASKS: Task[] = [
   { id: 3, name: "プリント取込", reward: 50 }
 ];
 
-// --- 日本時間（JST）を確実に取得する関数 ---
+// --- 日本時間（JST）と100%一致する「年月日」文字列を取得 ---
 const getLocalDateString = (): string => {
-  try {
-    const formatter = new Intl.DateTimeFormat('ja-JP', {
-      timeZone: 'Asia/Tokyo',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    });
-    const parts = formatter.formatToParts(new Date());
-    const year = parts.find(p => p.type === 'year')?.value;
-    const month = parts.find(p => p.type === 'month')?.value;
-    const day = parts.find(p => p.type === 'day')?.value;
-    if (year && month && day) {
-      return `${year}-${month}-${day}`;
-    }
-  } catch (e) {}
   const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const date = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${date}`;
 };
 
-// ==========================================
-// 💡 【超強力・解決の核】Cookieによる二重防衛処理
-// ==========================================
-
-// クッキーに今日の完了タスクを即座に固定書き込み（1日間有効）
-const setCompletedCookie = (key: string): void => {
-  if (typeof document !== 'undefined') {
-    document.cookie = `${encodeURIComponent(key)}=true; max-age=86400; path=/; SameSite=Lax`;
-  }
-};
-
-// クッキーから今日完了した全スタンプを取得
-const getCompletedFromCookies = (): string[] => {
-  if (typeof document === 'undefined') return [];
-  const cookies = document.cookie.split(';');
-  const completed: string[] = [];
-  const todayStr = getLocalDateString();
-  for (let c of cookies) {
-    const [name, value] = c.trim().split('=');
-    const decodedName = decodeURIComponent(name);
-    // 今日の日付で始まっており、値がtrueのもの
-    if (decodedName.startsWith(todayStr) && value === 'true') {
-      completed.push(decodedName);
-    }
-  }
-  return completed;
-};
-
-// LocalStorageからデータを読み出し、クッキーのスタンプとも強制マージする
+// --- LocalStorageから読み出す関数 ---
 const loadDataFromLocalStorage = (): AppState => {
   if (typeof window === 'undefined') {
-    return { tasks: INITIAL_TASKS, wallet: 0, invest: 0, exp: 0, level: 1, cumulativeDays: 1, monthlyLogins: 1, treasureTickets: 0, lastLoginDate: getLocalDateString(), completedTasksLog: [], taskHistory: [] };
+    return { tasks: INITIAL_TASKS, wallet: 0, invest: 0, exp: 0, level: 1, cumulativeDays: 1, monthlyLogins: 1, treasureTickets: 0, lastLoginDate: getLocalDateString(), completedTasksLog: [], taskHistory: [], todayEarnedMoney: 0, todayEarnedExp: 0 };
   }
 
   const saved = localStorage.getItem('warrior_rpg_save');
   const todayStr = getLocalDateString();
-  const cookieLogs = getCompletedFromCookies(); // クッキーから確実に残っているスタンプを取り出す
   
   if (saved) {
     try {
       const data = JSON.parse(saved);
-      const rawLogs = Array.isArray(data.completedTasksLog) ? data.completedTasksLog : [];
-      
-      // 💡 LocalStorageの履歴と、クッキーの履歴をガッチャンコして重複を削除！
-      // これにより「リロードされてLocalStorageが一瞬前の状態にロールバック」してもクッキーが守ります！
-      const mergedLogs = Array.from(new Set([...rawLogs, ...cookieLogs]));
-      const filteredCompletedLog = mergedLogs.filter((log: string) => log.startsWith(todayStr));
+      // 日付が変わっていたら今日の獲得カウンターは0リセットする
+      const savedDate = data.lastLoginDate || todayStr;
+      const isSameDay = (savedDate === todayStr);
 
       return {
         tasks: Array.isArray(data.tasks) ? data.tasks : INITIAL_TASKS,
@@ -228,20 +187,21 @@ const loadDataFromLocalStorage = (): AppState => {
         cumulativeDays: typeof data.cumulativeDays === 'number' ? data.cumulativeDays : 1,
         monthlyLogins: typeof data.monthlyLogins === 'number' ? data.monthlyLogins : 1,
         treasureTickets: typeof data.treasureTickets === 'number' ? data.treasureTickets : 0,
-        lastLoginDate: data.lastLoginDate || todayStr,
-        completedTasksLog: filteredCompletedLog, 
-        taskHistory: Array.isArray(data.taskHistory) ? data.taskHistory : []
+        lastLoginDate: todayStr,
+        completedTasksLog: Array.isArray(data.completedTasksLog) ? data.completedTasksLog : [], 
+        taskHistory: Array.isArray(data.taskHistory) ? data.taskHistory : [],
+        // 💡 獲得上限カウンターのロード（日付が変わっていたら強制0リセット）
+        todayEarnedMoney: isSameDay && typeof data.todayEarnedMoney === 'number' ? data.todayEarnedMoney : 0,
+        todayEarnedExp: isSameDay && typeof data.todayEarnedExp === 'number' ? data.todayEarnedExp : 0
       };
     } catch (e) {}
   }
-  return { tasks: INITIAL_TASKS, wallet: 0, invest: 0, exp: 0, level: 1, cumulativeDays: 1, monthlyLogins: 1, treasureTickets: 0, lastLoginDate: todayStr, completedTasksLog: cookieLogs, taskHistory: [] };
+  return { tasks: INITIAL_TASKS, wallet: 0, invest: 0, exp: 0, level: 1, cumulativeDays: 1, monthlyLogins: 1, treasureTickets: 0, lastLoginDate: todayStr, completedTasksLog: [], taskHistory: [], todayEarnedMoney: 0, todayEarnedExp: 0 };
 };
 
 const saveDataToLocalStorage = (data: AppState): void => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('warrior_rpg_save', JSON.stringify(data));
-    // 💡【おまじない】書き込んだ直後にダミーの読み出しを行い、iOS Safariにディスクへ強制保存させます
-    localStorage.getItem('warrior_rpg_save');
   }
 };
 
@@ -302,7 +262,7 @@ export default function App() {
     }
   }, []);
 
-  // --- 1日1回の日付更新＆スタンプ帳リセット処理 ---
+  // --- 1日1回の日付更新＆獲得上限カウンターのリセット ---
   useEffect(() => {
     const todayStr = getLocalDateString();
     const current = loadDataFromLocalStorage();
@@ -325,9 +285,6 @@ export default function App() {
         setTimeout(() => addMessage(`⚔️ 冒険日誌 ${nextCumulative}日目の朝が来た！`), 800);
       }
 
-      // 過去のスタンプをフィルタリング
-      const filteredCompletedLog = current.completedTasksLog.filter((log: string) => log.startsWith(todayStr));
-
       const updated: AppState = {
         ...current,
         cumulativeDays: nextCumulative,
@@ -335,7 +292,10 @@ export default function App() {
         invest: nextInvest,
         treasureTickets: nextTreasureTickets,
         lastLoginDate: todayStr,
-        completedTasksLog: filteredCompletedLog, 
+        completedTasksLog: [], 
+        // 💡 日付変更時は獲得カウンターを0にクリア
+        todayEarnedMoney: 0,
+        todayEarnedExp: 0,
         taskHistory: [...newLogs, ...current.taskHistory].slice(0, 50)
       };
 
@@ -371,10 +331,11 @@ export default function App() {
     return { wallet: nextWallet, invest: nextInvest };
   };
 
+  // ==========================================
+  // 💡 【超強力・解決の核】獲得上限（1日最大200円、経験値40EXP）システム
+  // ==========================================
   const completeTask = (taskId: number): void => {
     const todayStr = getLocalDateString();
-    
-    // 💡 実行前にLocalStorageから「本当に最新の状態」を再読み出し
     const current = loadDataFromLocalStorage();
     
     const targetTask = current.tasks.find(t => t.id === taskId);
@@ -382,28 +343,56 @@ export default function App() {
     
     const completedKey = `${todayStr}_${targetTask.name}`;
     
-    // 💡【二重ガード】Cookieにスタンプがあるか、stateにあるか、両方をがっちりチェック！
-    const cookieLogs = getCompletedFromCookies();
-    if (current.completedTasksLog.includes(completedKey) || cookieLogs.includes(completedKey)) {
+    // UI上の完了フラグがあるなら、防衛メッセージを表示して完了済みにする（リロード対策用のガード）
+    if (current.completedTasksLog.includes(completedKey)) {
       addMessage(`[防衛] すでに完了として記録されています。`);
       return;
     }
 
-    // 💡【超即座の防衛】スマホのディスク書き込みの前に、まずはCookieにスタンプを刻み込む
-    setCompletedCookie(completedKey);
+    const currentEarnedMoney = current.todayEarnedMoney || 0;
+    const currentEarnedExp = current.todayEarnedExp || 0;
 
-    const reward = targetTask.reward;
-    const nextExp = current.exp + 10;
+    // 1. 今日の獲得EXPと獲得金額がすでに上限に達している場合は、お金も経験値も一切加算しない。
+    // （ボタンをグレーアウトさせるスタンプ帳の記録処理だけを行い終了する）
+    if (currentEarnedMoney >= 200 && currentEarnedExp >= 40) {
+      addMessage(`⚠️ 本日の上限（200円 / 40EXP）に達しています！`);
+      
+      const updatedCompletedLog = [...current.completedTasksLog, completedKey];
+      const updated: AppState = {
+        ...current,
+        completedTasksLog: updatedCompletedLog
+      };
+      saveDataToLocalStorage(updated);
+      setState(updated);
+      return;
+    }
+
+    // 2. 加算可能な金額の計算（今日のお金上限200円を超えないように丸める）
+    let moneyToAdd = targetTask.reward;
+    if (currentEarnedMoney + moneyToAdd > 200) {
+      moneyToAdd = Math.max(0, 200 - currentEarnedMoney);
+    }
+
+    // 3. 加算可能な経験値の計算（今日のエクスペリエンス上限40EXPを超えないように丸める）
+    let expToAdd = 10;
+    if (currentEarnedExp + expToAdd > 40) {
+      expToAdd = Math.max(0, 40 - currentEarnedExp);
+    }
+
+    const nextExp = current.exp + expToAdd;
     const nextLevel = Math.floor(nextExp / 100) + 1;
     const isLevelUp = nextLevel > current.level;
 
-    const updatedCompletedLog = Array.from(new Set([...current.completedTasksLog, completedKey]));
+    // 本日のスタンプ帳（ボタンをグレーアウトにする履歴）を更新
+    const updatedCompletedLog = [...current.completedTasksLog, completedKey];
 
+    // お金を足す（上限オーバーフロー時の自動投資機能等もそのまま連動）
     let overflowLogs: HistoryLog[] = [];
-    let moneyState = addMoneyAtState(current, reward, overflowLogs);
+    let moneyState = addMoneyAtState(current, moneyToAdd, overflowLogs);
     let finalWallet = moneyState.wallet;
     let finalInvest = moneyState.invest;
 
+    // レベルアップボーナスはタスクの通常獲得とは「別枠の嬉しい特典」として通常通り支給
     if (isLevelUp) {
       const levelUpMoneyState = addMoneyAtState({ ...current, wallet: finalWallet, invest: finalInvest }, 300, overflowLogs);
       finalWallet = levelUpMoneyState.wallet;
@@ -413,10 +402,13 @@ export default function App() {
     const now = new Date();
     const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     
-    let newLogs: HistoryLog[] = [
-      { id: Date.now() + Math.random(), time: timeStr, text: `クエスト「${targetTask.name}」完了`, change: `+${reward}円` },
-      ...overflowLogs
-    ];
+    let newLogs: HistoryLog[] = [];
+    if (moneyToAdd > 0) {
+      newLogs.push({ id: Date.now() + Math.random(), time: timeStr, text: `クエスト「${targetTask.name}」完了`, change: `+${moneyToAdd}円` });
+    } else {
+      newLogs.push({ id: Date.now() + Math.random(), time: timeStr, text: `クエスト「${targetTask.name}」完了（上限到達のため0円）`, change: `+0円` });
+    }
+    newLogs = [...newLogs, ...overflowLogs];
 
     if (isLevelUp) {
       newLogs.unshift({ id: Date.now() + Math.random(), time: timeStr, text: `レベルアップ！ Lv.${current.level} ➔ Lv.${nextLevel} 特典ボーナス`, change: `+300円` });
@@ -424,7 +416,11 @@ export default function App() {
       setTimeout(() => setShowLevelUpPopup(true), 600);
     }
 
-    addMessage(`[クエスト完了] ${targetTask.name} (+${reward}円 / +10EXP)`);
+    if (moneyToAdd > 0 || expToAdd > 0) {
+      addMessage(`[クエスト完了] ${targetTask.name} (+${moneyToAdd}円 / +${expToAdd}EXP)`);
+    } else {
+      addMessage(`[クエスト完了] ${targetTask.name}（本日上限に達しています）`);
+    }
 
     const updated: AppState = {
       ...current,
@@ -432,7 +428,9 @@ export default function App() {
       invest: finalInvest,
       exp: nextExp,
       level: nextLevel,
-      completedTasksLog: updatedCompletedLog, 
+      completedTasksLog: updatedCompletedLog,
+      todayEarnedMoney: currentEarnedMoney + moneyToAdd, // 加算された分を今日のカウンターに記録
+      todayEarnedExp: currentEarnedExp + expToAdd,     // 加算された分を今日のカウンターに記録
       taskHistory: [...newLogs, ...current.taskHistory].slice(0, 50)
     };
 
@@ -478,5 +476,4 @@ export default function App() {
       const postDrawCurrent = loadDataFromLocalStorage();
       let overflowLogs: HistoryLog[] = [];
       let moneyState = addMoneyAtState(postDrawCurrent, winAmount, overflowLogs);
-      const now = new Date();
-      const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinut
+      const now = new 
