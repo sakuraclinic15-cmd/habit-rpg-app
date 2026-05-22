@@ -8,7 +8,7 @@ const WARRIOR_DIARY = [
   "薬草採取の依頼を受けた。腰が痛い。でも、これで稼いだ銅貨で明日は焼きたてのパンが買えるはずだ。",
   "道端で迷子を保護。護衛して街まで送る。戦うだけが冒険者の仕事じゃないと、古参の戦士に教わった。",
   "ついに魔物と遭遇した！……と思ったらただの小動物。でも、腰の剣に手をかけた時のあの緊張感、忘れない。",
-  "初めての魔物討伐依頼。相手はスライム. 剣がぬるぬるになったけど、何とか倒せたぞ！ 討伐証明、取った！",
+  "初めての魔物討伐依頼。相手はスライム。剣がぬるぬるになったけど、何とか倒せたぞ！ 討伐証明、取った！",
   "スライムと格闘した筋肉痛が酷い。今日は宿で大人しく武器の手入れをする。砥石で研ぐと剣が生き返るんだ。",
   "ギルドで少し強そうなパーティーに誘われた。コボルト討伐だ。足を引っ張らないように気を引き締めないと。",
   "コボルトとの初陣。仲間の背中を守る役割に徹した。最後の一撃は俺が！ ……少しだけ、自信がついたかも。",
@@ -19,7 +19,7 @@ const WARRIOR_DIARY = [
   "リベンジ成功。でもゴブリンの棍棒で自慢の盾が凹んだ。修理費で報酬が消えて、今日の飯は塩スープ。",
   "ギルドで「若手期待の星」って噂されてるのを聞いちゃった。ニヤニヤが止まらない。もっと褒めて。",
   "調子に乗って少し強い魔物に挑んだら、防具を噛みちぎられて半泣きで逃げ帰った。死ぬかと思った。",
-  "昨日の恐怖で足が震える。今日は宿の裏手で、ただひたすらに素振り。基本が一番大事って、本当だな。",
+  "昨日の恐怖で足が震える。宿の裏手で、ただひたすらに素振り。基本が一番大事って、本当だな。",
   "ソロは限界があるかも。ギルドの掲示板に「前衛求む！奢りあり」の文字。よし、話を聞いてみよう。",
   "臨時の3人パーティー結成。魔法使いの女の子と、盗賊の男。二人とも年上だけど、頼もしい。",
   "連携ってすげえ！ 俺が引きつけて、魔法でドン！ 1人で苦戦してた魔物が一瞬で消えた。感動だ。",
@@ -35,12 +35,12 @@ const WARRIOR_DIARY = [
   "夜襲だ！ 盗賊団が現れたが、今の俺たちなら負けない。カイルと背中を合わせて戦うの、悪くないな。",
   "無事に護衛完了。商人のおっちゃんからボーナスを貰った。カイルと「これで美味いもん食おう」と堅い握手。",
   "ギルドから「近郊の洞窟ダンジョン」の調査依頼が来た。ついに、本当のダンジョンアタックだ！",
-  "松明の明かりだけが頼り。暗い、狭い、不気味. カイルの奴、強がってるけど絶対にビビってる。",
+  "松明の明かりだけが頼り。暗い、狭い、不気味。カイルの奴、強がってるけど絶対にビビってる。",
   "ダンジョン3日目。毒グモの群れに遭遇。噛まれなくて良かったけど、糸が絡まって身動きが取れん！",
   "洞窟の奥でテントを張って一泊。背中が地面に当たって痛い。早く宿屋のふかふかベッドで寝たい。",
   "迷子になった。右を見ても左を見ても同じ岩肌。カイルの勘を信じたら、完全に行き止まり。殴るぞ。",
   "地下2階への階段を発見。空気がガラリと変わった。ここから先は、さらに危険なエリアらしい。",
-  "罠を踏んだ！ 天井からタライ……じゃなくて、巨大な岩が降ってきた。間一髪で避けたけど寿命が縮んだ。",
+  "罠を踏んだ！ 天井からタライ……じゃなくて、巨大な岩が降ってきた。間一刻で避けたけど寿命が縮んだ。",
   "奥の部屋で、光るチェストを発見！「宝箱だ！」って開けたらミミックだった。指を噛まれて大騒ぎ。",
   "最深部。大きな扉の前にいる。中からものすごい威圧感が伝わってくる。カイル、行くぞ。剣を抜け。",
   "ボス・巨大ゴーレムを撃破！ 剣が折れかけたけど、泥臭く勝った。俺たち、生きてる！ 最高の気分だ！",
@@ -57,7 +57,7 @@ const WARRIOR_DIARY = [
   "試験の条件は「現役の中堅冒険者を一本取ること」。今のままじゃ勝てない。誰かに稽古をつけてもらおう。",
   "酒場で酔っ払っていた元・ベテラン戦士のおっさんをスカウト。一升瓶と引き換えに、稽古をつけてもらう。",
   "おっさんの修行、理不尽すぎる！「滝に向かって叫べ」とか「薪を小指で割れ」とか、これ意味ある！？",
-  "今日も筋肉痛でベッドから起き上がれない。全身がミシミシ言う。カイルが笑いながら湿布を貼ってくれた。",
+  "今日も筋肉痛でベッドから起き上がれない。全身がミシミシ言う. カイルが笑いながら湿布を貼ってくれた。",
   "おっさんに木刀で挑むも、触れることすらできずにデコピンで気絶させられた。あの人、本当に何者なんだ。",
   "「お前の剣は力みすぎだ」とおっさん。力を抜いて、風を切るように……。あ、今、少しだけ感覚を掴んだかも。",
   "カイルと二人で、おっさんに挑む。二人係でもボコボコにされたけど、前より長く立っていられたぞ。",
@@ -86,9 +86,9 @@ const WARRIOR_DIARY = [
   "なんとか生還！ ギルド長に報告したら「素晴らしい手際だ」って。貰った報酬で、今日はちょっと良い宿に泊まろう。",
   "遺跡の宝石が高く売れて大儲け。カイルの奴、その金でいきなり高級な大剣を買いやがった。計画性ゼロかよ。",
   "「お前も防具買えよ」って言われたけど、俺は宿代や飯代のために貯金したいんだ。こういうところで意見が合わない。",
-  "今日受けた「オーク討伐」の依頼中, カイルが新しい剣を振り回して突っ込みすぎ、囲まれて大ピンチになった。",
+  "今日受けた「オーク討伐」の依頼中、カイルが新しい剣を振り回して突っ込みすぎ、囲まれて大ピンチになった。",
   "「無茶しすぎだ！」「新しい剣を試したかっただけだろ！」宿屋でカイルと大喧嘩。あいつの顔、もう見たくない。",
-  "今日はカイルを無視して, 一人で薬草採取の依頼へ。……なんか、一人だと森がやけに広く感じて落ち着かないな。",
+  "今日はカイルを無視して、一人で薬草採取の依頼へ。……なんか、一人だと森がやけに広く感じて落ち着かないな。",
   "ギルドに行ったら、カイルが別の奴らとパーティーを組んでた。べ、別に寂しくなんてないし。フン、勝手にしろ。",
   "カイルが組んだパーティー、評判の悪いガラの悪い奴らだ。あいつ、騙されて危険な依頼に行かされてないか……？",
   "胸騒ぎがして、カイルたちが向かった「這い寄る影の谷」へ走る。あそこはDランクじゃまだ早い危険地帯だぞ！",
@@ -148,7 +148,7 @@ export default function App() {
   const [level, setLevel] = useState(1);
   const [cumulativeDays, setCumulativeDays] = useState(1);
   const [monthlyLogins, setMonthlyLogins] = useState(1);
-  const [treasureTickets, setTreasureTickets] = useState(1);
+  const [treasureTickets, setTreasureTickets] = useState(0);
   const [lastLoginDate, setLastLoginDate] = useState('');
   const [taskHistory, setTaskHistory] = useState([]);
   
@@ -175,8 +175,14 @@ export default function App() {
   const [showLevelUpPopup, setShowLevelUpPopup] = useState(false);
   const [levelUpData, setLevelUpData] = useState({ old: 1, next: 2 });
 
+  const [isDataReady, setIsDataReady] = useState(false); // 【重要】ロード完了フラグ
   const messageIdRef = useRef(0);
-  const isLoaded = useRef(false);
+
+  // 時間フォーマットヘルパー
+  const getFormattedTime = () => {
+    const now = new Date();
+    return `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  };
 
   // --- Tailwind CSS 自動読み込み ---
   useEffect(() => {
@@ -188,107 +194,125 @@ export default function App() {
     }
   }, []);
 
-  // --- データロード ---
+  // --- 【バグ根絶】データロード ＆ 日替わり判定を完全一本化 ---
   useEffect(() => {
     const saved = localStorage.getItem('warrior_rpg_save');
+    const todayStr = new Date().toISOString().split('T')[0];
+    
+    let loadedTasks = INITIAL_TASKS;
+    let loadedWallet = 0;
+    let loadedInvest = 0;
+    let loadedExp = 0;
+    let loadedLevel = 1;
+    let loadedCumulativeDays = 1;
+    let loadedMonthlyLogins = 1;
+    let loadedTreasureTickets = 0;
+    let loadedLastLoginDate = '';
+    let loadedTaskHistory = [];
+
+    // 1. まずローカルストレージから確実にデータを読み出す
     if (saved) {
       try {
         const data = JSON.parse(saved);
-        setTasks(data.tasks || INITIAL_TASKS);
-        setWallet(data.wallet || 0);
-        setInvest(data.invest || 0);
-        setExp(data.exp || 0);
-        setLevel(data.level || 1);
-        setCumulativeDays(data.cumulativeDays || 1);
-        setMonthlyLogins(data.monthlyLogins || 1);
-        setTreasureTickets(data.treasureTickets || 0);
-        setLastLoginDate(data.lastLoginDate || '');
-        setTaskHistory(data.taskHistory || []);
+        if (data.tasks) loadedTasks = data.tasks;
+        if (data.wallet !== undefined) loadedWallet = data.wallet;
+        if (data.invest !== undefined) loadedInvest = data.invest;
+        if (data.exp !== undefined) loadedExp = data.exp;
+        if (data.level !== undefined) loadedLevel = data.level;
+        if (data.cumulativeDays !== undefined) loadedCumulativeDays = data.cumulativeDays;
+        if (data.monthlyLogins !== undefined) loadedMonthlyLogins = data.monthlyLogins;
+        if (data.treasureTickets !== undefined) loadedTreasureTickets = data.treasureTickets;
+        if (data.lastLoginDate !== undefined) loadedLastLoginDate = data.lastLoginDate;
+        if (data.taskHistory) loadedTaskHistory = data.taskHistory;
       } catch (e) {
         console.error("Save data load error", e);
       }
     }
-    isLoaded.current = true;
+
+    // 2. 読み込み終えた確定データを使って、日付変更のチェックを行う
+    if (loadedLastLoginDate !== '') {
+      if (loadedLastLoginDate !== todayStr) {
+        // 本当に日付が変わった時だけここを通る！
+        const today = new Date();
+        const lastLogin = new Date(loadedLastLoginDate);
+        lastLogin.setHours(0,0,0,0);
+        today.setHours(0,0,0,0);
+        
+        const diffDays = Math.round((today - lastLogin) / (1000 * 60 * 60 * 24));
+
+        if (diffDays > 0) {
+          loadedCumulativeDays += 1;
+          // 新しい日になったのでクエストを未完了にする
+          loadedTasks = loadedTasks.map(t => ({ ...t, done: false }));
+
+          // 月を跨いだ場合の処理
+          if (today.getMonth() !== lastLogin.getMonth()) {
+            loadedMonthlyLogins = 1;
+            if (loadedInvest > 0) {
+              const interest = Math.floor(loadedInvest * 0.01);
+              loadedInvest += interest;
+              loadedTaskHistory = [{
+                id: Date.now() + Math.random(),
+                time: `${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')} 00:00`,
+                text: `利息付与 (+${interest}円)`,
+                change: `+${interest}円`
+              }, ...loadedTaskHistory.slice(0, 49)];
+            }
+          } else {
+            loadedMonthlyLogins += 1;
+          }
+
+          // 5日ごとのチケットボーナス
+          if (loadedCumulativeDays % 5 === 0) {
+            loadedTreasureTickets += 1;
+            loadedTaskHistory = [{
+              id: Date.now() + Math.random(),
+              time: `${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')} 00:00`,
+              text: `宝箱チケット獲得 (通算${loadedCumulativeDays}日特典)`,
+              change: `+1枚`
+            }, ...loadedTaskHistory.slice(0, 49)];
+            setTimeout(() => addMessage(`🎁 通算ログイン${loadedCumulativeDays}日記念！「宝箱チケット」獲得！`), 600);
+          } else {
+            setTimeout(() => addMessage(`⚔️ 冒険日誌 ${loadedCumulativeDays}日目の朝が来た！`), 600);
+          }
+        }
+        loadedLastLoginDate = todayStr;
+      }
+    } else {
+      // アプリを人生で初めて起動したとき
+      loadedLastLoginDate = todayStr;
+      setTimeout(() => addMessage(`⚔️ クエストをこなして最強の戦士を目指せ！`), 600);
+    }
+
+    // 3. すべてを完全に同期させた状態でステートに一斉セット
+    setTasks(loadedTasks);
+    setWallet(loadedWallet);
+    setInvest(loadedInvest);
+    setExp(loadedExp);
+    setLevel(loadedLevel);
+    setCumulativeDays(loadedCumulativeDays);
+    setMonthlyLogins(loadedMonthlyLogins);
+    setTreasureTickets(loadedTreasureTickets);
+    setLastLoginDate(loadedLastLoginDate);
+    setTaskHistory(loadedTaskHistory);
+
+    // 4. これでセーブ許可を出す
+    setIsDataReady(true);
   }, []);
 
-  // --- データセーブ ---
+  // --- データセーブ（ロードが完全に終わった後だけ動くように制御） ---
   useEffect(() => {
-    if (isLoaded.current) {
+    if (isDataReady) {
       const dataToSave = { tasks, wallet, invest, exp, level, cumulativeDays, monthlyLogins, treasureTickets, lastLoginDate, taskHistory };
       localStorage.setItem('warrior_rpg_save', JSON.stringify(dataToSave));
     }
-  }, [tasks, wallet, invest, exp, level, cumulativeDays, monthlyLogins, treasureTickets, lastLoginDate, taskHistory]);
-
-  // --- ログイン日付更新処理 ---
-  useEffect(() => {
-    if (!isLoaded.current) return;
-    const todayStr = new Date().toISOString().split('T')[0];
-    
-    if (lastLoginDate !== todayStr) {
-      const today = new Date();
-      const lastLogin = lastLoginDate ? new Date(lastLoginDate) : new Date();
-      lastLogin.setHours(0,0,0,0);
-      today.setHours(0,0,0,0);
-      
-      const diffDays = Math.round((today - lastLogin) / (1000 * 60 * 60 * 24));
-
-      let nextCumulative = cumulativeDays;
-      let nextMonthly = monthlyLogins;
-      let interest = 0;
-      
-      setTasks(prev => prev.map(t => ({ ...t, done: false })));
-
-      if (lastLoginDate === '') {
-        setLastLoginDate(todayStr);
-        return;
-      }
-
-      if (diffDays > 0) {
-        nextCumulative += 1;
-        
-        if (today.getMonth() !== lastLogin.getMonth()) {
-          nextMonthly = 1;
-          if (invest > 0) {
-            interest = Math.floor(invest * 0.01);
-            setInvest(prev => prev + interest);
-            addHistoryLog(`利息付与 (+${interest}円)`);
-          }
-        } else {
-          nextMonthly += 1;
-        }
-
-        setCumulativeDays(nextCumulative);
-        setMonthlyLogins(nextMonthly);
-        setLastLoginDate(todayStr);
-
-        if (nextCumulative % 5 === 0) {
-          setTreasureTickets(prev => prev + 1);
-          addMessage(`🎁 通算ログイン${nextCumulative}日記念！「宝箱チケット」獲得！`);
-          addHistoryLog(`宝箱チケット獲得 (通算${nextCumulative}日特典)`);
-        } else {
-          addMessage(`⚔️ 冒険日誌 ${nextCumulative}日目の朝が来た！`);
-        }
-      }
-    }
-  }, [lastLoginDate, isLoaded.current]);
+  }, [tasks, wallet, invest, exp, level, cumulativeDays, monthlyLogins, treasureTickets, lastLoginDate, taskHistory, isDataReady]);
 
   // --- Helpers ---
   const addMessage = (text) => {
     const id = `${Date.now()}-${messageIdRef.current++}`;
     setMessages(prev => [...prev, { id, text }]);
     setTimeout(() => setMessages(prev => prev.filter(m => m.id !== id)), 4000);
-  };
-
-  const addHistoryLog = (text, changeAmount = "") => {
-    const now = new Date();
-    const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    const newLog = {
-      id: Date.now() + Math.random(),
-      time: timeStr,
-      text,
-      change: changeAmount
-    };
-    setTaskHistory(prev => [newLog, ...prev.slice(0, 49)]);
   };
 
   const rankInfo = getWarriorRank(level);
@@ -300,7 +324,16 @@ export default function App() {
         const overflow = newWallet - 3000;
         setInvest(prevInvest => prevInvest + overflow);
         addMessage(`財布の上限(3000円)を超えた ${overflow}円 を自動で投資口座へ送りました！`);
-        addHistoryLog(`財布満杯による投資自動振替`, `+${overflow}円`);
+        
+        const now = new Date();
+        const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        setTaskHistory(prev => [{
+          id: Date.now() + Math.random(),
+          time: timeStr,
+          text: `財布満杯による投資自動振替`,
+          change: `+${overflow}円`
+        }, ...prev.slice(0, 49)]);
+        
         return 3000;
       }
       return newWallet;
@@ -317,7 +350,15 @@ export default function App() {
         const nextLevel = Math.floor(nextExp / 100) + 1;
         
         addMessage(`[クエスト完了] ${t.name} (+${t.reward}円 / +10EXP)`);
-        addHistoryLog(`クエスト「${t.name}」完了`, `+${t.reward}円`);
+        
+        const now = new Date();
+        const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        setTaskHistory(prev => [{
+          id: Date.now() + Math.random(),
+          time: timeStr,
+          text: `クエスト「${t.name}」完了`,
+          change: `+${t.reward}円`
+        }, ...prev.slice(0, 49)]);
 
         if (nextLevel > level) {
           setLevel(nextLevel);
@@ -325,7 +366,13 @@ export default function App() {
           setTimeout(() => {
             addMoney(300);
             setShowLevelUpPopup(true);
-            addHistoryLog(`レベルアップ Lv.${level} ➔ Lv.${nextLevel}`, `+300円`);
+            const levelTimeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            setTaskHistory(prev => [{
+              id: Date.now() + Math.random(),
+              time: levelTimeStr,
+              text: `レベルアップ Lv.${level} ➔ Lv.${nextLevel}`,
+              change: `+300円`
+            }, ...prev.slice(0, 49)]);
           }, 600);
         }
 
@@ -368,7 +415,16 @@ export default function App() {
       if (winAmount > 0) {
         addMoney(winAmount);
       }
-      addHistoryLog(`宝箱を開けた (${textResult})`, winAmount > 0 ? `+${winAmount}円` : "0円");
+      
+      const now = new Date();
+      const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      setTaskHistory(prev => [{
+        id: Date.now() + Math.random(),
+        time: timeStr,
+        text: `宝箱を開けた (${textResult})`,
+        change: winAmount > 0 ? `+${winAmount}円` : "0円"
+      }, ...prev.slice(0, 49)]);
+      
       setIsDrawing(false);
     }, 1500);
   };
@@ -649,7 +705,7 @@ export default function App() {
           <h4 className="text-sm font-bold text-red-800 mb-2">⚠ 危険な操作</h4>
           <button 
             onClick={() => {
-              if (window.confirm("すべてのセーブデータをリセットして最初からやり直しますか？")) {
+              if (window.confirm("すべてのセーブデータをリセットして最初からやり長しますか？")) {
                 localStorage.removeItem('warrior_rpg_save');
                 window.location.reload();
               }
@@ -956,4 +1012,3 @@ export default function App() {
       </div>
     </>
   );
-}
