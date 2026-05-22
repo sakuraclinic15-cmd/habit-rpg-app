@@ -43,10 +43,10 @@ interface RankInfo {
 // --- 100日分の戦士の冒険日誌（台本） ---
 const WARRIOR_DIARY: string[] = [
   "今日、ギルドに登録した。俺は最強の戦士になる。まずはスライム退治からだ。剣、重いけど悪くないな。",
-  "薬草採取の依頼を受けた。腰が痛い。でも、これで稼いだ銅貨で明日は焼きたてのパンが買えるはずだ。",
+  "薬草採取の依頼を受けた。腰が痛い。ベッドで寝たい。でも、これで稼いだ銅貨で明日は焼きたてのパンが買えるはずだ。",
   "道端で迷子を保護。護衛して街まで送る。戦うだけが冒険者の仕事じゃないと、古参の戦士に教わった。",
-  "ついに魔物と遭遇した！……と思ったらただの小動物。でも、腰の剣に手をかけた時のあの緊張感、忘れない。",
-  "初めての魔物討伐依頼。相手はスライム。剣がぬるぬるになったけど、何とか倒せたぞ！ 討伐証明、取った！",
+  "ついに魔物と遭遇した！……と思ったらただの小動物。基本の構えをとった時のあの緊張感、忘れない。",
+  "初めての魔物討伐依頼。相手はスライム。剣がぬるぬるになったけど、何とか倒せたぞ！ 討伐証明、ゲット！",
   "スライムと格闘した筋肉痛が酷い。今日は宿で大人しく武器の手入れをする。砥石で研ぐと剣が生き返るんだ。",
   "ギルドで少し強そうなパーティーに誘われた。コボルト討伐だ。足を引っ張らないように気を引き締めないと。",
   "コボルトとの初陣。仲間の背中を守る役割に徹した。最後の一撃は俺が！ ……少しだけ、自信がついたかも。",
@@ -54,7 +54,7 @@ const WARRIOR_DIARY: string[] = [
   "ランクが上がったとギルド受付嬢に言われた。まだ一番下だけど、看板の名前を見るたび胸が高鳴る。頑張るぞ！",
   "ちょっといい依頼を見つけた。「街道のゴブリン退治」。これなら俺も主力として張れるはずだ。",
   "ゴブリンの癖に罠を使うなんて卑怯だぞ！ 穴に落ちて丸一日無駄にした。お尻が痛い……。",
-  "リベンジ成功。でもゴブリンの棍棒で自慢の盾が凹んだ。修理費で報酬が消えて、今日の飯は塩スープ。",
+  "リベンジ成功。返り討ちにしてやったが盾が凹んだ。修理費で報酬が消えて、今日の飯は塩スープだけだ。",
   "ギルドで「若手期待の星」って噂されてるのを聞いちゃった。ニヤニヤが止まらない。もっと褒めて。",
   "調子に乗って少し強い魔物に挑んだら、防具を噛みちぎられて半泣きで逃げ帰った。死ぬかと思った。",
   "昨日の恐怖で足が震える。宿の裏手で、ただひたすらに素振り。基本が一番大事って、本当だな。",
@@ -105,7 +105,7 @@ const WARRIOR_DIARY: string[] = [
   "俺の対戦相手は、盾使いのベテラン。鉄壁の防御をどう崩すか……おっさんとの修行を思い出すんだ。",
   "力を抜いて、相手の呼吸を読んで……一閃！ 盾の隙間を突いて、木刀を喉元に突きつけた。勝った、俺の勝ちだ！",
   "カイルも大苦戦の末に勝利。あいつ、最後は剣を放り投げてタックルで勝ってた。戦士というか、野生児だな。",
-  "ついにDランクに昇格！ 銀色の新しいギルドプレートが眩しい。これで少しは「一人前」に近づけたか？",
+  "ついにDランクに昇格！ 銀色の新しいギルドプレートが眩しい。これで少しは「一人前」に近づできたか？",
   "Dランクになった途端、受けられる依頼の質が変わった。「隣国国境付近での魔物間引き」。遠征任務だ。",
   "初めて乗る乗合馬車。ガタガタ揺れて、カイルが派手に馬車酔いしている。大剣使いの弱点が乗り物とはな。",
   "国境の村に到着。空気がピリピリしている。街の周りとは、魔物の凶暴さが一段階違う気がするぞ。",
@@ -113,9 +113,9 @@ const WARRIOR_DIARY: string[] = [
   "ウルフのボスを撃破。怪我をした村の人を、カイルと肩を貸して村まで運ぶ。感謝されて、心が温かくなった。",
   "遠征終了。村長からお礼に貰った特産の干し肉、めちゃくちゃ美味い。よし、明日はいよいよ街へ帰るぞ！",
   "街に戻ったら、ギルド長直々に指名。新しく見つかった「古代遺跡」の先行調査だって。おいおい、大出世か？",
-  "遺跡の入り口に到着。普通の洞窟と違って、壁に見たことない文字が光ってる。カイルが「美味そう」とか言ってる。",
+  "遺跡の入り口に到着。普通の洞窟と違って、壁に見たことない文字が光ってる。カイルが「美味しそう」とか言ってる。",
   "遺跡の中は魔法の罠だらけ。歩くたびに火が噴き出したり、床が凍ったり。前髪がちょっと焦げたぞ、危ねえ！",
-  "カイルが変なレバーを引いたせいが、部屋の扉が閉まって大量の砂が降ってきた！ 埋まる、二人で必死に掘った。",
+  "カイルが変なレバーを引いたせいで、部屋の扉が閉まって大量の砂が降ってきた！ 埋まる、二人で必死に掘った。",
   "遺跡4日目。不思議な剣を発見！ 抜こうとしたら、古い魔法の結界に弾き飛ばされて尻もちをついた。痛てて。",
   "遺跡を警備する古代の動く鎧（ガーディアン）と戦闘。剣が効きにくい！ カイルと息を合わせて関節を狙う。",
   "ガーディアンを何とか撃破。壊れた鎧の中から、綺麗な青い宝石が出てきた。これ、高く売れるやつじゃないか？",
@@ -150,8 +150,26 @@ const INITIAL_TASKS: Task[] = [
   { id: 3, name: "プリント取込", reward: 50 }
 ];
 
-// --- 日本時間（JST）と100%一致する「年月日」文字列を取得 ---
+// --- 💡対策その1: タイムゾーン（Asia/Tokyo）を明示的に指定して、日付文字列をズレなく取得 ---
 const getLocalDateString = (): string => {
+  try {
+    const formatter = new Intl.DateTimeFormat('ja-JP', {
+      timeZone: 'Asia/Tokyo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+    const parts = formatter.formatToParts(new Date());
+    const year = parts.find(p => p.type === 'year')?.value;
+    const month = parts.find(p => p.type === 'month')?.value;
+    const day = parts.find(p => p.type === 'day')?.value;
+    if (year && month && day) {
+      return `${year}-${month}-${day}`;
+    }
+  } catch (e) {
+    // 万が一のフォールバック
+  }
+  // 念のためのフォールバックコード
   const d = new Date();
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -166,7 +184,7 @@ const parseLocalDate = (dateStr: string): Date => {
   return parts.length === 3 ? new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10)) : new Date();
 };
 
-// --- LocalStorageから素直に読み出す関数（余計な逆算はしない） ---
+// --- LocalStorageから素直に読み出す関数 ---
 const loadDataFromLocalStorage = (): AppState => {
   if (typeof window === 'undefined') {
     return { tasks: INITIAL_TASKS, wallet: 0, invest: 0, exp: 0, level: 1, cumulativeDays: 1, monthlyLogins: 1, treasureTickets: 0, lastLoginDate: getLocalDateString(), completedTasksLog: [], taskHistory: [] };
@@ -178,6 +196,13 @@ const loadDataFromLocalStorage = (): AppState => {
   if (saved) {
     try {
       const data = JSON.parse(saved);
+      
+      // 💡対策その2: 【超重要】読み出しの瞬間に、「今日の日付で始まらない古い履歴」だけを除去。
+      // これを挟むことで、万が一ログイン日付の自動クリア処理が誤作動しても、
+      // ユーザーの画面に保存されている「今日のクリアログ」が消えてしまうのを2重に防ぎます！
+      const rawLogs = Array.isArray(data.completedTasksLog) ? data.completedTasksLog : [];
+      const filteredCompletedLog = rawLogs.filter((log: string) => log.startsWith(todayStr));
+
       return {
         tasks: Array.isArray(data.tasks) ? data.tasks : INITIAL_TASKS,
         wallet: typeof data.wallet === 'number' ? data.wallet : 0,
@@ -188,7 +213,7 @@ const loadDataFromLocalStorage = (): AppState => {
         monthlyLogins: typeof data.monthlyLogins === 'number' ? data.monthlyLogins : 1,
         treasureTickets: typeof data.treasureTickets === 'number' ? data.treasureTickets : 0,
         lastLoginDate: data.lastLoginDate || todayStr,
-        completedTasksLog: Array.isArray(data.completedTasksLog) ? data.completedTasksLog : [], // ここに本日のスタンプが記録される
+        completedTasksLog: filteredCompletedLog, // 常に今日の日付分だけ安全に保持
         taskHistory: Array.isArray(data.taskHistory) ? data.taskHistory : []
       };
     } catch (e) {}
@@ -249,7 +274,7 @@ export default function App() {
 
   const messageIdRef = useRef<number>(0);
 
-  // --- Tailwind CSS 自動読み込み処理を復活 (これを消すとスタイルが崩れます) ---
+  // --- Tailwind CSS 自動読み込み処理 ---
   useEffect(() => {
     if (!document.getElementById('tailwind-script')) {
       const script = document.createElement('script');
@@ -282,6 +307,9 @@ export default function App() {
         setTimeout(() => addMessage(`⚔️ 冒険日誌 ${nextCumulative}日目の朝が来た！`), 800);
       }
 
+      // 💡対策その3: ログイン判定処理が走った際にも、今日のスタンプ以外の過去のログだけをクリーンアップし、今日のログは安全に残します。
+      const filteredCompletedLog = current.completedTasksLog.filter((log: string) => log.startsWith(todayStr));
+
       const updated: AppState = {
         ...current,
         cumulativeDays: nextCumulative,
@@ -289,8 +317,7 @@ export default function App() {
         invest: nextInvest,
         treasureTickets: nextTreasureTickets,
         lastLoginDate: todayStr,
-        // 日付が変わったら、本日の完了履歴(スタンプ帳)を綺麗に空っぽにする
-        completedTasksLog: [], 
+        completedTasksLog: filteredCompletedLog, 
         taskHistory: [...newLogs, ...current.taskHistory].slice(0, 50)
       };
 
@@ -326,9 +353,6 @@ export default function App() {
     return { wallet: nextWallet, invest: nextInvest };
   };
 
-  // ==========================================
-  // 【ユーザー様の指示通り：究極にシンプルなグレーアウトガード】
-  // ==========================================
   const completeTask = (taskId: number): void => {
     const todayStr = getLocalDateString();
     const current = loadDataFromLocalStorage();
@@ -338,7 +362,6 @@ export default function App() {
     
     const completedKey = `${todayStr}_${targetTask.name}`;
     
-    // 💡【これだけ】履歴(completedTasksLog)に今日このタスクをやった記録があれば、一切処理しない（return）
     if (current.completedTasksLog.includes(completedKey)) {
       addMessage(`[防衛] すでに完了として記録されています。`);
       return;
@@ -349,10 +372,8 @@ export default function App() {
     const nextLevel = Math.floor(nextExp / 100) + 1;
     const isLevelUp = nextLevel > current.level;
 
-    // 履歴（スタンプ帳）に今回のタスクを記録
     const updatedCompletedLog = [...current.completedTasksLog, completedKey];
 
-    // お小遣いを普通に足し算
     let overflowLogs: HistoryLog[] = [];
     let moneyState = addMoneyAtState(current, reward, overflowLogs);
     let finalWallet = moneyState.wallet;
@@ -386,7 +407,7 @@ export default function App() {
       invest: finalInvest,
       exp: nextExp,
       level: nextLevel,
-      completedTasksLog: updatedCompletedLog, // スタンプ帳を保存（これで明日までロックされる）
+      completedTasksLog: updatedCompletedLog, 
       taskHistory: [...newLogs, ...current.taskHistory].slice(0, 50)
     };
 
@@ -463,14 +484,3 @@ export default function App() {
   const renderHome = () => {
     const diaryIndex = Math.max(0, state.cumulativeDays - 1);
     const todayDiaryText = WARRIOR_DIARY[diaryIndex] || "最強の戦士としての日常は続く！今日もさらなる高みへ！";
-    const currentProgressExp = state.exp % 100;
-    const todayStr = getLocalDateString();
-
-    return (
-      <div className="flex flex-col h-full overflow-y-auto pb-24 bg-gray-100 text-gray-800">
-        <div className="bg-slate-900 text-white p-4 pixel-border m-4 shadow-xl border-t-4 border-t-blue-500 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-          <div className="flex items-start gap-4 relative z-10">
-            <div className="flex flex-col items-center w-[90px] flex-shrink-0">
-              <Avatar avatar={rankInfo.avatar} size="large" />
-              <div classNa
