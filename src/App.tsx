@@ -20,11 +20,11 @@ const WARRIOR_DIARY = [
   "リベンジ成功。でもゴブリンの棍棒で自慢の盾が凹んだ。修理費で報酬が消えて、今日の飯は塩スープ。",
   "ギルドで「若手期待の星」って噂されてるのを聞いちゃった。ニヤニヤが止まらない。もっと褒めて。",
   "調子に乗って少し強い魔物に挑んだら、防具を噛みちぎられて半泣きで逃げ帰った。死ぬかと思った。",
-  "昨日の恐怖で足が震える。今日は宿の裏手で、ただひたすらに素振り。基本が一番大事って、本当だな。",
+  "昨日の恐怖で足が震える。宿の裏手で、ただひたすらに素振り。基本が一番大事って、本当だな。",
   "ソロは限界があるかも。ギルドの掲示板に「前衛求む！奢りあり」の文字。よし、話を聞いてみよう。",
   "臨時の3人パーティー結成。魔法使いの女の子と、盗賊の男。二人とも年上だけど、頼もしい。",
   "連携ってすげえ！ 俺が引きつけて、魔法でドン！ 1人で苦戦してた魔物が一瞬で消えた。感動だ。",
-  "打ち上げで魔法使いの姉さんに「可愛いね」って頭を撫でられた。戦士として見られてない気がする。",
+  "打ち上げで魔法使い of 姉さんに「可愛いね」って頭を撫でられた。戦士として見られてない気がする。",
   "臨時パーティーは解散。それぞれの道へ。また寂しい一人旅か……と思ったら、ギルドで変な奴に絡まれた。",
   "絡んできたのは同い年の大剣使い。名前はカイル。「どっちが強いか勝負だ！」って、今忙しいんだけど。",
   "カイルと街の外で決闘。結果は引き分け。あいつ、大振りのくせに強え。泥だらけで大笑いした。",
@@ -34,7 +34,7 @@ const WARRIOR_DIARY = [
   "街に戻ったら、商人から「荷馬車の護衛」を頼まれた。カイルと二人、初めての指名依頼だ。",
   "護衛中、カイルが「腹が減った」とうるさい。お前の胃袋はブラックホールか。俺の干し肉を分ける。",
   "夜襲だ！ 盗賊団が現れたが、今の俺たちなら負けない。カイルと背中を合わせて戦うの、悪くないな。",
-  "無事に護衛完了。商人のおっちゃんからボーナスを貰った。カイルと「これで美味いもん食おう」と堅い握手。",
+  "無さに護衛完了。商人のおっちゃんからボーナスを貰った。カイルと「これで美味いもん食おう」と堅い握手。",
   "ギルドから「近郊の洞窟ダンジョン」の調査依頼が来た。ついに、本当のダンジョンアタックだ！",
   "松明の明かりだけが頼り。暗い、狭い、不気味。カイルの奴、強がってるけど絶対にビビってる。",
   "ダンジョン3日目。毒グモの群れに遭遇。噛まれなくて良かったけど、糸が絡まって身動きが取れん！",
@@ -47,7 +47,7 @@ const WARRIOR_DIARY = [
   "ボス・巨大ゴーレムを撃破！ 剣が折れかけたけど、泥臭く勝った。俺たち、生きてる！ 最高の気分だ！",
   "街へ凱旋！ ギルドのみんなが拍手で迎えてくれた。いやー、それほどでも……って、顔のニヤけが戻らない。",
   "ゴーレムの魔石が高く売れた！ 奮発してカイルと高級酒場へ。ジュースで乾杯だけど、気分は一流だ。",
-  "折れかけた剣を新調. 馴染みの鍛冶屋の親父に「良い戦い方をしたな」と褒められた。剣が軽いぜ。",
+  "折れかけた剣を新調。馴染みの鍛冶屋の親父に「良い戦い方をしたな」と褒められた。剣が軽いぜ。",
   "昨日買った新品の剣を自慢したくて、街をうろつく。誰か「いい剣だね」って話しかけてくれないかな。",
   "カイルが「お前の奢りで肉を食わせろ」と毎日つきまとってくる。報酬、もう半分くらいカイルの胃袋だぞ。",
   "ギルドの受付嬢さんに「最近調子に乗ってますね」と冷たい目で言われた。ギクッ。す、すいません……。",
@@ -76,7 +76,7 @@ const WARRIOR_DIARY = [
   "ウルフのボスを撃破。怪我をした村の人を、カイルと肩を貸して村まで運ぶ。感謝されて、心が温かくなった。",
   "遠征終了。村長からお礼に貰った特産の干し肉、めちゃくちゃ美味い。よし、明日はいよいよ街へ帰るぞ！",
   "街に戻ったら、ギルド長直々に指名。新しく見つかった「古代遺跡」の先行調査だって。おいおい、大出世か？",
-  "遺跡の入り口に到着。普通の洞窟と違って、壁に見たことない文字が光ってる. カイルが「美味そう」とか言ってる。",
+  "遺跡の入り口に到着。普通の洞窟と違って、壁に見たことない文字が光ってる。カイルが「美味そう」とか言ってる。",
   "遺跡の中は魔法の罠だらけ。歩くたびに火が噴き出したり、床が凍ったり。前髪がちょっと焦げたぞ、危ねえ！",
   "カイルが変なレバーを引いたせいが、部屋の扉が閉まって大量の砂が降ってきた！ 埋まる、二人で必死に掘った。",
   "遺跡4日目。不思議な剣を発見！ 抜こうとしたら、古い魔法の結界に弾き飛ばされて尻もちをついた。痛てて。",
@@ -96,9 +96,9 @@ const WARRIOR_DIARY = [
   "谷の奥で、案の定仲間に見捨てられて魔物に囲まれるカイルを発見！「バカカイル！」って叫びながら、俺は飛び込んだ。",
   "二人で背中を合わせ、死に物狂いで魔物を撃退。泥だらけのまま「助けにくるのが遅い」「うるせえ」と、笑い合った。",
   "街への帰り道。お互い「悪かった」って、ボソボソ言い訳。でも、これで前よりずっと相棒になれた気がする。",
-  "カイルが新しい大剣の使い方を俺見せてくれた。大振りだけど、俺が隙を埋めれば最強の武器になる。",
+  "カイルが新しい大剣の使い方を俺に見せてくれた。大振りだけど、俺が隙を埋めれば最強の武器になる。",
   "ギルドの受付嬢さんに「仲直りできて良かったですね」とニヤニヤされた。全部バレてた。恥ずかしすぎる。",
-  "二人での連携を再特訓。俺が盾で敵の体勢を崩し、カイルが叩き斬る。阿吽の呼吸って、こういうのを言うんだな。",
+  "二人での連携を再特訓。俺が盾で敵の体勢を崩し, カイルが叩き斬る。阿吽の呼吸って、こういうのを言うんだな。",
   "街の子供に「戦士のお兄ちゃんたち、カッコいい！」と言われた。今度は転ばずに、バシッとポーズを決めたぞ。",
   "地元の名士から「お屋敷の地下ネズミ退治」を頼まれた。ネズミって言っても、こっちのネズミは犬並みにデカい。",
   "地下室でネズミと大乱闘。カイルが驚いて暴れた拍子に、名士の高級なツボを割った。……俺たちの報酬から天引きだ。",
@@ -113,6 +113,25 @@ const INITIAL_TASKS = [
   { id: 2, name: "数学(AI採点)", reward: 100, done: false },
   { id: 3, name: "プリント取込", reward: 50, done: false }
 ];
+
+// --- 日本時間（スマホの現地時間）と100%完全一致する「YYYY-MM-DD」を取得する関数（UTCのズレを解消） ---
+const getLocalDateString = () => {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const date = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${date}`;
+};
+
+// --- 日付をブラウザの時差に干渉されずにパースする安全な関数 ---
+const parseLocalDate = (dateStr) => {
+  if (!dateStr) return new Date();
+  const parts = dateStr.split('-');
+  if (parts.length === 3) {
+    return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+  }
+  return new Date();
+};
 
 // --- 戦士ランクの定義 ---
 const getWarriorRank = (level) => {
@@ -139,12 +158,12 @@ const Avatar = ({ avatar, size = "large" }) => {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
-  const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
+  const [currentDate, setCurrentDate] = useState(getLocalDateString());
   
   // ==========================================
-  // 【バグ根絶】遅延初期化 (Lazy State Initialization)
-  // レンダリングされる前にLocalStorageから完全に同期ロードすることで
-  // 非同期読み込みのタイミングによるデータ上書き競合を完全に防ぎます。
+  // 【完全バグ根絶】遅延初期化（Lazy Initialization）
+  // 起動時の初期ローディングを完璧に「マウント前」にロック。
+  // これにより、読み込み完了前に空データで上書き保存される不具合を100%解決。
   // ==========================================
   const [tasks, setTasks] = useState(() => {
     const saved = localStorage.getItem('warrior_rpg_save');
@@ -239,10 +258,11 @@ export default function App() {
     if (saved) {
       try {
         const data = JSON.parse(saved);
-        if (data.lastLoginDate !== undefined) return data.lastLoginDate;
+        if (data.lastLoginDate) return data.lastLoginDate;
       } catch (e) {}
     }
-    return '';
+    // データがない初回起動時は、今日の日付を初期値にして「変化エフェクト」の暴発を防止
+    return getLocalDateString();
   });
 
   const [taskHistory, setTaskHistory] = useState(() => {
@@ -281,27 +301,22 @@ export default function App() {
 
   const messageIdRef = useRef(0);
 
-  // --- 1日1回だけ確実に起動する日付変更チェック ---
+  // --- 【時差バグ解決】1日1回だけ確実に起動するローカル日付変更チェック ---
   useEffect(() => {
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = getLocalDateString(); // 日本時間の時計に完全連動
     
-    if (lastLoginDate !== todayStr) {
-      const today = new Date();
+    if (lastLoginDate !== todayStr && lastLoginDate !== '') {
+      const today = parseLocalDate(todayStr);
+      const lastLogin = parseLocalDate(lastLoginDate);
       
-      if (lastLoginDate === '') {
-        // 初起動処理
-        setLastLoginDate(todayStr);
-        return;
-      }
-
-      const lastLogin = new Date(lastLoginDate);
+      // 時刻を完全にゼロリセット
       lastLogin.setHours(0,0,0,0);
       today.setHours(0,0,0,0);
       
       const diffDays = Math.round((today - lastLogin) / (1000 * 60 * 60 * 24));
 
       if (diffDays > 0) {
-        // クエストの完了を全クリア
+        // 本当に翌日になったのでクエストの完了をリセット
         setTasks(prev => prev.map(t => ({ ...t, done: false })));
 
         // 通算日数の増加
@@ -323,7 +338,7 @@ export default function App() {
           return nextCumulative;
         });
 
-        // 月跨ぎチェック
+        // 月跨ぎ判定
         setMonthlyLogins(prev => {
           let nextMonthly = prev;
           if (today.getMonth() !== lastLogin.getMonth()) {
@@ -350,9 +365,9 @@ export default function App() {
       }
       setLastLoginDate(todayStr);
     }
-  }, []); // 起動時1回のみ（依存配列は空で安全）
+  }, []); // 起動時1回のみ確実に実行
 
-  // --- 自動セーブ (ステート変更検知) ---
+  // --- 自動セーブ ---
   useEffect(() => {
     const dataToSave = { tasks, wallet, invest, exp, level, cumulativeDays, monthlyLogins, treasureTickets, lastLoginDate, taskHistory };
     localStorage.setItem('warrior_rpg_save', JSON.stringify(dataToSave));
@@ -500,14 +515,4 @@ export default function App() {
           <div className="flex items-start gap-4 relative z-10">
             <div className="flex flex-col items-center w-[90px] flex-shrink-0">
               <Avatar avatar={rankInfo.avatar} size="large" />
-              <div className="text-sm font-bold mt-2 text-center w-full bg-slate-800 rounded pixel-border border-slate-700 py-1 shadow-inner text-yellow-400">
-                Lv.{level}
-              </div>
-            </div>
-
-            <div className="flex-1 flex flex-col justify-between min-h-[140px]">
-              <div className="flex justify-between items-start border-b border-slate-800 pb-1.5">
-                <div className="font-bold text-lg text-emerald-400 tracking-wide">{rankInfo.name}</div>
-                <div className="text-xs text-blue-300 font-bold self-center bg-blue-950/80 px-2 py-0.5 rounded pixel-border border-blue-900">
-                  通算: {cumulativeDays}日目
-  
+              <div className="text-sm font-bold mt-2 text-center w-full bg-slate-800 rounded pixel-bor
