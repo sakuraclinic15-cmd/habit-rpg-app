@@ -1,5 +1,56 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Home, Settings, Lock, Wallet, TrendingUp, UserCheck, CheckSquare, Trash2, Ticket, Edit3, X, Gift, History } from 'lucide-react';
+import { Home, Settings, Lock, Wallet, TrendingUp, UserCheck, CheckSquare, Trash2, Edit3, X, Gift, History } from 'lucide-react';
+
+// --- TypeScript型定義 ---
+interface Task {
+  id: number;
+  name: string;
+  reward: number;
+}
+
+interface HistoryLog {
+  id: number;
+  time: string;
+  text: string;
+  change: string;
+}
+
+interface AppState {
+  tasks: Task[];
+  wallet: number;
+  invest: number;
+  exp: number;
+  level: number;
+  cumulativeDays: number;
+  monthlyLogins: number;
+  treasureTickets: number;
+  lastLoginDate: string;
+  completedTasksLog: string[]; // 今日クリアした「日付_タスク名」を記録する配列
+  taskHistory: HistoryLog[];
+  todayEarnedMoney: number;   // 1日の獲得お小遣い上限カウンター（最大200円）
+  todayEarnedExp: number;     // 1日の獲得経験値上限カウンター（最大40EXP）
+}
+
+interface AvatarProps {
+  avatar: string;
+  size?: 'large' | 'small';
+}
+
+interface RankInfo {
+  name: string;
+  avatar: string;
+}
+
+interface ChestResult {
+  amount: number;
+  text: string;
+  index: number;
+}
+
+interface MessageItem {
+  id: string;
+  text: string;
+}
 
 // --- 100日分の戦士の冒険日誌（台本） ---
 const WARRIOR_DIARY = [
@@ -42,7 +93,7 @@ const WARRIOR_DIARY = [
   "罠を踏んだ！ 天井からタライ……じゃなくて、巨大な岩が降ってきた。間一髪で避けたけど寿命が縮んだ。",
   "奥の部屋で、光るチェストを発見！「宝箱だ！」って開けたらミミックだった。指を噛まれて大騒ぎ。",
   "最深部。大きな扉の前にいる。中からものすごい威圧感が伝わってくる。カイル、行くぞ。剣を抜け。",
-  "ボス・巨大ゴーレムを撃破！ 剣が折れかけたけど、泥臭く勝った。俺たち、生きてる！ 最高の気分だ！",
+  "ボス・巨大ゴーレムを撃破！ 剣が折れかけたけど、泥臭く勝った。俺たち, 生きてる！ 最高の気分だ！",
   "街へ凱旋！ ギルドのみんなが拍手で迎えてくれた。いやー、それほどでも……って、顔のニヤけが戻らない。",
   "ゴーレムの魔石が高く売れた！ 奮発してカイルと高級酒場へ。ジュースで乾杯だけど、気分は一流だ。",
   "折れかけた剣を新調。馴染みの鍛冶屋の親父に「良い戦い方をしたな」と褒められた。剣が軽いぜ。",
@@ -112,7 +163,7 @@ const INITIAL_TASKS = [
 ];
 
 // --- 日本時間の「年月日」文字列を取得 ---
-const getLocalDateString = () => {
+const getLocalDateString = (): string => {
   const d = new Date();
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -120,8 +171,8 @@ const getLocalDateString = () => {
   return `${year}-${month}-${date}`;
 };
 
-// --- LocalStorageからデータをロードする関数（TypeScript型定義の全廃） ---
-const loadDataFromLocalStorage = () => {
+// --- LocalStorageからデータをロードする関数 ---
+const loadDataFromLocalStorage = (): AppState => {
   if (typeof window === 'undefined') {
     return {
       tasks: INITIAL_TASKS,
@@ -161,7 +212,6 @@ const loadDataFromLocalStorage = () => {
         lastLoginDate: todayStr,
         completedTasksLog: Array.isArray(data.completedTasksLog) ? data.completedTasksLog : [], 
         taskHistory: Array.isArray(data.taskHistory) ? data.taskHistory : [],
-        // 1日獲得上限のカウンター（日付が変わっていたら自動的に0リセット）
         todayEarnedMoney: isSameDay && typeof data.todayEarnedMoney === 'number' ? data.todayEarnedMoney : 0,
         todayEarnedExp: isSameDay && typeof data.todayEarnedExp === 'number' ? data.todayEarnedExp : 0
       };
@@ -184,13 +234,13 @@ const loadDataFromLocalStorage = () => {
   };
 };
 
-const saveDataToLocalStorage = (data) => {
+const saveDataToLocalStorage = (data: AppState): void => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('warrior_rpg_save', JSON.stringify(data));
   }
 };
 
-const getWarriorRank = (level) => {
+const getWarriorRank = (level: number): RankInfo => {
   if (level <= 2) return { name: "Fランク 新米戦士", avatar: "🔰" };
   if (level <= 5) return { name: "Eランク 見習い戦士", avatar: "🧹" };
   if (level <= 9) return { name: "Dランク 駆け出し戦士", avatar: "🗡️" };
@@ -201,7 +251,7 @@ const getWarriorRank = (level) => {
   return { name: "伝説の聖騎士", avatar: "🌟" };
 };
 
-const Avatar = ({ avatar, size = "large" }) => {
+const Avatar: React.FC<AvatarProps> = ({ avatar, size = "large" }) => {
   const width = size === "large" ? '80px' : '60px';
   const height = size === "large" ? '120px' : '90px';
   const fontSize = size === "large" ? '50px' : '40px';
@@ -213,28 +263,28 @@ const Avatar = ({ avatar, size = "large" }) => {
 };
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
-  const [state, setState] = useState(() => loadDataFromLocalStorage());
-  const [messages, setMessages] = useState([]);
+  const [activeTab, setActiveTab] = useState<string>('home');
+  const [state, setState] = useState<AppState>(() => loadDataFromLocalStorage());
+  const [messages, setMessages] = useState<MessageItem[]>([]);
   
-  const [parentUnlocked, setParentUnlocked] = useState(false);
-  const [pinInput, setPinInput] = useState('');
-  const [pinError, setPinError] = useState('');
-  const [investWithdrawAmount, setInvestWithdrawAmount] = useState('');
-  const [investDepositAmount, setInvestDepositAmount] = useState('');
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingTasks, setEditingTasks] = useState([]);
-  const [newTaskName, setNewTaskName] = useState('');
-  const [newTaskReward, setNewTaskReward] = useState(50);
+  const [parentUnlocked, setParentUnlocked] = useState<boolean>(false);
+  const [pinInput, setPinInput] = useState<string>('');
+  const [pinError, setPinError] = useState<string>('');
+  const [investWithdrawAmount, setInvestWithdrawAmount] = useState<string>('');
+  const [investDepositAmount, setInvestDepositAmount] = useState<string>('');
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [editingTasks, setEditingTasks] = useState<Task[]>([]);
+  const [newTaskName, setNewTaskName] = useState<string>('');
+  const [newTaskReward, setNewTaskReward] = useState<number>(50);
   
-  const [showChestGame, setShowChestGame] = useState(false);
-  const [chestStates, setChestStates] = useState(['closed', 'closed', 'closed']);
-  const [chestResult, setChestResult] = useState(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [showLevelUpPopup, setShowLevelUpPopup] = useState(false);
-  const [levelUpData, setLevelUpData] = useState({ old: 1, next: 2 });
+  const [showChestGame, setShowChestGame] = useState<boolean>(false);
+  const [chestStates, setChestStates] = useState<string[]>(['closed', 'closed', 'closed']);
+  const [chestResult, setChestResult] = useState<ChestResult | null>(null);
+  const [isDrawing, setIsDrawing] = useState<boolean>(false);
+  const [showLevelUpPopup, setShowLevelUpPopup] = useState<boolean>(false);
+  const [levelUpData, setLevelUpData] = useState<{ old: number; next: number }>({ old: 1, next: 2 });
 
-  const messageIdRef = useRef(0);
+  const messageIdRef = useRef<number>(0);
 
   // --- Tailwind CSS 自動読み込み処理 ---
   useEffect(() => {
@@ -253,10 +303,9 @@ export default function App() {
 
     if (current.lastLoginDate !== todayStr) {
       const nextCumulative = current.cumulativeDays + 1;
-      let nextMonthly = current.monthlyLogins;
       let nextInvest = current.invest;
       let nextTreasureTickets = current.treasureTickets;
-      let newLogs = [];
+      let newLogs: HistoryLog[] = [];
 
       const now = new Date();
       const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} 00:00`;
@@ -269,16 +318,15 @@ export default function App() {
         setTimeout(() => addMessage(`⚔️ 冒険日誌 ${nextCumulative}日目の朝が来た！`), 800);
       }
 
-      const updated = {
+      const updated: AppState = {
         ...current,
         cumulativeDays: nextCumulative,
-        monthlyLogins: nextMonthly,
         invest: nextInvest,
         treasureTickets: nextTreasureTickets,
         lastLoginDate: todayStr,
         completedTasksLog: [], 
-        todayEarnedMoney: 0, // 新しい1日の始まりなのでお小遣い上限カウンターを0に
-        todayEarnedExp: 0,   // 新しい1日の始まりなので経験値上限カウンターを0に
+        todayEarnedMoney: 0, 
+        todayEarnedExp: 0,   
         taskHistory: [...newLogs, ...current.taskHistory].slice(0, 50)
       };
 
@@ -287,7 +335,7 @@ export default function App() {
     }
   }, []);
 
-  const addMessage = (text) => {
+  const addMessage = (text: string): void => {
     const id = `${Date.now()}-${messageIdRef.current++}`;
     setMessages(prev => [...prev, { id, text }]);
     setTimeout(() => setMessages(prev => prev.filter(m => m.id !== id)), 4000);
@@ -295,7 +343,7 @@ export default function App() {
 
   const rankInfo = getWarriorRank(state.level);
 
-  const addMoneyAtState = (currentData, amount, overflowLogs) => {
+  const addMoneyAtState = (currentData: AppState, amount: number, overflowLogs: HistoryLog[]) => {
     let nextWallet = currentData.wallet + amount;
     let nextInvest = currentData.invest;
     if (nextWallet > 3000) {
@@ -317,7 +365,7 @@ export default function App() {
   // ==========================================
   // 💡 獲得上限（1日最大200円、経験値40EXP）システム
   // ==========================================
-  const completeTask = (taskId) => {
+  const completeTask = (taskId: number): void => {
     const todayStr = getLocalDateString();
     const current = loadDataFromLocalStorage();
     
@@ -326,7 +374,6 @@ export default function App() {
     
     const completedKey = `${todayStr}_${targetTask.name}`;
     
-    // 既に今日クリア済みの場合は処理しない
     if (current.completedTasksLog.includes(completedKey)) {
       addMessage(`[防衛] すでに完了として記録されています。`);
       return;
@@ -335,12 +382,11 @@ export default function App() {
     const currentEarnedMoney = current.todayEarnedMoney || 0;
     const currentEarnedExp = current.todayEarnedExp || 0;
 
-    // もし既にお小遣い・経験値の両方が本日の天井に達しているなら、これ以上加算しない
     if (currentEarnedMoney >= 200 && currentEarnedExp >= 40) {
       addMessage(`⚠️ 本日の上限（200円 / 40EXP）に達しています！`);
       
       const updatedCompletedLog = [...current.completedTasksLog, completedKey];
-      const updated = {
+      const updated: AppState = {
         ...current,
         completedTasksLog: updatedCompletedLog
       };
@@ -349,13 +395,11 @@ export default function App() {
       return;
     }
 
-    // 本日の獲得可能なお小遣いの残り枠を計算（上限200円）
     let moneyToAdd = targetTask.reward;
     if (currentEarnedMoney + moneyToAdd > 200) {
       moneyToAdd = Math.max(0, 200 - currentEarnedMoney);
     }
 
-    // 本日の獲得可能な経験値の残り枠を計算（上限40EXP）
     let expToAdd = 10;
     if (currentEarnedExp + expToAdd > 40) {
       expToAdd = Math.max(0, 40 - currentEarnedExp);
@@ -367,12 +411,11 @@ export default function App() {
 
     const updatedCompletedLog = [...current.completedTasksLog, completedKey];
 
-    let overflowLogs = [];
+    let overflowLogs: HistoryLog[] = [];
     let moneyState = addMoneyAtState(current, moneyToAdd, overflowLogs);
     let finalWallet = moneyState.wallet;
     let finalInvest = moneyState.invest;
 
-    // レベルアップボーナス(300円)は別枠のご褒美として機能
     if (isLevelUp) {
       const levelUpMoneyState = addMoneyAtState({ ...current, wallet: finalWallet, invest: finalInvest }, 300, overflowLogs);
       finalWallet = levelUpMoneyState.wallet;
@@ -382,7 +425,7 @@ export default function App() {
     const now = new Date();
     const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     
-    let newLogs = [];
+    let newLogs: HistoryLog[] = [];
     if (moneyToAdd > 0) {
       newLogs.push({ id: Date.now() + Math.random(), time: timeStr, text: `クエスト「${targetTask.name}」完了`, change: `+${moneyToAdd}円` });
     } else {
@@ -402,15 +445,15 @@ export default function App() {
       addMessage(`[クエスト完了] ${targetTask.name}（本日上限に達しています）`);
     }
 
-    const updated = {
+    const updated: AppState = {
       ...current,
       wallet: finalWallet,
       invest: finalInvest,
       exp: nextExp,
       level: nextLevel,
       completedTasksLog: updatedCompletedLog,
-      todayEarnedMoney: currentEarnedMoney + moneyToAdd, // 本日の獲得記録を更新
-      todayEarnedExp: currentEarnedExp + expToAdd,     // 本日の獲得記録を更新
+      todayEarnedMoney: currentEarnedMoney + moneyToAdd, 
+      todayEarnedExp: currentEarnedExp + expToAdd,     
       taskHistory: [...newLogs, ...current.taskHistory].slice(0, 50)
     };
 
@@ -418,14 +461,14 @@ export default function App() {
     setState(updated);
   };
 
-  const startChestDraw = (index) => {
+  const startChestDraw = (index: number): void => {
     if (isDrawing || state.treasureTickets <= 0) return;
     setIsDrawing(true);
 
     const current = loadDataFromLocalStorage();
     const nextTickets = Math.max(0, current.treasureTickets - 1);
     
-    const intermediateData = { ...current, treasureTickets: nextTickets };
+    const intermediateData: AppState = { ...current, treasureTickets: nextTickets };
     saveDataToLocalStorage(intermediateData);
     setState(intermediateData);
 
@@ -454,17 +497,17 @@ export default function App() {
       setChestResult({ amount: winAmount, text: textResult, index });
       
       const postDrawCurrent = loadDataFromLocalStorage();
-      let overflowLogs = [];
+      let overflowLogs: HistoryLog[] = [];
       let moneyState = addMoneyAtState(postDrawCurrent, winAmount, overflowLogs);
       const now = new Date();
       const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-      let historyLogs = [
+      let historyLogs: HistoryLog[] = [
         { id: Date.now() + Math.random(), time: timeStr, text: `宝箱を開けた (${textResult})`, change: winAmount > 0 ? `+${winAmount}円` : "0円" },
         ...overflowLogs
       ];
 
-      const updated = {
+      const updated: AppState = {
         ...postDrawCurrent,
         wallet: moneyState.wallet,
         invest: moneyState.invest,
@@ -477,7 +520,7 @@ export default function App() {
     }, 1500);
   };
 
-  const resetChestGame = () => {
+  const resetChestGame = (): void => {
     setChestStates(['closed', 'closed', 'closed']);
     setChestResult(null);
     setIsDrawing(false);
@@ -766,7 +809,7 @@ export default function App() {
               <div className="grid grid-cols-3 gap-3 mb-6 py-4">
                 {[0, 1, 2].map((idx) => {
                   let chestEmoji = "🎁";
-                  if (chestStates[idx] === 'opened') { chestEmoji = chestResult?.amount && chestResult.amount > 0 ? "💎" : "💀"; }
+                  if (chestStates[idx] === 'opened' && chestResult) { chestEmoji = chestResult.amount > 0 ? "💎" : "💀"; }
                   return (
                     <button key={idx} disabled={isDrawing || chestStates.some(s => s === 'opened' || s === 'shaking')} onClick={() => startChestDraw(idx)} className={`h-24 pixel-border rounded flex flex-col items-center justify-center text-4xl ${chestStates[idx] === 'shaking' ? 'chest-shake bg-orange-800' : 'bg-slate-800'} ${chestStates[idx] === 'opened' ? 'bg-black' : ''}`}>
                       <span>{chestEmoji}</span>
