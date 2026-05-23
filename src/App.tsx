@@ -54,7 +54,7 @@ interface MessageItem {
 
 // --- 100日分の戦士の冒険日誌（台本） ---
 const WARRIOR_DIARY = [
-  "今日、ギルドに登録した。俺は最強の戦士になる。まずはスライム退治からだ。剣、重いけど悪くないな。",
+  "今日, ギルドに登録した。俺は最強の戦士になる。まずはスライム退治からだ。剣、重いけど悪くないな。",
   "薬草採取の依頼を受けた。腰が痛い。ベッドで寝たい。でも、これで稼いだ銅貨で明日は焼きたてのパンが買えるはずだ。",
   "道端で迷子を保護。護衛して街まで送る。戦うだけが冒険者の仕事じゃないと、古参の戦士に教わった。",
   "ついに魔物と遭遇した！……と思ったらただの小動物。基本の構えをとった時のあの緊張感、忘れない。",
@@ -80,7 +80,7 @@ const WARRIOR_DIARY = [
   "気がついたらカイルと即席コンビを組むことに。依頼は「巨大イノシシの狩猟」。肉、美味そうだな。",
   "イノシシ突進強すぎ！ 二人まとめて吹っ飛ばされて川に落ちた。防具が重くて溺れかけたぞ。",
   "作戦勝ち！ 俺が囮になって、カイルが横から一閃。仕留めた肉で作ったステーキ、人生で一番美味い！",
-  "街に戻ったら、商人から「荷馬車の護衛」を頼まれた。カイルと二人、初めての指名依頼だ。",
+  "街に戻ったら, 商人から「荷馬車の護衛」を頼まれた。カイルと二人、初めての指名依頼だ。",
   "護衛中、カイルが「腹が減った」とうるさい。お前の胃袋はブラックホールか。俺の干し肉を分ける。",
   "夜襲だ！ 盗賊団が現れたが、今の俺たちなら負けない。カイルと背中を合わせて戦うの、悪くないな。",
   "無事に護衛完了。商人のおっちゃんからボーナスを貰った。カイルと「これで美味いもん食おう」と堅い握手。",
@@ -248,7 +248,7 @@ const getWarriorRank = (level: number): RankInfo => {
   if (level <= 19) return { name: "Bランク 精鋭戦士", avatar: "⚔️" };
   if (level <= 29) return { name: "Aランク 豪傑戦士", avatar: "🔥" };
   if (level <= 49) return { name: "Sランク 英雄戦士", avatar: "👑" };
-  return { name: "伝説の聖騎士", avatar: "🌟" };
+  return { name: "伝説 of 聖騎士", avatar: "🌟" };
 };
 
 const Avatar: React.FC<AvatarProps> = ({ avatar, size = "large" }) => {
@@ -678,7 +678,8 @@ export default function App() {
           <div className="space-y-4">
             <div className="flex gap-2">
               <input type="number" placeholder="出金額" className="flex-1 p-3 pixel-border text-right text-lg shadow-inner" value={investWithdrawAmount} onChange={e => setInvestWithdrawAmount(e.target.value)} />
-              <button onClick={() => { const amt = parseInt(investWithdrawAmount, 10); const current = loadDataFromLocalStorage(); if (amt > 0 && amt <= state.invest) { setState(prev => { const now = new Date(); const updated = { ...prev, invest: prev.invest - amt, taskHistory: [{ id: Date.now() + Math.random(), time: `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`, text: `投資口座から引き出し`, change: `-${amt}円` }, ...prev.taskHistory].slice(0, 50) }; saveDataToLocalStorage(updated); return updated; }); addMessage(`投資口座から ${amt}円 を引き出しました。`); setInvestWithdrawAmount(''); } else { addMessage("無効な金額です"); } }} className="bg-gray-800 text-white px-5 py-3 pixel-border font-bold">引き出す</button>
+              {/* 💡 TS6133エラーを完全に解消: 未使用のローカル変数 current を定義から削除しました */}
+              <button onClick={() => { const amt = parseInt(investWithdrawAmount, 10); if (amt > 0 && amt <= state.invest) { setState(prev => { const now = new Date(); const updated = { ...prev, invest: prev.invest - amt, taskHistory: [{ id: Date.now() + Math.random(), time: `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`, text: `投資口座から引き出し`, change: `-${amt}円` }, ...prev.taskHistory].slice(0, 50) }; saveDataToLocalStorage(updated); return updated; }); addMessage(`投資口座から ${amt}円 を引き出しました。`); setInvestWithdrawAmount(''); } else { addMessage("無効な金額です"); } }} className="bg-gray-800 text-white px-5 py-3 pixel-border font-bold">引き出す</button>
             </div>
             <div className="flex gap-2">
               <input type="number" placeholder="入金額" className="flex-1 p-3 pixel-border text-right text-lg shadow-inner" value={investDepositAmount} onChange={e => setInvestDepositAmount(e.target.value)} />
