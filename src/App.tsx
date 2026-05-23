@@ -58,10 +58,10 @@ const WARRIOR_DIARY = [
   "薬草採取の依頼を受けた。腰が痛い。ベッドで寝たい。でも、これで稼いだ銅貨で明日は焼きたてのパンが買えるはずだ。",
   "道端で迷子を保護。護衛して街まで送る。戦うだけが冒険者の仕事じゃないと、古参の戦士に教わった。",
   "ついに魔物と遭遇した！……と思ったらただの小動物。基本の構えをとった時のあの緊張感、忘れない。",
-  "初めての魔物討伐依頼。相手はスライム。剣がぬるぬるになったけど、何とか倒せたぞ！ 討伐証明、ゲット！",
+  "初めての魔物討伐依頼。相手はスライム. 剣がぬるぬるになったけど、何とか倒せたぞ！ 討伐証明、ゲット！",
   "スライムと格闘した筋肉痛が酷い。今日は宿で大人しく武器の手入れをする。砥石で研ぐと剣が生き返るんだ。",
   "ギルドで少し強そうなパーティーに誘われた。コボルト討伐だ。足を引っ張らないように気を引き締めないと。",
-  "コボルトとの初陣。仲間の背中を守る役割に徹した。最後の一撃は俺が！ ……少しだけ、自信がついたかも。",
+  "コボルトとの初陣。仲間の背中を守る役割に徹した。最後の一撃は俺が！ ……少しだけ, 自信がついたかも。",
   "討伐報酬で新しい革の小手を買った。防具の重要性を身をもって知ったからな。見た目も、少し強そうになったかな？",
   "ランクが上がったとギルド受付嬢に言われた。まだ一番下だけど、看板の名前を見るたび胸が高鳴る。頑張るぞ！",
   "ちょっといい依頼を見つけた。「街道のゴブリン退治」。これなら俺も主力として張れるはずだ。",
@@ -124,7 +124,7 @@ const WARRIOR_DIARY = [
   "国境近くの森で、ウルフの群れと遭遇。動きが速い！ でも、落ち着いて対応すれば、今の俺たちの敵じゃない。",
   "ウルフのボスを撃破。怪我をした村の人を、カイルと肩を貸して村まで運ぶ。感謝されて、心が温かくなった。",
   "遠征終了。村長からお礼に貰った特産の干し肉、めちゃくちゃ美味い。よし、明日はいよいよ街へ帰るぞ！",
-  "街に戻ったら、ギルド長直々に指名。新しく見つかった「古代遺跡」の先行調査だって。おいおい、大出世か？",
+  "街に戻ったら, ギルド長直々に指名。新しく見つかった「古代遺跡」の先行調査だって。おいおい、大出世か？",
   "遺跡の入り口に到着。普通の洞窟と違って、壁に見たことない文字が光ってる。カイルが「美味しそう」とか言ってる。",
   "遺跡の中は魔法の罠だらけ。歩くたびに火が噴き出したり、床が凍ったり。前髪がちょっと焦げたぞ、危ねえ！",
   "カイルが変なレバーを引いたせいで、部屋の扉が閉まって大量の砂が降ってきた！ 埋まる、二人で必死に掘った。",
@@ -147,7 +147,7 @@ const WARRIOR_DIARY = [
   "街への帰り道。お互い「悪かった」って、ボソボソ言い訳。でも、これで前よりずっと相棒になれた気がする。",
   "カイルが新しい大剣の使い方を俺に見せてくれた。大振りだけど、俺が隙を埋めれば最強の武器になる。",
   "ギルドの受付嬢さんに「仲直りできて良かったですね」とニヤニヤされた。全部バレてた。恥ずかしすぎる。",
-  "二人での連携を再特訓。俺が盾で敵の体勢を崩し、カイルが叩き斬る。阿吽の呼吸って、こういうのを言うんだな。",
+  "二人での連携を再特訓。俺が盾で敵の体勢を崩し, カイルが叩き斬る。阿吽の呼吸って、こういうのを言うんだな。",
   "街の子供に「戦士のお兄ちゃんたち、カッコいい！」と言われた。今度は転ばずに、バシッとポーズを決めたぞ。",
   "地元の名士から「お屋敷の地下ネズミ退治」を頼まれた。ネズミって言っても、こっちのネズミは犬並みにデカい。",
   "地下室でネズミと大乱闘。カイルが驚いて暴れた拍子に、名士の高級なツボを割った。……俺たちの報酬から天引きだ。",
@@ -535,30 +535,32 @@ export default function App() {
 
     return (
       <div className="flex flex-col h-full overflow-y-auto pb-24 bg-gray-100 text-gray-800">
+        
+        {/* 💡 ステータス・冒険日誌：上下に縦幅をグッと拡大（min-h-[165px] ＆パディングと文字フォントを少し広げてどっしり読みやすく） */}
         <div className="bg-slate-900 text-white p-4 pixel-border m-4 shadow-xl border-t-4 border-t-blue-500 relative overflow-hidden">
           <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
           <div className="flex items-start gap-4 relative z-10">
             <div className="flex flex-col items-center w-[90px] flex-shrink-0">
               <Avatar avatar={rankInfo.avatar} size="large" />
-              <div className="text-sm font-bold mt-2 text-center w-full bg-slate-800 rounded pixel-border border-slate-700 py-1 shadow-inner text-yellow-400">
+              <div className="text-sm font-bold mt-2 text-center w-full bg-slate-800 rounded pixel-border border-slate-700 py-1.5 shadow-inner text-yellow-400">
                 Lv.{state.level}
               </div>
             </div>
-            <div className="flex-1 flex flex-col justify-between min-h-[140px]">
-              <div className="flex justify-between items-start border-b border-slate-800 pb-1.5">
+            <div className="flex-1 flex flex-col justify-between min-h-[165px]">
+              <div className="flex justify-between items-start border-b border-slate-800 pb-2">
                 <div className="font-bold text-lg text-emerald-400 tracking-wide">{rankInfo.name}</div>
-                <div className="text-xs text-blue-300 font-bold self-center bg-blue-950/80 px-2 py-0.5 rounded pixel-border border-blue-900">
+                <div className="text-xs text-blue-300 font-bold self-center bg-blue-950/80 px-2 py-1 rounded pixel-border border-blue-900">
                   通算: {state.cumulativeDays}日目
                 </div>
               </div>
-              <div className="bg-black/60 text-gray-200 p-2.5 pixel-border border-slate-800 text-[12px] flex flex-col relative mt-2 flex-1 shadow-inner leading-relaxed">
+              <div className="bg-black/60 text-gray-200 p-3 pixel-border border-slate-800 text-[13px] flex flex-col relative mt-2 flex-1 shadow-inner leading-relaxed">
                 <div className="absolute -top-2 left-2 bg-slate-800 px-1.5 text-[9px] text-yellow-500 font-bold border border-slate-700 rounded uppercase tracking-wider">
                   冒険日誌
                 </div>
-                <p className="mt-1 font-sans">{todayDiaryText}</p>
+                <p className="mt-1 font-sans font-medium">{todayDiaryText}</p>
               </div>
-              <div className="mt-2.5">
-                <div className="flex justify-between text-[10px] text-gray-400 font-bold mb-0.5">
+              <div className="mt-3">
+                <div className="flex justify-between text-[10px] text-gray-400 font-bold mb-1">
                   <span>経験値</span>
                   <span>{currentProgressExp} / 100 EXP</span>
                 </div>
@@ -580,15 +582,7 @@ export default function App() {
         )}
 
         <div className="px-4 mb-4 space-y-2">
-          {/* 本日の獲得制限メーターの表示 */}
-          <div className="bg-amber-50 border-2 border-amber-300 p-3 rounded shadow-sm text-xs font-bold flex justify-between items-center text-amber-900">
-            <div>🛡️ 本日の獲得制限カウンター</div>
-            <div className="flex gap-4">
-              <span>お小遣い: <b className="text-orange-600">{state.todayEarnedMoney}</b> / 200円</span>
-              <span>経験値: <b className="text-blue-600">{state.todayEarnedExp}</b> / 40 EXP</span>
-            </div>
-          </div>
-
+          {/* 💡 お小遣い制限カウンターは「遊び方」タブへと引っ越ししたため、ここからは丸ごとスッキリ取り除かれています！ */}
           <div className="flex gap-2">
             <div className="flex-1 bg-white p-4 pixel-border shadow-md flex items-center gap-2">
               <Wallet className="text-orange-500 w-8 h-8" />
@@ -614,20 +608,21 @@ export default function App() {
               <Edit3 size={16} /> クエスト編集
             </button>
           </div>
-          <div className="space-y-4 mt-2">
+          <div className="space-y-3 mt-2">
             {state.tasks.map(task => {
               const isDone = state.completedTasksLog.includes(`${todayStr}_${task.name}`);
               return (
-                <button key={task.id} onClick={() => completeTask(task.id)} disabled={isDone} className={`w-full text-left p-6 pixel-border shadow-md flex items-center justify-between transition-all min-h-[96px] ${isDone ? 'bg-gray-200 opacity-60 cursor-not-allowed font-normal' : 'bg-white active:bg-blue-50 hover:bg-gray-50'}`}>
-                  <div className="flex items-center gap-5">
-                    <div className={`w-12 h-12 flex items-center justify-center pixel-border shadow-inner ${isDone ? 'bg-green-500 border-green-700' : 'bg-white'}`}>
-                      {isDone && <UserCheck size={32} className="text-white drop-shadow-md" />}
+                /* 💡 クエスト完了ボタン：少しスリムに小さく調整 (padding 6 ➔ 4.5、最小高 96px ➔ 76px、フォントサイズをやや小さくして画面に収まりやすくしました) */
+                <button key={task.id} onClick={() => completeTask(task.id)} disabled={isDone} className={`w-full text-left p-4.5 pixel-border shadow-md flex items-center justify-between transition-all min-h-[76px] ${isDone ? 'bg-gray-200 opacity-60 cursor-not-allowed font-normal' : 'bg-white active:bg-blue-50 hover:bg-gray-50'}`}>
+                  <div className="flex items-center gap-3.5">
+                    <div className={`w-10 h-10 flex items-center justify-center pixel-border shadow-inner flex-shrink-0 ${isDone ? 'bg-green-500 border-green-700' : 'bg-white'}`}>
+                      {isDone && <UserCheck size={24} className="text-white drop-shadow-md" />}
                     </div>
-                    <span className={`text-xl ${isDone ? 'line-through text-gray-500 font-normal' : 'font-bold text-gray-800'}`}>{task.name}</span>
+                    <span className={`text-lg ${isDone ? 'line-through text-gray-500 font-normal' : 'font-bold text-gray-800'}`}>{task.name}</span>
                   </div>
-                  <div className="text-right flex flex-col justify-center">
-                    <div className="text-2xl font-black text-orange-600">{task.reward}円</div>
-                    <div className="text-xs text-blue-600 font-bold mt-1">+10 EXP</div>
+                  <div className="text-right flex flex-col justify-center flex-shrink-0">
+                    <div className="text-xl font-black text-orange-600">{task.reward}円</div>
+                    <div className="text-[10px] text-blue-600 font-bold mt-0.5">+10 EXP</div>
                   </div>
                 </button>
               );
@@ -678,7 +673,6 @@ export default function App() {
           <div className="space-y-4">
             <div className="flex gap-2">
               <input type="number" placeholder="出金額" className="flex-1 p-3 pixel-border text-right text-lg shadow-inner" value={investWithdrawAmount} onChange={e => setInvestWithdrawAmount(e.target.value)} />
-              {/* 💡 TS6133エラーを完全に解消: 未使用のローカル変数 current を定義から削除しました */}
               <button onClick={() => { const amt = parseInt(investWithdrawAmount, 10); if (amt > 0 && amt <= state.invest) { setState(prev => { const now = new Date(); const updated = { ...prev, invest: prev.invest - amt, taskHistory: [{ id: Date.now() + Math.random(), time: `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`, text: `投資口座から引き出し`, change: `-${amt}円` }, ...prev.taskHistory].slice(0, 50) }; saveDataToLocalStorage(updated); return updated; }); addMessage(`投資口座から ${amt}円 を引き出しました。`); setInvestWithdrawAmount(''); } else { addMessage("無効な金額です"); } }} className="bg-gray-800 text-white px-5 py-3 pixel-border font-bold">引き出す</button>
             </div>
             <div className="flex gap-2">
@@ -728,6 +722,24 @@ export default function App() {
   const renderSettings = () => (
     <div className="flex flex-col h-full overflow-y-auto pb-24 p-4 bg-gray-100 text-gray-800">
       <h2 className="text-2xl font-bold mb-5 border-b-2 border-gray-300 pb-2 flex items-center gap-2"><Settings size={24} /> ギルドの遊び方</h2>
+      
+      {/* 💡 制限カウンターの引っ越し先：遊び方タブの上部に、非常に見やすいダッシュボード風デザインで組み込みました */}
+      <div className="bg-amber-50 border-2 border-amber-300 p-4 rounded shadow-md mb-6 text-sm font-bold text-amber-900 pixel-border">
+        <div className="flex items-center gap-2 mb-2 pb-1 border-b border-amber-200">
+          <span>🛡️ 本日の獲得制限カウンター</span>
+        </div>
+        <div className="grid grid-cols-2 gap-3 mt-1.5 text-center">
+          <div className="bg-white p-2 rounded pixel-border border-amber-200">
+            <span className="text-[10px] text-gray-500 block">お小遣い上限</span>
+            <span className="text-base"><b className="text-orange-600 text-lg">{state.todayEarnedMoney}</b> / 200円</span>
+          </div>
+          <div className="bg-white p-2 rounded pixel-border border-amber-200">
+            <span className="text-[10px] text-gray-500 block">経験値上限</span>
+            <span className="text-base"><b className="text-blue-600 text-lg">{state.todayEarnedExp}</b> / 40 EXP</span>
+          </div>
+        </div>
+      </div>
+
       <div className="bg-white p-5 pixel-border mb-6 shadow-sm border-l-4 border-l-yellow-500">
         <h3 className="text-lg font-bold mb-3 text-yellow-800">👑 ランクアップ＆宝箱のルール</h3>
         <ul className="text-sm text-gray-600 list-disc list-inside space-y-2">
