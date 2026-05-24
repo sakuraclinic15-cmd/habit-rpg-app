@@ -69,11 +69,11 @@ const WARRIOR_DIARY = [
   "リベンジ成功。返り討ちにしてやったが盾が凹んだ。修理費で報酬が消えて、今日の飯は塩スープだけだ。",
   "ギルドで「若手期待の星」って噂されてるのを聞いちゃった。ニヤニヤが止まらない。もっと褒めて。",
   "調子に乗って少し強い魔物に挑んだら、防具を噛みちぎられて半泣きで逃げ帰った。死ぬかと思った。",
-  "昨日の恐怖で足が震える。宿の裏手で、ただひたすらに素振り。基本が一番大事って、本当だな。",
+  "昨日の恐怖で足が震える。宿の裏手で, ただひたすらに素振り。基本が一番大事って、本当だな。",
   "ソロは限界があるかも。ギルドの掲示板に「前衛求む！奢りあり」の文字。よし、話を聞いてみよう。",
   "臨時の3人パーティー結成。魔法使いの女の子と、盗賊の男。二人とも年上だけど、頼もしい。",
   "連携ってすげえ！ 俺が引きつけて、魔法でドン！ 1人で苦戦してた魔物が一瞬で消えた。感動だ。",
-  "打ち上げで魔法使いの姉さんに「可愛いね」って頭を撫でられた。戦士として見られてない気がする。",
+  "打ち上げで魔法使い of 姉さんに「可愛いね」って頭を撫でられた。戦士として見られてない気がする。",
   "臨時パーティーは解散。それぞれの道へ。また寂しい一人旅か……と思ったら、ギルドで変な奴に絡まれた。",
   "絡んできたのは同い年の大剣使い。名前はカイル。「どっちが強いか勝負だ！」って、今忙しいんだけど。",
   "カイルと街の外で決闘。結果は引き分け。あいつ、大振りのくせに強え。泥だらけで大笑いした。",
@@ -94,7 +94,7 @@ const WARRIOR_DIARY = [
   "奥の部屋で、光るチェストを発見！「宝箱だ！」って開けたらミミックだった。指を噛まれて大騒ぎ。",
   "最深部。大きな扉の前にいる。中からものすごい威圧感が伝わってくる。カイル、行くぞ。剣を抜け。",
   "ボス・巨大ゴーレムを撃破！ 剣が折れかけたけど、泥臭く勝った。俺たち, 生きてる！ 最高の気分だ！",
-  "街へ凱旋！ ギルドのみんなが拍手で迎えてくれた。いやー、それほどでも……って、顔のニヤけが戻らない。",
+  "街へ凱旋！ ギルドのみんなが拍手で迎えてくれた。いやー、それほどでも……って, 顔のニヤけが戻らない。",
   "ゴーレムの魔石が高く売れた！ 奮発してカイルと高級酒場へ。ジュースで乾杯だけど、気分は一流だ。",
   "折れかけた剣を新調。馴染みの鍛冶屋の親父に「良い戦い方をしたな」と褒められた。剣が軽いぜ。",
   "昨日買った新品の剣を自慢したくて、街をうろつく。誰か「いい剣だね」って話しかけてくれないかな。",
@@ -109,7 +109,7 @@ const WARRIOR_DIARY = [
   "おっさんの修行、理不尽すぎる！「滝に向かって叫べ」とか「薪を小指で割れ」とか、これ意味ある！？",
   "今日も筋肉痛でベッドから起き上がれない。全身がミシミシ言う。カイルが笑いながら湿布を貼ってくれた。",
   "おっさんに木刀で挑むも、触れることすらできずにデコピンで気絶させられた。あの人、本当に何者なんだ。",
-  "「お前の剣は力みすぎだ」とおっさん。力を抜いて、風を切るように……。あ、今、少しだけ感覚を掴んだかも。",
+  "「お前の剣は力みすぎだ」とおっさん。力を抜いて、風を切るように……。あ、今, 少しだけ感覚を掴んだかも。",
   "カイルと二人で、おっさんに挑む。二人係でもボコボコにされたけど、前より長く立っていられたぞ。",
   "おっさんが「もう教えることはねえ。酒持ってこい」と。ぶっきらぼうだけど、少し寂しいな。ありがとな。",
   "試験前日。カイルと二人で武器を磨く。明日はお互い別々の相手と戦う。絶対に二人で合格するんだ。",
@@ -197,6 +197,7 @@ const loadDataFromLocalStorage = (): AppState => {
   if (saved) {
     try {
       const data = JSON.parse(saved);
+      // 💡前回のログイン日をロード。今日の日付で強制上書きしていた致命的なバグを完全に修正！
       const savedDate = data.lastLoginDate || todayStr;
       const isSameDay = (savedDate === todayStr);
 
@@ -209,7 +210,8 @@ const loadDataFromLocalStorage = (): AppState => {
         cumulativeDays: typeof data.cumulativeDays === 'number' ? data.cumulativeDays : 1,
         monthlyLogins: typeof data.monthlyLogins === 'number' ? data.monthlyLogins : 1,
         treasureTickets: typeof data.treasureTickets === 'number' ? data.treasureTickets : 0,
-        lastLoginDate: todayStr,
+        // 💡 過去の最終ログイン日を上書きせずロードし、日付が変化したことをuseEffectが検知できるようにします
+        lastLoginDate: savedDate,
         completedTasksLog: Array.isArray(data.completedTasksLog) ? data.completedTasksLog : [], 
         taskHistory: Array.isArray(data.taskHistory) ? data.taskHistory : [],
         todayEarnedMoney: isSameDay && typeof data.todayEarnedMoney === 'number' ? data.todayEarnedMoney : 0,
@@ -301,6 +303,7 @@ export default function App() {
     const todayStr = getLocalDateString();
     const current = loadDataFromLocalStorage();
 
+    // 💡ロードされた「過去の日付」と「今日の日付」を比較。これで日付の跨ぎを正確に検知！
     if (current.lastLoginDate !== todayStr) {
       const nextCumulative = current.cumulativeDays + 1;
       let nextInvest = current.invest;
@@ -323,7 +326,7 @@ export default function App() {
         cumulativeDays: nextCumulative,
         invest: nextInvest,
         treasureTickets: nextTreasureTickets,
-        lastLoginDate: todayStr,
+        lastLoginDate: todayStr, // 本日の日付を次のログイン比較用に新しく上書き保存
         completedTasksLog: [], 
         todayEarnedMoney: 0, 
         todayEarnedExp: 0,   
@@ -536,7 +539,7 @@ export default function App() {
     return (
       <div className="flex flex-col h-full overflow-y-auto pb-24 bg-gray-100 text-gray-800">
         
-        {/* 💡 ステータス・冒険日誌：上下に縦幅をグッと拡大（min-h-[165px] ＆パディングと文字フォントを少し広げてどっしり読みやすく） */}
+        {/* 💡 ステータス・冒険日誌エリア：縦幅をグッと拡大（最小高 165px ＆読みやすいフォントバランス） */}
         <div className="bg-slate-900 text-white p-4 pixel-border m-4 shadow-xl border-t-4 border-t-blue-500 relative overflow-hidden">
           <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
           <div className="flex items-start gap-4 relative z-10">
@@ -582,7 +585,6 @@ export default function App() {
         )}
 
         <div className="px-4 mb-4 space-y-2">
-          {/* 💡 お小遣い制限カウンターは「遊び方」タブへと引っ越ししたため、ここからは丸ごとスッキリ取り除かれています！ */}
           <div className="flex gap-2">
             <div className="flex-1 bg-white p-4 pixel-border shadow-md flex items-center gap-2">
               <Wallet className="text-orange-500 w-8 h-8" />
@@ -612,8 +614,8 @@ export default function App() {
             {state.tasks.map(task => {
               const isDone = state.completedTasksLog.includes(`${todayStr}_${task.name}`);
               return (
-                /* 💡 クエスト完了ボタン：少しスリムに小さく調整 (padding 6 ➔ 4.5、最小高 96px ➔ 76px、フォントサイズをやや小さくして画面に収まりやすくしました) */
-                <button key={task.id} onClick={() => completeTask(task.id)} disabled={isDone} className={`w-full text-left p-4.5 pixel-border shadow-md flex items-center justify-between transition-all min-h-[76px] ${isDone ? 'bg-gray-200 opacity-60 cursor-not-allowed font-normal' : 'bg-white active:bg-blue-50 hover:bg-gray-50'}`}>
+                /* 💡 クエストボタン：小さくスリムに調整しつつ、快適な押しやすさを維持 */
+                <button key={task.id} onClick={() => completeTask(task.id)} disabled={isDone} className={`w-full text-left p-4 pixel-border shadow-md flex items-center justify-between transition-all min-h-[76px] ${isDone ? 'bg-gray-200 opacity-60 cursor-not-allowed font-normal' : 'bg-white active:bg-blue-50 hover:bg-gray-50'}`}>
                   <div className="flex items-center gap-3.5">
                     <div className={`w-10 h-10 flex items-center justify-center pixel-border shadow-inner flex-shrink-0 ${isDone ? 'bg-green-500 border-green-700' : 'bg-white'}`}>
                       {isDone && <UserCheck size={24} className="text-white drop-shadow-md" />}
@@ -723,7 +725,7 @@ export default function App() {
     <div className="flex flex-col h-full overflow-y-auto pb-24 p-4 bg-gray-100 text-gray-800">
       <h2 className="text-2xl font-bold mb-5 border-b-2 border-gray-300 pb-2 flex items-center gap-2"><Settings size={24} /> ギルドの遊び方</h2>
       
-      {/* 💡 制限カウンターの引っ越し先：遊び方タブの上部に、非常に見やすいダッシュボード風デザインで組み込みました */}
+      {/* 💡 お小遣い制限カウンター：遊び方タブの上部に、非常に見やすいダッシュボード風デザインで組み込みました */}
       <div className="bg-amber-50 border-2 border-amber-300 p-4 rounded shadow-md mb-6 text-sm font-bold text-amber-900 pixel-border">
         <div className="flex items-center gap-2 mb-2 pb-1 border-b border-amber-200">
           <span>🛡️ 本日の獲得制限カウンター</span>
