@@ -947,14 +947,13 @@ export default function App() {
           <div className="space-y-4">
             <div className="flex gap-2">
               <input type="number" placeholder="出金額" className="flex-1 p-3 pixel-border text-right text-lg shadow-inner" value={investWithdrawAmount} onChange={e => setInvestWithdrawAmount(e.target.value)} />
-              <button onClick={() => { 
-                const amt = parseInt(investWithdrawAmount, 10); 
-　　　　　　　　　const current = loadDataFromLocalStorage();
-                if (amt > 0 && amt <= state.invest) { 
-                  setState(prev => { 
-                    const now = new Date(); 
-                    const nextWallet = prev.wallet;
-                    const nextInvest = prev.invest - amt;
+             <button onClick={() => { 
+  const amt = parseInt(investWithdrawAmount, 10); 
+  if (amt > 0 && amt <= state.invest) { 
+    setState(prev => { 
+      const now = new Date(); 
+      const nextWallet = prev.wallet;
+      const nextInvest = prev.invest - amt;
 
                     // 出金時の資産履歴を記録
                     const nextAssetHistory = recordAssetHistory(prev, nextWallet, nextInvest, `親による投資口座から引き出し (-${amt}円)`);
