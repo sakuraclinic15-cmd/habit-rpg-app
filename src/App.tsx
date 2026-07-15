@@ -949,7 +949,7 @@ export default function App() {
               <input type="number" placeholder="出金額" className="flex-1 p-3 pixel-border text-right text-lg shadow-inner" value={investWithdrawAmount} onChange={e => setInvestWithdrawAmount(e.target.value)} />
               <button onClick={() => { 
                 const amt = parseInt(investWithdrawAmount, 10); 
-                const current = loadDataFromLocalStorage(); 
+　　　　　　　　　const current = loadDataFromLocalStorage();
                 if (amt > 0 && amt <= state.invest) { 
                   setState(prev => { 
                     const now = new Date(); 
