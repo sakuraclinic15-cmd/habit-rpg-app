@@ -1,86 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Home, Settings, Lock, Wallet, TrendingUp, UserCheck, CheckSquare, Trash2, Edit3, X, Gift, History } from 'lucide-react';
-
-// --- TypeScript型定義 ---
-interface Task {
-  id: number;
-  name: string;
-  reward: number;
-}
-
-interface HistoryLog {
-  id: number;
-  time: string;
-  text: string;
-  change: string;
-}
-
-interface AppState {
-  tasks: Task[];
-  wallet: number;
-  invest: number;
-  exp: number;
-  level: number;
-  cumulativeDays: number;
-  monthlyLogins: number;
-  treasureTickets: number;
-  lastLoginDate: string;
-  completedTasksLog: string[]; // 今日クリアした「日付_タスク名」を記録する配列
-  taskHistory: HistoryLog[];
-  todayEarnedMoney: number;   // 1日の獲得お小遣い上限カウンター（最大200円）
-  todayEarnedExp: number;     // 1日の獲得経験値上限カウンター（最大40EXP）
-}
-
-interface AvatarProps {
-  avatar: string;
-  size?: 'large' | 'small';
-}
-
-interface RankInfo {
-  name: string;
-  avatar: string;
-}
-
-interface ChestResult {
-  amount: number;
-  text: string;
-  index: number;
-}
-
-interface MessageItem {
-  id: string;
-  text: string;
-}
+import { Home, Settings, Lock, Wallet, TrendingUp, UserCheck, CheckSquare, Trash2, Ticket, Edit3, X, Gift, History, BookOpen, BarChart2 } from 'lucide-react';
 
 // --- 100日分の戦士の冒険日誌（台本） ---
 const WARRIOR_DIARY = [
-  "今日, ギルドに登録した。俺は最強の戦士になる。まずはスライム退治からだ。剣、重いけど悪くないな。",
+  "今日、ギルドに登録した。俺は最強の戦士になる。まずはスライム退治からだ。剣、重いけど悪くないな。",
   "薬草採取の依頼を受けた。腰が痛い。ベッドで寝たい。でも、これで稼いだ銅貨で明日は焼きたてのパンが買えるはずだ。",
   "道端で迷子を保護。護衛して街まで送る。戦うだけが冒険者の仕事じゃないと、古参の戦士に教わった。",
   "ついに魔物と遭遇した！……と思ったらただの小動物。基本の構えをとった時のあの緊張感、忘れない。",
-  "初めての魔物討伐依頼。相手はスライム. 剣がぬるぬるになったけど、何とか倒せたぞ！ 討伐証明、ゲット！",
+  "初めての魔物討伐依頼。相手はスライム。剣がぬるぬるになったけど、何とか倒せたぞ！ 討伐証明、ゲット！",
   "スライムと格闘した筋肉痛が酷い。今日は宿で大人しく武器の手入れをする。砥石で研ぐと剣が生き返るんだ。",
   "ギルドで少し強そうなパーティーに誘われた。コボルト討伐だ。足を引っ張らないように気を引き締めないと。",
-  "コボルトとの初陣。仲間の背中を守る役割に徹した。最後の一撃は俺が！ ……少しだけ, 自信がついたかも。",
+  "コボルトとの初陣。仲間の背中を守る役割に徹した。最後の一撃は俺が！ ……少しだけ、自信がついたかも。",
   "討伐報酬で新しい革の小手を買った。防具の重要性を身をもって知ったからな。見た目も、少し強そうになったかな？",
   "ランクが上がったとギルド受付嬢に言われた。まだ一番下だけど、看板の名前を見るたび胸が高鳴る。頑張るぞ！",
   "ちょっといい依頼を見つけた。「街道のゴブリン退治」。これなら俺も主力として張れるはずだ。",
   "ゴブリンの癖に罠を使うなんて卑怯だぞ！ 穴に落ちて丸一日無駄にした。お尻が痛い……。",
   "リベンジ成功。返り討ちにしてやったが盾が凹んだ。修理費で報酬が消えて、今日の飯は塩スープだけだ。",
-  "ギルドで「若手期待の星」って噂されてるのを聞いちゃった。ニヤニヤが止まらない。もっと褒めて。",
+  "ギルドで「若手期待の星」って噂されてるのを聞いちゃった。ニヤニヤが止マラナイ。もっと褒めて。",
   "調子に乗って少し強い魔物に挑んだら、防具を噛みちぎられて半泣きで逃げ帰った。死ぬかと思った。",
-  "昨日の恐怖で足が震える。宿の裏手で, ただひたすらに素振り。基本が一番大事って、本当だな。",
+  "昨日の恐怖で足が震える。宿の裏手で、ただひたすらに素振り。基本が一番大事って、本当だな。",
   "ソロは限界があるかも。ギルドの掲示板に「前衛求む！奢りあり」の文字。よし、話を聞いてみよう。",
   "臨時の3人パーティー結成。魔法使いの女の子と、盗賊の男。二人とも年上だけど、頼もしい。",
   "連携ってすげえ！ 俺が引きつけて、魔法でドン！ 1人で苦戦してた魔物が一瞬で消えた。感動だ。",
-  "打ち上げで魔法使い of 姉さんに「可愛いね」って頭を撫でられた。戦士として見られてない気がする。",
+  "打ち上げで魔法使いの姉さんに「可愛いね」って頭を撫でられた。戦士として見られてない気がする。",
   "臨時パーティーは解散。それぞれの道へ。また寂しい一人旅か……と思ったら、ギルドで変な奴に絡まれた。",
   "絡んできたのは同い年の大剣使い。名前はカイル。「どっちが強いか勝負だ！」って、今忙しいんだけど。",
   "カイルと街の外で決闘。結果は引き分け。あいつ、大振りのくせに強え。泥だらけで大笑いした。",
   "気がついたらカイルと即席コンビを組むことに。依頼は「巨大イノシシの狩猟」。肉、美味そうだな。",
   "イノシシ突進強すぎ！ 二人まとめて吹っ飛ばされて川に落ちた。防具が重くて溺れかけたぞ。",
   "作戦勝ち！ 俺が囮になって、カイルが横から一閃。仕留めた肉で作ったステーキ、人生で一番美味い！",
-  "街に戻ったら, 商人から「荷馬車の護衛」を頼まれた。カイルと二人、初めての指名依頼だ。",
+  "街に戻ったら、商人から「荷馬車の護衛」を頼まれた。カイルと二人、初めての指名依頼だ。",
   "護衛中、カイルが「腹が減った」とうるさい。お前の胃袋はブラックホールか。俺の干し肉を分ける。",
   "夜襲だ！ 盗賊団が現れたが、今の俺たちなら負けない。カイルと背中を合わせて戦うの、悪くないな。",
   "無事に護衛完了。商人のおっちゃんからボーナスを貰った。カイルと「これで美味いもん食おう」と堅い握手。",
@@ -92,9 +41,9 @@ const WARRIOR_DIARY = [
   "地下2階への階段を発見。空気がガラリと変わった。ここから先は、さらに危険なエリアらしい。",
   "罠を踏んだ！ 天井からタライ……じゃなくて、巨大な岩が降ってきた。間一髪で避けたけど寿命が縮んだ。",
   "奥の部屋で、光るチェストを発見！「宝箱だ！」って開けたらミミックだった。指を噛まれて大騒ぎ。",
-  "最深部。大きな扉の前にいる。中からものすごい威圧感が伝わってくる。カイル、行くぞ。剣を抜け。",
-  "ボス・巨大ゴーレムを撃破！ 剣が折れかけたけど、泥臭く勝った。俺たち, 生きてる！ 最高の気分だ！",
-  "街へ凱旋！ ギルドのみんなが拍手で迎えてくれた。いやー、それほどでも……って, 顔のニヤけが戻らない。",
+  "最深部。大きな扉の前にいる。中からものすごい威圧感が伝ってくる。カイル、行くぞ。剣を抜け。",
+  "ボス・巨大ゴーレムを撃破！ 剣が折れかけたけど、泥臭く勝った。俺たち、生きてる！ 最高の気分だ！",
+  "街へ凱旋！ ギルドのみんなが拍手で迎えてくれた。いやー、それほどでも……って、顔のニヤけが戻らない。",
   "ゴーレムの魔石が高く売れた！ 奮発してカイルと高級酒場へ。ジュースで乾杯だけど、気分は一流だ。",
   "折れかけた剣を新調。馴染みの鍛冶屋の親父に「良い戦い方をしたな」と褒められた。剣が軽いぜ。",
   "昨日買った新品の剣を自慢したくて、街をうろつく。誰か「いい剣だね」って話しかけてくれないかな。",
@@ -109,7 +58,7 @@ const WARRIOR_DIARY = [
   "おっさんの修行、理不尽すぎる！「滝に向かって叫べ」とか「薪を小指で割れ」とか、これ意味ある！？",
   "今日も筋肉痛でベッドから起き上がれない。全身がミシミシ言う。カイルが笑いながら湿布を貼ってくれた。",
   "おっさんに木刀で挑むも、触れることすらできずにデコピンで気絶させられた。あの人、本当に何者なんだ。",
-  "「お前の剣は力みすぎだ」とおっさん。力を抜いて、風を切るように……。あ、今, 少しだけ感覚を掴んだかも。",
+  "「お前の剣は力みすぎだ」とおっさん。力を抜いて、風を切るように……。あ、今、少しだけ感覚を掴んだかも。",
   "カイルと二人で、おっさんに挑む。二人係でもボコボコにされたけど、前より長く立っていられたぞ。",
   "おっさんが「もう教えることはねえ。酒持ってこい」と。ぶっきらぼうだけど、少し寂しいな。ありがとな。",
   "試験前日。カイルと二人で武器を磨く。明日はお互い別々の相手と戦う。絶対に二人で合格するんだ。",
@@ -124,7 +73,7 @@ const WARRIOR_DIARY = [
   "国境近くの森で、ウルフの群れと遭遇。動きが速い！ でも、落ち着いて対応すれば、今の俺たちの敵じゃない。",
   "ウルフのボスを撃破。怪我をした村の人を、カイルと肩を貸して村まで運ぶ。感謝されて、心が温かくなった。",
   "遠征終了。村長からお礼に貰った特産の干し肉、めちゃくちゃ美味い。よし、明日はいよいよ街へ帰るぞ！",
-  "街に戻ったら, ギルド長直々に指名。新しく見つかった「古代遺跡」の先行調査だって。おいおい、大出世か？",
+  "街に戻ったら、ギルド長直々に指名。新しく見つかった「古代遺跡」の先行調査だって。おいおい、大出世か？",
   "遺跡の入り口に到着。普通の洞窟と違って、壁に見たことない文字が光ってる。カイルが「美味しそう」とか言ってる。",
   "遺跡の中は魔法の罠だらけ。歩くたびに火が噴き出したり、床が凍ったり。前髪がちょっと焦げたぞ、危ねえ！",
   "カイルが変なレバーを引いたせいで、部屋の扉が閉まって大量の砂が降ってきた！ 埋まる、二人で必死に掘った。",
@@ -146,11 +95,11 @@ const WARRIOR_DIARY = [
   "二人で背中を合わせ、死に物狂いで魔物を撃退。泥だらけのまま「助けにくるのが遅い」「うるせえ」と、笑い合った。",
   "街への帰り道。お互い「悪かった」って、ボソボソ言い訳。でも、これで前よりずっと相棒になれた気がする。",
   "カイルが新しい大剣の使い方を俺に見せてくれた。大振りだけど、俺が隙を埋めれば最強の武器になる。",
-  "ギルドの受付嬢さんに「仲直りできて良かったですね」とニヤニヤされた。全部バレてた。恥ずかしすぎる。",
-  "二人での連携を再特訓。俺が盾で敵の体勢を崩し, カイルが叩き斬る。阿吽の呼吸って、こういうのを言うんだな。",
+  "ギルドの受付嬢さんに「仲直りできて良かったですね」とニヤニヤされた。全部バレてた。恥づかしすぎる。",
+  "二人での連携を再特訓。俺が盾で敵の体勢を崩し、カイルが叩き斬る。阿吽の呼吸って、こういうのを言うんだな。",
   "街の子供に「戦士のお兄ちゃんたち、カッコいい！」と言われた。今度は転ばずに、バシッとポーズを決めたぞ。",
   "地元の名士から「お屋敷の地下ネズミ退治」を頼まれた。ネズミって言っても、こっちのネズミは犬並みにデカい。",
-  "地下室でネズミと大乱闘。カイルが驚いて暴れた拍子に、名士の高級なツボを割った。……俺たちの報酬から天引きだ。",
+  "地下室でネズミと大乱闘. カイルが驚いて暴れた拍子に、名士の高級なツボを割った。……俺たちの報酬から天引きだ。",
   "ツボの弁償で一文無しに。二人で川原で魚を釣って焼いて食う。でも、カイルと食う魚は、なんだか美味い。",
   "ギルドに、これまでにないデカい羊皮紙の依頼書が張り出された。差出人は……なんと「王国の貴族」。",
   "100日目の節目。その貴族からの依頼は「お嬢様の護衛任務」。ついに俺たちも、上流社会にお呼ばれか！？"
@@ -162,8 +111,8 @@ const INITIAL_TASKS = [
   { id: 3, name: "プリント取込", reward: 50 }
 ];
 
-// --- 日本時間の「年月日」文字列を取得 ---
-const getLocalDateString = (): string => {
+// --- 日本時間（JST）の日付文字列を取得 ---
+const getLocalDateString = () => {
   const d = new Date();
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -171,23 +120,14 @@ const getLocalDateString = (): string => {
   return `${year}-${month}-${date}`;
 };
 
-// --- LocalStorageからデータをロードする関数 ---
-const loadDataFromLocalStorage = (): AppState => {
+// --- LocalStorageからロードする関数 ---
+const loadDataFromLocalStorage = () => {
   if (typeof window === 'undefined') {
-    return {
-      tasks: INITIAL_TASKS,
-      wallet: 0,
-      invest: 0,
-      exp: 0,
-      level: 1,
-      cumulativeDays: 1,
-      monthlyLogins: 1,
-      treasureTickets: 0,
-      lastLoginDate: getLocalDateString(),
-      completedTasksLog: [],
-      taskHistory: [],
-      todayEarnedMoney: 0,
-      todayEarnedExp: 0
+    return { 
+      tasks: INITIAL_TASKS, wallet: 0, invest: 0, exp: 0, level: 1, 
+      cumulativeDays: 1, monthlyLogins: 1, treasureTickets: 0, 
+      lastLoginDate: getLocalDateString(), completedTasksLog: [], taskHistory: [], 
+      todayEarnedMoney: 0, todayEarnedExp: 0, assetHistory: [] 
     };
   }
 
@@ -197,52 +137,70 @@ const loadDataFromLocalStorage = (): AppState => {
   if (saved) {
     try {
       const data = JSON.parse(saved);
-      // 💡前回のログイン日をロード。今日の日付で強制上書きしていた致命的なバグを完全に修正！
       const savedDate = data.lastLoginDate || todayStr;
       const isSameDay = (savedDate === todayStr);
 
+      const wallet = typeof data.wallet === 'number' ? data.wallet : 0;
+      const invest = typeof data.invest === 'number' ? data.invest : 0;
+
+      // 💡 既存データの救済・互換性維持
+      // 資産履歴（assetHistory）がない場合は初期値として現在の残高でスタートする履歴を自動生成
+      let assetHistory = Array.isArray(data.assetHistory) ? data.assetHistory : [];
+      if (assetHistory.length === 0) {
+        assetHistory = [{
+          id: Date.now(),
+          date: todayStr,
+          wallet: wallet,
+          invest: invest,
+          total: wallet + invest,
+          label: "冒険開始残高"
+        }];
+      }
+
       return {
         tasks: Array.isArray(data.tasks) ? data.tasks : INITIAL_TASKS,
-        wallet: typeof data.wallet === 'number' ? data.wallet : 0,
-        invest: typeof data.invest === 'number' ? data.invest : 0,
+        wallet: wallet,
+        invest: invest,
         exp: typeof data.exp === 'number' ? data.exp : 0,
         level: typeof data.level === 'number' ? data.level : 1,
         cumulativeDays: typeof data.cumulativeDays === 'number' ? data.cumulativeDays : 1,
         monthlyLogins: typeof data.monthlyLogins === 'number' ? data.monthlyLogins : 1,
         treasureTickets: typeof data.treasureTickets === 'number' ? data.treasureTickets : 0,
-        // 💡 過去の最終ログイン日を上書きせずロードし、日付が変化したことをuseEffectが検知できるようにします
-        lastLoginDate: savedDate,
+        lastLoginDate: todayStr,
         completedTasksLog: Array.isArray(data.completedTasksLog) ? data.completedTasksLog : [], 
         taskHistory: Array.isArray(data.taskHistory) ? data.taskHistory : [],
         todayEarnedMoney: isSameDay && typeof data.todayEarnedMoney === 'number' ? data.todayEarnedMoney : 0,
-        todayEarnedExp: isSameDay && typeof data.todayEarnedExp === 'number' ? data.todayEarnedExp : 0
+        todayEarnedExp: isSameDay && typeof data.todayEarnedExp === 'number' ? data.todayEarnedExp : 0,
+        assetHistory: assetHistory // 安全にデータをロード
       };
     } catch (e) {}
   }
-  return {
-    tasks: INITIAL_TASKS,
-    wallet: 0,
-    invest: 0,
-    exp: 0,
-    level: 1,
-    cumulativeDays: 1,
-    monthlyLogins: 1,
-    treasureTickets: 0,
-    lastLoginDate: todayStr,
-    completedTasksLog: [],
-    taskHistory: [],
-    todayEarnedMoney: 0,
-    todayEarnedExp: 0
+
+  // 初回起動時
+  const initialTotal = 0;
+  return { 
+    tasks: INITIAL_TASKS, wallet: 0, invest: 0, exp: 0, level: 1, 
+    cumulativeDays: 1, monthlyLogins: 1, treasureTickets: 0, 
+    lastLoginDate: todayStr, completedTasksLog: [], taskHistory: [], 
+    todayEarnedMoney: 0, todayEarnedExp: 0, 
+    assetHistory: [{
+      id: Date.now(),
+      date: todayStr,
+      wallet: 0,
+      invest: 0,
+      total: 0,
+      label: "冒険開始！"
+    }] 
   };
 };
 
-const saveDataToLocalStorage = (data: AppState): void => {
+const saveDataToLocalStorage = (data) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('warrior_rpg_save', JSON.stringify(data));
   }
 };
 
-const getWarriorRank = (level: number): RankInfo => {
+const getWarriorRank = (level) => {
   if (level <= 2) return { name: "Fランク 新米戦士", avatar: "🔰" };
   if (level <= 5) return { name: "Eランク 見習い戦士", avatar: "🧹" };
   if (level <= 9) return { name: "Dランク 駆け出し戦士", avatar: "🗡️" };
@@ -250,10 +208,10 @@ const getWarriorRank = (level: number): RankInfo => {
   if (level <= 19) return { name: "Bランク 精鋭戦士", avatar: "⚔️" };
   if (level <= 29) return { name: "Aランク 豪傑戦士", avatar: "🔥" };
   if (level <= 49) return { name: "Sランク 英雄戦士", avatar: "👑" };
-  return { name: "伝説 of 聖騎士", avatar: "🌟" };
+  return { name: "伝説の聖騎士", avatar: "🌟" };
 };
 
-const Avatar: React.FC<AvatarProps> = ({ avatar, size = "large" }) => {
+const Avatar = ({ avatar, size = "large" }) => {
   const width = size === "large" ? '80px' : '60px';
   const height = size === "large" ? '120px' : '90px';
   const fontSize = size === "large" ? '50px' : '40px';
@@ -265,28 +223,31 @@ const Avatar: React.FC<AvatarProps> = ({ avatar, size = "large" }) => {
 };
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<string>('home');
-  const [state, setState] = useState<AppState>(() => loadDataFromLocalStorage());
-  const [messages, setMessages] = useState<MessageItem[]>([]);
+  const [activeTab, setActiveTab] = useState('home');
+  const [state, setState] = useState(() => loadDataFromLocalStorage());
+  const [messages, setMessages] = useState([]);
   
-  const [parentUnlocked, setParentUnlocked] = useState<boolean>(false);
-  const [pinInput, setPinInput] = useState<string>('');
-  const [pinError, setPinError] = useState<string>('');
-  const [investWithdrawAmount, setInvestWithdrawAmount] = useState<string>('');
-  const [investDepositAmount, setInvestDepositAmount] = useState<string>('');
-  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
-  const [editingTasks, setEditingTasks] = useState<Task[]>([]);
-  const [newTaskName, setNewTaskName] = useState<string>('');
-  const [newTaskReward, setNewTaskReward] = useState<number>(50);
+  const [parentUnlocked, setParentUnlocked] = useState(false);
+  const [pinInput, setPinInput] = useState('');
+  const [pinError, setPinError] = useState('');
+  const [investWithdrawAmount, setInvestWithdrawAmount] = useState('');
+  const [investDepositAmount, setInvestDepositAmount] = useState('');
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingTasks, setEditingTasks] = useState([]);
+  const [newTaskName, setNewTaskName] = useState('');
+  const [newTaskReward, setNewTaskReward] = useState(50);
   
-  const [showChestGame, setShowChestGame] = useState<boolean>(false);
-  const [chestStates, setChestStates] = useState<string[]>(['closed', 'closed', 'closed']);
-  const [chestResult, setChestResult] = useState<ChestResult | null>(null);
-  const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  const [showLevelUpPopup, setShowLevelUpPopup] = useState<boolean>(false);
-  const [levelUpData, setLevelUpData] = useState<{ old: number; next: number }>({ old: 1, next: 2 });
+  const [showChestGame, setShowChestGame] = useState(false);
+  const [chestStates, setChestStates] = useState(['closed', 'closed', 'closed']);
+  const [chestResult, setChestResult] = useState(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [showLevelUpPopup, setShowLevelUpPopup] = useState(false);
+  const [levelUpData, setLevelUpData] = useState({ old: 1, next: 2 });
 
-  const messageIdRef = useRef<number>(0);
+  // グラフ用ホバー情報
+  const [hoveredPoint, setHoveredPoint] = useState(null);
+
+  const messageIdRef = useRef(0);
 
   // --- Tailwind CSS 自動読み込み処理 ---
   useEffect(() => {
@@ -298,21 +259,37 @@ export default function App() {
     }
   }, []);
 
-  // --- 1日1回の日付更新＆獲得上限カウンターのリセット ---
+  // --- 💡お財布変動時に資産履歴（assetHistory）を蓄積するヘルパー関数 ---
+  const recordAssetHistory = (currentState, nextWallet, nextInvest, label) => {
+    const todayStr = getLocalDateString();
+    const newRecord = {
+      id: Date.now() + Math.random(),
+      date: todayStr,
+      wallet: nextWallet,
+      invest: nextInvest,
+      total: nextWallet + nextInvest,
+      label: label
+    };
+    // 履歴は最大60件まで保持し、それ以前は古い順に切り捨て（グラフ描画時の負荷軽減）
+    return [...(currentState.assetHistory || []), newRecord].slice(-60);
+  };
+
+  // --- 1日1回の日付更新＆獲得上限カウンターのリセット & 毎日の利子付与の自動記録 ---
   useEffect(() => {
     const todayStr = getLocalDateString();
     const current = loadDataFromLocalStorage();
 
-    // 💡ロードされた「過去の日付」と「今日の日付」を比較。これで日付の跨ぎを正確に検知！
     if (current.lastLoginDate !== todayStr) {
       const nextCumulative = current.cumulativeDays + 1;
+      let nextMonthly = current.monthlyLogins;
       let nextInvest = current.invest;
       let nextTreasureTickets = current.treasureTickets;
-      let newLogs: HistoryLog[] = [];
+      let newLogs = [];
 
       const now = new Date();
       const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} 00:00`;
 
+      // 1. ログイン記念チケット付与
       if (nextCumulative % 5 === 0) {
         nextTreasureTickets += 1;
         newLogs.push({ id: Date.now() + Math.random(), time: timeStr, text: `通算ログイン${nextCumulative}日特典「宝箱チケット」獲得`, change: `+1枚` });
@@ -321,15 +298,35 @@ export default function App() {
         setTimeout(() => addMessage(`⚔️ 冒険日誌 ${nextCumulative}日目の朝が来た！`), 800);
       }
 
-      const updated: AppState = {
+      // 2. 投資口座の月利1%（毎日 日割り 1/30 として利子を加算、または日次ボーナス）
+      // わかりやすさ優先のため、日付が変わるたびに投資額が100円以上あれば、投資残高の1%（最低1円〜）を利子として自動付与
+      let interestEarned = 0;
+      if (nextInvest >= 100) {
+        interestEarned = Math.max(1, Math.floor(nextInvest * 0.01));
+        nextInvest += interestEarned;
+        newLogs.push({
+          id: Date.now() + Math.random(),
+          time: timeStr,
+          text: `投資口座のデイリー利子（1%）獲得`,
+          change: `+${interestEarned}円`
+        });
+        setTimeout(() => addMessage(`📈 投資口座の利子で ${interestEarned}円 増えた！`), 1600);
+      }
+
+      // 資産履歴の記録
+      const nextAssetHistory = recordAssetHistory(current, current.wallet, nextInvest, interestEarned > 0 ? "利子獲得" : "新しい1日の始まり");
+
+      const updated = {
         ...current,
         cumulativeDays: nextCumulative,
+        monthlyLogins: nextMonthly,
         invest: nextInvest,
         treasureTickets: nextTreasureTickets,
-        lastLoginDate: todayStr, // 本日の日付を次のログイン比較用に新しく上書き保存
+        lastLoginDate: todayStr,
         completedTasksLog: [], 
-        todayEarnedMoney: 0, 
-        todayEarnedExp: 0,   
+        todayEarnedMoney: 0,
+        todayEarnedExp: 0,
+        assetHistory: nextAssetHistory,
         taskHistory: [...newLogs, ...current.taskHistory].slice(0, 50)
       };
 
@@ -338,7 +335,7 @@ export default function App() {
     }
   }, []);
 
-  const addMessage = (text: string): void => {
+  const addMessage = (text) => {
     const id = `${Date.now()}-${messageIdRef.current++}`;
     setMessages(prev => [...prev, { id, text }]);
     setTimeout(() => setMessages(prev => prev.filter(m => m.id !== id)), 4000);
@@ -346,7 +343,7 @@ export default function App() {
 
   const rankInfo = getWarriorRank(state.level);
 
-  const addMoneyAtState = (currentData: AppState, amount: number, overflowLogs: HistoryLog[]) => {
+  const addMoneyAtState = (currentData, amount, overflowLogs) => {
     let nextWallet = currentData.wallet + amount;
     let nextInvest = currentData.invest;
     if (nextWallet > 3000) {
@@ -365,10 +362,8 @@ export default function App() {
     return { wallet: nextWallet, invest: nextInvest };
   };
 
-  // ==========================================
-  // 💡 獲得上限（1日最大200円、経験値40EXP）システム
-  // ==========================================
-  const completeTask = (taskId: number): void => {
+  // --- クエスト（タスク）完了処理 ---
+  const completeTask = (taskId) => {
     const todayStr = getLocalDateString();
     const current = loadDataFromLocalStorage();
     
@@ -389,7 +384,7 @@ export default function App() {
       addMessage(`⚠️ 本日の上限（200円 / 40EXP）に達しています！`);
       
       const updatedCompletedLog = [...current.completedTasksLog, completedKey];
-      const updated: AppState = {
+      const updated = {
         ...current,
         completedTasksLog: updatedCompletedLog
       };
@@ -414,7 +409,7 @@ export default function App() {
 
     const updatedCompletedLog = [...current.completedTasksLog, completedKey];
 
-    let overflowLogs: HistoryLog[] = [];
+    let overflowLogs = [];
     let moneyState = addMoneyAtState(current, moneyToAdd, overflowLogs);
     let finalWallet = moneyState.wallet;
     let finalInvest = moneyState.invest;
@@ -428,7 +423,7 @@ export default function App() {
     const now = new Date();
     const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     
-    let newLogs: HistoryLog[] = [];
+    let newLogs = [];
     if (moneyToAdd > 0) {
       newLogs.push({ id: Date.now() + Math.random(), time: timeStr, text: `クエスト「${targetTask.name}」完了`, change: `+${moneyToAdd}円` });
     } else {
@@ -448,15 +443,19 @@ export default function App() {
       addMessage(`[クエスト完了] ${targetTask.name}（本日上限に達しています）`);
     }
 
-    const updated: AppState = {
+    // 💡 資産履歴（assetHistory）に今回の変動を記録
+    const nextAssetHistory = recordAssetHistory(current, finalWallet, finalInvest, `クエスト「${targetTask.name}」`);
+
+    const updated = {
       ...current,
       wallet: finalWallet,
       invest: finalInvest,
       exp: nextExp,
       level: nextLevel,
       completedTasksLog: updatedCompletedLog,
-      todayEarnedMoney: currentEarnedMoney + moneyToAdd, 
-      todayEarnedExp: currentEarnedExp + expToAdd,     
+      todayEarnedMoney: currentEarnedMoney + moneyToAdd,
+      todayEarnedExp: currentEarnedExp + expToAdd,
+      assetHistory: nextAssetHistory,
       taskHistory: [...newLogs, ...current.taskHistory].slice(0, 50)
     };
 
@@ -464,14 +463,15 @@ export default function App() {
     setState(updated);
   };
 
-  const startChestDraw = (index: number): void => {
+  // --- 宝箱ゲーム判定 ---
+  const startChestDraw = (index) => {
     if (isDrawing || state.treasureTickets <= 0) return;
     setIsDrawing(true);
 
     const current = loadDataFromLocalStorage();
     const nextTickets = Math.max(0, current.treasureTickets - 1);
     
-    const intermediateData: AppState = { ...current, treasureTickets: nextTickets };
+    const intermediateData = { ...current, treasureTickets: nextTickets };
     saveDataToLocalStorage(intermediateData);
     setState(intermediateData);
 
@@ -500,20 +500,24 @@ export default function App() {
       setChestResult({ amount: winAmount, text: textResult, index });
       
       const postDrawCurrent = loadDataFromLocalStorage();
-      let overflowLogs: HistoryLog[] = [];
+      let overflowLogs = [];
       let moneyState = addMoneyAtState(postDrawCurrent, winAmount, overflowLogs);
       const now = new Date();
       const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-      let historyLogs: HistoryLog[] = [
+      let historyLogs = [
         { id: Date.now() + Math.random(), time: timeStr, text: `宝箱を開けた (${textResult})`, change: winAmount > 0 ? `+${winAmount}円` : "0円" },
         ...overflowLogs
       ];
 
-      const updated: AppState = {
+      // 💡 資産履歴（assetHistory）に記録
+      const nextAssetHistory = recordAssetHistory(postDrawCurrent, moneyState.wallet, moneyState.invest, `宝箱開封: ${winAmount}円`);
+
+      const updated = {
         ...postDrawCurrent,
         wallet: moneyState.wallet,
         invest: moneyState.invest,
+        assetHistory: nextAssetHistory,
         taskHistory: [...historyLogs, ...postDrawCurrent.taskHistory].slice(0, 50)
       };
 
@@ -523,11 +527,119 @@ export default function App() {
     }, 1500);
   };
 
-  const resetChestGame = (): void => {
+  const resetChestGame = () => {
     setChestStates(['closed', 'closed', 'closed']);
     setChestResult(null);
     setIsDrawing(false);
     setShowChestGame(false);
+  };
+
+  // ==========================================
+  // 💡 【新機能】自作SVG折れ線グラフコンポーネント
+  // ==========================================
+  const renderAssetChart = () => {
+    const history = state.assetHistory || [];
+    if (history.length < 2) {
+      return (
+        <div className="h-40 flex items-center justify-center text-xs text-slate-400 font-bold border-2 border-dashed border-slate-700 rounded-lg">
+          グラフデータがまだ足りないぞ！冒険を進めよう！
+        </div>
+      );
+    }
+
+    const svgWidth = 500;
+    const svgHeight = 180;
+    const padding = 20;
+
+    const values = history.map(h => h.total);
+    const maxVal = Math.max(...values, 100); // 最小上限を100円
+    const minVal = Math.min(...values, 0);
+
+    const range = maxVal - minVal;
+    const pointsCount = history.length;
+
+    // 各座標を計算
+    const points = history.map((record, i) => {
+      const x = padding + (i / (pointsCount - 1)) * (svgWidth - padding * 2);
+      // y軸は上が0なので反転
+      const y = svgHeight - padding - ((record.total - minVal) / (range || 1)) * (svgHeight - padding * 2);
+      return { x, y, ...record };
+    });
+
+    // 折れ線のパス(d)を作成
+    const pathD = points.reduce((path, p, i) => {
+      return i === 0 ? `M ${p.x} ${p.y}` : `${path} L ${p.x} ${p.y}`;
+    }, "");
+
+    // 塗りつぶしのパス（グラデーション用）
+    const areaD = `${pathD} L ${points[points.length - 1].x} ${svgHeight - padding} L ${points[0].x} ${svgHeight - padding} Z`;
+
+    return (
+      <div className="relative bg-slate-950 p-4 border-4 border-slate-800 rounded-xl shadow-inner">
+        <div className="flex justify-between items-center mb-1 text-[11px] text-yellow-500 font-bold">
+          <span>📈 資産合計の推移</span>
+          <span className="text-slate-400">期間: 直近{pointsCount}回の変動</span>
+        </div>
+        
+        <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} className="w-full h-full overflow-visible">
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#eab308" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#eab308" stopOpacity="0.0" />
+            </linearGradient>
+          </defs>
+          
+          {/* グリッド（水平線） */}
+          {[0.25, 0.5, 0.75].map((ratio, idx) => {
+            const y = padding + ratio * (svgHeight - padding * 2);
+            const val = Math.floor(maxVal - ratio * range);
+            return (
+              <g key={idx}>
+                <line x1={padding} y1={y} x2={svgWidth - padding} y2={y} stroke="#1e293b" strokeWidth="1" strokeDasharray="4 4" />
+                <text x={padding + 5} y={y - 4} fill="#475569" fontSize="8" fontWeight="bold">{val}円</text>
+              </g>
+            );
+          })}
+
+          {/* 塗りつぶしグラデーション */}
+          <path d={areaD} fill="url(#chartGrad)" />
+
+          {/* メインの折れ線 */}
+          <path d={pathD} fill="none" stroke="#eab308" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+
+          {/* プロットドット */}
+          {points.map((p, i) => (
+            <circle
+              key={i}
+              cx={p.x}
+              cy={p.y}
+              r={hoveredPoint?.id === p.id ? "6" : "3.5"}
+              fill={hoveredPoint?.id === p.id ? "#ef4444" : "#eab308"}
+              stroke="#0f172a"
+              strokeWidth="1.5"
+              className="cursor-pointer transition-all duration-100"
+              onMouseEnter={() => setHoveredPoint(p)}
+              onMouseLeave={() => setHoveredPoint(null)}
+              onTouchStart={() => setHoveredPoint(p)}
+            />
+          ))}
+        </svg>
+
+        {/* ホバーした時のポップアップ情報 */}
+        <div className="h-10 mt-2 flex items-center justify-center bg-slate-900/60 border border-slate-800 rounded-lg text-center px-2">
+          {hoveredPoint ? (
+            <div className="text-[11px] font-bold text-slate-200">
+              📅 <span className="text-yellow-400">{hoveredPoint.date}</span> : 
+              <span className="text-emerald-400 ml-1.5">{hoveredPoint.label}</span>
+              <span className="text-white ml-2">合計: <b className="text-orange-500 font-extrabold">{hoveredPoint.total}円</b></span>
+              <span className="text-[9px] text-slate-500 ml-1.5">(財布:{hoveredPoint.wallet}円 / 投資:{hoveredPoint.invest}円)</span>
+            </div>
+          ) : (
+            <span className="text-[10px] text-slate-500 font-bold">グラフの丸ぽち（●）に触ると詳しい記録が見れるぞ！</span>
+          )}
+        </div>
+      </div>
+    );
   };
 
   const renderHome = () => {
@@ -538,32 +650,30 @@ export default function App() {
 
     return (
       <div className="flex flex-col h-full overflow-y-auto pb-24 bg-gray-100 text-gray-800">
-        
-        {/* 💡 ステータス・冒険日誌エリア：縦幅をグッと拡大（最小高 165px ＆読みやすいフォントバランス） */}
         <div className="bg-slate-900 text-white p-4 pixel-border m-4 shadow-xl border-t-4 border-t-blue-500 relative overflow-hidden">
           <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
           <div className="flex items-start gap-4 relative z-10">
             <div className="flex flex-col items-center w-[90px] flex-shrink-0">
               <Avatar avatar={rankInfo.avatar} size="large" />
-              <div className="text-sm font-bold mt-2 text-center w-full bg-slate-800 rounded pixel-border border-slate-700 py-1.5 shadow-inner text-yellow-400">
+              <div className="text-sm font-bold mt-2 text-center w-full bg-slate-800 rounded pixel-border border-slate-700 py-1 shadow-inner text-yellow-400">
                 Lv.{state.level}
               </div>
             </div>
-            <div className="flex-1 flex flex-col justify-between min-h-[165px]">
-              <div className="flex justify-between items-start border-b border-slate-800 pb-2">
+            <div className="flex-1 flex flex-col justify-between min-h-[140px]">
+              <div className="flex justify-between items-start border-b border-slate-800 pb-1.5">
                 <div className="font-bold text-lg text-emerald-400 tracking-wide">{rankInfo.name}</div>
-                <div className="text-xs text-blue-300 font-bold self-center bg-blue-950/80 px-2 py-1 rounded pixel-border border-blue-900">
+                <div className="text-xs text-blue-300 font-bold self-center bg-blue-950/80 px-2 py-0.5 rounded pixel-border border-blue-900">
                   通算: {state.cumulativeDays}日目
                 </div>
               </div>
-              <div className="bg-black/60 text-gray-200 p-3 pixel-border border-slate-800 text-[13px] flex flex-col relative mt-2 flex-1 shadow-inner leading-relaxed">
+              <div className="bg-black/60 text-gray-200 p-2.5 pixel-border border-slate-800 text-[12px] flex flex-col relative mt-2 flex-1 shadow-inner leading-relaxed">
                 <div className="absolute -top-2 left-2 bg-slate-800 px-1.5 text-[9px] text-yellow-500 font-bold border border-slate-700 rounded uppercase tracking-wider">
                   冒険日誌
                 </div>
-                <p className="mt-1 font-sans font-medium">{todayDiaryText}</p>
+                <p className="mt-1 font-sans">{todayDiaryText}</p>
               </div>
-              <div className="mt-3">
-                <div className="flex justify-between text-[10px] text-gray-400 font-bold mb-1">
+              <div className="mt-2.5">
+                <div className="flex justify-between text-[10px] text-gray-400 font-bold mb-0.5">
                   <span>経験値</span>
                   <span>{currentProgressExp} / 100 EXP</span>
                 </div>
@@ -585,6 +695,14 @@ export default function App() {
         )}
 
         <div className="px-4 mb-4 space-y-2">
+          <div className="bg-amber-50 border-2 border-amber-300 p-3 rounded shadow-sm text-xs font-bold flex justify-between items-center text-amber-900">
+            <div>🛡️ 本日の獲得制限カウンター</div>
+            <div className="flex gap-4">
+              <span>お小遣い: <b className="text-orange-600">{state.todayEarnedMoney}</b> / 200円</span>
+              <span>経験値: <b className="text-blue-600">{state.todayEarnedExp}</b> / 40 EXP</span>
+            </div>
+          </div>
+
           <div className="flex gap-2">
             <div className="flex-1 bg-white p-4 pixel-border shadow-md flex items-center gap-2">
               <Wallet className="text-orange-500 w-8 h-8" />
@@ -610,21 +728,20 @@ export default function App() {
               <Edit3 size={16} /> クエスト編集
             </button>
           </div>
-          <div className="space-y-3 mt-2">
+          <div className="space-y-4 mt-2">
             {state.tasks.map(task => {
               const isDone = state.completedTasksLog.includes(`${todayStr}_${task.name}`);
               return (
-                /* 💡 クエストボタン：小さくスリムに調整しつつ、快適な押しやすさを維持 */
-                <button key={task.id} onClick={() => completeTask(task.id)} disabled={isDone} className={`w-full text-left p-4 pixel-border shadow-md flex items-center justify-between transition-all min-h-[76px] ${isDone ? 'bg-gray-200 opacity-60 cursor-not-allowed font-normal' : 'bg-white active:bg-blue-50 hover:bg-gray-50'}`}>
-                  <div className="flex items-center gap-3.5">
-                    <div className={`w-10 h-10 flex items-center justify-center pixel-border shadow-inner flex-shrink-0 ${isDone ? 'bg-green-500 border-green-700' : 'bg-white'}`}>
-                      {isDone && <UserCheck size={24} className="text-white drop-shadow-md" />}
+                <button key={task.id} onClick={() => completeTask(task.id)} disabled={isDone} className={`w-full text-left p-6 pixel-border shadow-md flex items-center justify-between transition-all min-h-[96px] ${isDone ? 'bg-gray-200 opacity-60 cursor-not-allowed font-normal' : 'bg-white active:bg-blue-50 hover:bg-gray-50'}`}>
+                  <div className="flex items-center gap-5">
+                    <div className={`w-12 h-12 flex items-center justify-center pixel-border shadow-inner ${isDone ? 'bg-green-500 border-green-700' : 'bg-white'}`}>
+                      {isDone && <UserCheck size={32} className="text-white drop-shadow-md" />}
                     </div>
-                    <span className={`text-lg ${isDone ? 'line-through text-gray-500 font-normal' : 'font-bold text-gray-800'}`}>{task.name}</span>
+                    <span className={`text-xl ${isDone ? 'line-through text-gray-500 font-normal' : 'font-bold text-gray-800'}`}>{task.name}</span>
                   </div>
-                  <div className="text-right flex flex-col justify-center flex-shrink-0">
-                    <div className="text-xl font-black text-orange-600">{task.reward}円</div>
-                    <div className="text-[10px] text-blue-600 font-bold mt-0.5">+10 EXP</div>
+                  <div className="text-right flex flex-col justify-center">
+                    <div className="text-2xl font-black text-orange-600">{task.reward}円</div>
+                    <div className="text-xs text-blue-600 font-bold mt-1">+10 EXP</div>
                   </div>
                 </button>
               );
@@ -635,16 +752,94 @@ export default function App() {
     );
   };
 
+  // ==========================================
+  // 💡 【新機能】おこづかい通帳＆グラフタブの描画
+  // ==========================================
+  const renderBankBook = () => {
+    const totalAssets = state.wallet + state.invest;
+
+    return (
+      <div className="flex flex-col h-full overflow-y-auto pb-24 bg-slate-900 text-slate-100 p-4">
+        <h2 className="text-2xl font-bold mb-4 border-b-2 border-slate-800 pb-2 flex items-center gap-2 text-yellow-500">
+          <BookOpen size={24} /> ギルドのおこづかい通帳
+        </h2>
+
+        {/* 資産サマリーカード */}
+        <div className="bg-gradient-to-r from-slate-950 to-slate-900 border-4 border-yellow-500/80 p-5 rounded-2xl shadow-2xl mb-6 relative overflow-hidden">
+          <div className="absolute right-4 top-2 text-6xl opacity-10 font-black text-yellow-500 select-none">BANK</div>
+          <div className="text-xs font-bold text-yellow-400 uppercase tracking-widest mb-1">Total Assets / 総資産</div>
+          <div className="text-3xl font-black text-yellow-500 tracking-wide mb-4">{totalAssets} <span className="text-lg">円</span></div>
+          
+          <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-800">
+            <div>
+              <div className="text-[10px] text-slate-400 font-bold">お財布残高</div>
+              <div className="text-lg font-bold text-slate-200">{state.wallet} 円</div>
+            </div>
+            <div>
+              <div className="text-[10px] text-slate-400 font-bold">利殖口座（月利1%）</div>
+              <div className="text-lg font-bold text-blue-400">{state.invest} 円</div>
+            </div>
+          </div>
+        </div>
+
+        {/* 資産推移グラフ */}
+        <div className="mb-6">
+          <h3 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5 uppercase">
+            <BarChart2 size={16} className="text-yellow-500" /> 資産の成長曲線グラフ
+          </h3>
+          {renderAssetChart()}
+        </div>
+
+        {/* 全おこづかい取引履歴（通帳デザイン） */}
+        <div>
+          <h3 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5 uppercase">
+            <History size={16} className="text-yellow-500" /> 取引明細（通帳記録）
+          </h3>
+          <div className="border-4 border-slate-800 rounded-xl overflow-hidden shadow-2xl">
+            {/* 通帳のヘッダー */}
+            <div className="grid grid-cols-12 gap-1 bg-slate-950 p-2.5 text-[10px] font-black text-slate-400 border-b-2 border-slate-800 text-center">
+              <span className="col-span-3 text-left">取引日時</span>
+              <span className="col-span-6 text-left">お取引内容</span>
+              <span className="col-span-3 text-right">差引残高</span>
+            </div>
+            
+            {/* 通帳明細 */}
+            <div className="divide-y-2 divide-slate-950 max-h-80 overflow-y-auto bg-slate-900/90 font-mono text-xs">
+              {state.taskHistory.length > 0 ? (
+                state.taskHistory.map((log) => (
+                  <div key={log.id} className="grid grid-cols-12 gap-1 p-3 items-center hover:bg-slate-850/50">
+                    <span className="col-span-3 text-[10px] text-slate-400 font-bold text-left">{log.time}</span>
+                    <div className="col-span-6 flex flex-col text-left">
+                      <span className="font-bold text-slate-200">{log.text}</span>
+                      <span className="text-[9px] text-slate-500">種別: {log.text.includes('リセット') ? '精算' : log.text.includes('利子') ? '運用利益' : log.text.includes('宝箱') ? '宝箱ボーナス' : 'クエスト成果'}</span>
+                    </div>
+                    <div className="col-span-3 text-right flex flex-col items-end">
+                      <span className={`font-black ${log.change.includes('-') ? 'text-red-400' : 'text-emerald-400'}`}>{log.change}</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-8 text-center text-slate-500 font-bold bg-slate-900">
+                  まだ通帳に記帳がありません。<br />クエストに挑戦してお金を稼ごう！
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderParent = () => {
     if (!parentUnlocked) {
       return (
-        <div className="flex flex-col items-center justify-center h-full p-6 text-center bg-gray-100">
-          <Lock size={64} className="text-gray-400 mb-6 drop-shadow-md" />
-          <h2 className="text-2xl font-bold mb-3 text-gray-800">保護者管理システム</h2>
-          <p className="text-base text-gray-600 mb-8">ここから先は親専用の画面です。</p>
-          <input type="password" placeholder="PINコードを入力" className="p-4 text-center text-2xl tracking-widest pixel-border w-64 mb-3 focus:outline-none" value={pinInput} onChange={(e) => { setPinInput(e.target.value); setPinError(''); }} />
+        <div className="flex flex-col items-center justify-center h-full p-6 text-center bg-gray-100 bg-slate-900 text-slate-100">
+          <Lock size={64} className="text-gray-400 mb-6 drop-shadow-md text-red-500" />
+          <h2 className="text-2xl font-bold mb-3 text-slate-100">保護者管理システム</h2>
+          <p className="text-base text-slate-400 mb-8">ここから先は親専用の画面です。</p>
+          <input type="password" placeholder="PINコードを入力" className="p-4 text-center text-2xl tracking-widest pixel-border bg-slate-950 border-slate-800 text-yellow-400 w-64 mb-3 focus:outline-none" value={pinInput} onChange={(e) => { setPinInput(e.target.value); setPinError(''); }} />
           {pinError && <p className="text-red-500 text-base font-bold mb-4">{pinError}</p>}
-          <button onClick={() => { if (pinInput === '5454') { setParentUnlocked(true); setPinInput(''); } else { setPinError('パスワードが違います'); } }} className="bg-gray-800 text-white px-10 py-4 pixel-border font-bold text-lg w-64 shadow-md">ロック解除</button>
+          <button onClick={() => { if (pinInput === '5454') { setParentUnlocked(true); setPinInput(''); } else { setPinError('パスワードが違います'); } }} className="bg-slate-850 hover:bg-slate-800 text-white px-10 py-4 pixel-border font-bold text-lg w-64 shadow-md">ロック解除</button>
         </div>
       );
     }
@@ -654,18 +849,45 @@ export default function App() {
           <h2 className="text-xl font-bold flex items-center gap-2"><Lock size={20} className="text-red-600" /> 保護者メニュー</h2>
           <button onClick={() => setParentUnlocked(false)} className="text-sm bg-gray-200 px-3 py-1 pixel-border font-bold shadow-sm">ロックする</button>
         </div>
+        
+        {/* お小遣いの現金精算 */}
         <div className="bg-white p-5 pixel-border mb-6 shadow-md border-t-4 border-t-orange-500">
           <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><Wallet size={20}/> お小遣いの現金精算</h3>
           <div className="flex justify-between items-center bg-gray-100 p-4 mb-4 rounded shadow-inner">
             <span className="font-bold">現在の財布残高:</span>
             <span className="text-2xl font-bold text-orange-600">{state.wallet} 円</span>
           </div>
-          <button onClick={() => { const refund = state.wallet; setState(prev => { const now = new Date(); const updated = { ...prev, wallet: 0, taskHistory: [{ id: Date.now() + Math.random(), time: `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`, text: `お財布リセット (精算完了)`, change: `-${refund}円` }, ...prev.taskHistory].slice(0, 50) }; saveDataToLocalStorage(updated); return updated; }); addMessage(`財布から ${refund}円 を出金しリセットしました。`); }} disabled={state.wallet === 0} className={`w-full py-4 pixel-border font-bold text-lg shadow-sm ${state.wallet > 0 ? 'bg-orange-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+          <button onClick={() => { 
+            const refund = state.wallet; 
+            setState(prev => { 
+              const now = new Date(); 
+              const nextWallet = 0;
+              const nextInvest = prev.invest;
+
+              // 💡 お小遣い精算時の資産履歴を記録
+              const nextAssetHistory = recordAssetHistory(prev, nextWallet, nextInvest, `現金精算 (-${refund}円)`);
+
+              const updated = { 
+                ...prev, 
+                wallet: nextWallet, 
+                assetHistory: nextAssetHistory,
+                taskHistory: [{ 
+                  id: Date.now() + Math.random(), 
+                  time: `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`, 
+                  text: `お財布リセット (現金精算完了)`, 
+                  change: `-${refund}円` 
+                }, ...prev.taskHistory].slice(0, 50) 
+              }; 
+              saveDataToLocalStorage(updated); 
+              return updated; 
+            }); 
+            addMessage(`財布から ${refund}円 を出金しリセットしました。`); 
+          }} disabled={state.wallet === 0} className={`w-full py-4 pixel-border font-bold text-lg shadow-sm ${state.wallet > 0 ? 'bg-orange-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
             {state.wallet}円 を支払ってリセット
           </button>
         </div>
 
-        {/* 親からの自由入金（上限メーターに干渉せずいつでも追加可能） */}
+        {/* 投資口座の管理 */}
         <div className="bg-white p-5 pixel-border mb-6 shadow-md border-t-4 border-t-blue-500">
           <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><TrendingUp size={20}/> 投資口座の管理</h3>
           <div className="flex justify-between items-center bg-gray-100 p-4 mb-5 rounded shadow-inner">
@@ -675,34 +897,77 @@ export default function App() {
           <div className="space-y-4">
             <div className="flex gap-2">
               <input type="number" placeholder="出金額" className="flex-1 p-3 pixel-border text-right text-lg shadow-inner" value={investWithdrawAmount} onChange={e => setInvestWithdrawAmount(e.target.value)} />
-              <button onClick={() => { const amt = parseInt(investWithdrawAmount, 10); if (amt > 0 && amt <= state.invest) { setState(prev => { const now = new Date(); const updated = { ...prev, invest: prev.invest - amt, taskHistory: [{ id: Date.now() + Math.random(), time: `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`, text: `投資口座から引き出し`, change: `-${amt}円` }, ...prev.taskHistory].slice(0, 50) }; saveDataToLocalStorage(updated); return updated; }); addMessage(`投資口座から ${amt}円 を引き出しました。`); setInvestWithdrawAmount(''); } else { addMessage("無効な金額です"); } }} className="bg-gray-800 text-white px-5 py-3 pixel-border font-bold">引き出す</button>
+              <button onClick={() => { 
+                const amt = parseInt(investWithdrawAmount, 10); 
+                const current = loadDataFromLocalStorage(); 
+                if (amt > 0 && amt <= state.invest) { 
+                  setState(prev => { 
+                    const now = new Date(); 
+                    const nextWallet = prev.wallet;
+                    const nextInvest = prev.invest - amt;
+
+                    // 💡 出金時の資産履歴を記録
+                    const nextAssetHistory = recordAssetHistory(prev, nextWallet, nextInvest, `親による投資口座から引き出し (-${amt}円)`);
+
+                    const updated = { 
+                      ...prev, 
+                      invest: nextInvest, 
+                      assetHistory: nextAssetHistory,
+                      taskHistory: [{ 
+                        id: Date.now() + Math.random(), 
+                        time: `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`, 
+                        text: `投資口座から手動引き出し`, 
+                        change: `-${amt}円` 
+                      }, ...prev.taskHistory].slice(0, 50) 
+                    }; 
+                    saveDataToLocalStorage(updated); 
+                    return updated; 
+                  }); 
+                  addMessage(`投資口座から ${amt}円 を引き出しました。`); 
+                  setInvestWithdrawAmount(''); 
+                } else { 
+                  addMessage("無効な金額です"); 
+                } 
+              }} className="bg-gray-800 text-white px-5 py-3 pixel-border font-bold">引き出す</button>
             </div>
             <div className="flex gap-2">
               <input type="number" placeholder="入金額" className="flex-1 p-3 pixel-border text-right text-lg shadow-inner" value={investDepositAmount} onChange={e => setInvestDepositAmount(e.target.value)} />
-              <button onClick={() => { const amt = parseInt(investDepositAmount, 10); if (amt > 0) { setState(prev => { const now = new Date(); const updated = { ...prev, invest: prev.invest + amt, taskHistory: [{ id: Date.now() + Math.random(), time: `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`, text: `投資口座へ手動入金`, change: `+${amt}円` }, ...prev.taskHistory].slice(0, 50) }; saveDataToLocalStorage(updated); return updated; }); addMessage(`投資口座に ${amt}円 を入金しました。`); setInvestDepositAmount(''); } else { addMessage("正しい金額を入力してください"); } }} className="bg-blue-600 text-white px-5 py-3 pixel-border font-bold">入金する</button>
+              <button onClick={() => { 
+                const amt = parseInt(investDepositAmount, 10); 
+                if (amt > 0) { 
+                  setState(prev => { 
+                    const now = new Date(); 
+                    const nextWallet = prev.wallet;
+                    const nextInvest = prev.invest + amt;
+
+                    // 💡 入金時の資産履歴を記録
+                    const nextAssetHistory = recordAssetHistory(prev, nextWallet, nextInvest, `親による投資口座へ手動入金 (+${amt}円)`);
+
+                    const updated = { 
+                      ...prev, 
+                      invest: nextInvest, 
+                      assetHistory: nextAssetHistory,
+                      taskHistory: [{ 
+                        id: Date.now() + Math.random(), 
+                        time: `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`, 
+                        text: `投資口座へ手動入金`, 
+                        change: `+${amt}円` 
+                      }, ...prev.taskHistory].slice(0, 50) 
+                    }; 
+                    saveDataToLocalStorage(updated); 
+                    return updated; 
+                  }); 
+                  addMessage(`投資口座に ${amt}円 を入金しました。`); 
+                  setInvestDepositAmount(''); 
+                } else { 
+                  addMessage("正しい金額を入力してください"); 
+                } 
+              }} className="bg-blue-600 text-white px-5 py-3 pixel-border font-bold">入金する</button>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-5 pixel-border mb-6 shadow-md border-t-4 border-t-slate-700">
-          <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><History size={20}/> クエスト実施履歴ログ（直近1ヶ月）</h3>
-          <div className="border-2 border-gray-300 rounded max-h-60 overflow-y-auto divide-y divide-gray-200 bg-gray-50 text-sm">
-            {state.taskHistory.length > 0 ? (
-              state.taskHistory.map((log) => (
-                <div key={log.id} className="p-2.5 flex justify-between items-center bg-white hover:bg-slate-50">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-gray-400 font-bold">{log.time}</span>
-                    <span className="font-bold text-gray-800">{log.text}</span>
-                  </div>
-                  <span className={`text-sm font-black ${log.change.includes('-') ? 'text-red-600' : 'text-emerald-600'}`}>{log.change}</span>
-                </div>
-              ))
-            ) : (
-              <div className="p-4 text-center text-gray-400 font-bold">履歴はありません。</div>
-            )}
-          </div>
-        </div>
-
+        {/* 危険な操作 */}
         <div className="bg-red-50 p-4 border-2 border-red-300 rounded">
           <h4 className="text-sm font-bold text-red-800 mb-2">⚠ 危険な操作</h4>
           <button 
@@ -724,30 +989,14 @@ export default function App() {
   const renderSettings = () => (
     <div className="flex flex-col h-full overflow-y-auto pb-24 p-4 bg-gray-100 text-gray-800">
       <h2 className="text-2xl font-bold mb-5 border-b-2 border-gray-300 pb-2 flex items-center gap-2"><Settings size={24} /> ギルドの遊び方</h2>
-      
-      {/* 💡 お小遣い制限カウンター：遊び方タブの上部に、非常に見やすいダッシュボード風デザインで組み込みました */}
-      <div className="bg-amber-50 border-2 border-amber-300 p-4 rounded shadow-md mb-6 text-sm font-bold text-amber-900 pixel-border">
-        <div className="flex items-center gap-2 mb-2 pb-1 border-b border-amber-200">
-          <span>🛡️ 本日の獲得制限カウンター</span>
-        </div>
-        <div className="grid grid-cols-2 gap-3 mt-1.5 text-center">
-          <div className="bg-white p-2 rounded pixel-border border-amber-200">
-            <span className="text-[10px] text-gray-500 block">お小遣い上限</span>
-            <span className="text-base"><b className="text-orange-600 text-lg">{state.todayEarnedMoney}</b> / 200円</span>
-          </div>
-          <div className="bg-white p-2 rounded pixel-border border-amber-200">
-            <span className="text-[10px] text-gray-500 block">経験値上限</span>
-            <span className="text-base"><b className="text-blue-600 text-lg">{state.todayEarnedExp}</b> / 40 EXP</span>
-          </div>
-        </div>
-      </div>
-
       <div className="bg-white p-5 pixel-border mb-6 shadow-sm border-l-4 border-l-yellow-500">
-        <h3 className="text-lg font-bold mb-3 text-yellow-800">👑 ランクアップ＆宝箱のルール</h3>
+        <h3 className="text-lg font-bold mb-3 text-yellow-800">👑 ランクアップ＆おこづかいのルール</h3>
         <ul className="text-sm text-gray-600 list-disc list-inside space-y-2">
           <li>タスクを完了すると、お小遣いと <span className="font-bold text-blue-600">経験値</span> が貯まります。</li>
           <li><span className="font-bold text-yellow-600">100 EXP</span> でレベルアップし、その場で <span className="font-bold text-emerald-600">300円</span> 獲得！</li>
           <li>通算ログイン <span className="font-bold text-purple-600">5日ごと</span> に宝箱チケット獲得。ハズレ/100円/500円が当たります。</li>
+          <li><span className="font-bold text-blue-600">投資口座</span> にお金を預けておくと、1日経つごとに投資額の <span className="font-bold text-emerald-600">1%</span> の利子が毎日自動で増えていきます！</li>
+          <li><span className="font-bold text-yellow-500">新機能・おこづかい通帳：</span> 自分が頑張って手に入れたお財布や投資の全履歴、そしておこづかいの成長曲線が綺麗なグラフで見られるようになりました！</li>
           <li className="text-red-700 font-bold">🛡️ セーフティ：タスクを何度リロードしても、1日に得られるお小遣いは最大200円、経験値は最大40 EXPまでです。</li>
         </ul>
       </div>
@@ -778,6 +1027,13 @@ export default function App() {
         .chest-shake {
           animation: shake 0.5s infinite;
         }
+        .animate-spin-slow {
+          animation: spin 8s linear infinite;
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
       `}</style>
       
       <div className="max-w-md mx-auto h-screen bg-gray-100 flex flex-col dot-font text-gray-800 relative select-none shadow-2xl">
@@ -799,19 +1055,24 @@ export default function App() {
 
         <main className="flex-1 overflow-hidden relative">
           {activeTab === 'home' && renderHome()}
+          {activeTab === 'bank' && renderBankBook()}
           {activeTab === 'parent' && renderParent()}
           {activeTab === 'settings' && renderSettings()}
         </main>
 
         <nav className="bg-gray-300 border-t-4 border-gray-800 flex absolute bottom-0 w-full h-20 z-20">
           <button onClick={() => setActiveTab('home')} className={`flex-1 flex flex-col items-center justify-center pixel-nav-item ${activeTab === 'home' ? 'active' : ''}`}>
-            <Home size={28} className="mb-1" /><span className="text-xs font-bold">冒険の部屋</span>
+            <Home size={24} className="mb-1" /><span className="text-[10px] font-bold">冒険の部屋</span>
+          </button>
+          {/* 💡 新設された「おこづかい通帳」タブ（子供も自由に見られる） */}
+          <button onClick={() => setActiveTab('bank')} className={`flex-1 flex flex-col items-center justify-center pixel-nav-item ${activeTab === 'bank' ? 'active' : ''}`}>
+            <BookOpen size={24} className="mb-1 text-yellow-500" /><span className="text-[10px] font-bold">おこづかい通帳</span>
           </button>
           <button onClick={() => setActiveTab('parent')} className={`flex-1 flex flex-col items-center justify-center pixel-nav-item ${activeTab === 'parent' ? 'active' : ''}`}>
-            <Lock size={28} className="mb-1" /><span className="text-xs font-bold">親管理</span>
+            <Lock size={24} className="mb-1" /><span className="text-[10px] font-bold">親管理</span>
           </button>
           <button onClick={() => setActiveTab('settings')} className={`flex-1 flex flex-col items-center justify-center pixel-nav-item ${activeTab === 'settings' ? 'active' : ''}`}>
-            <Settings size={28} className="mb-1" /><span className="text-xs font-bold">遊び方</span>
+            <Settings size={24} className="mb-1" /><span className="text-[10px] font-bold">遊び方</span>
           </button>
         </nav>
 
@@ -824,7 +1085,7 @@ export default function App() {
               <div className="grid grid-cols-3 gap-3 mb-6 py-4">
                 {[0, 1, 2].map((idx) => {
                   let chestEmoji = "🎁";
-                  if (chestStates[idx] === 'opened' && chestResult) { chestEmoji = chestResult.amount > 0 ? "💎" : "💀"; }
+                  if (chestStates[idx] === 'opened') { chestEmoji = chestResult?.amount && chestResult.amount > 0 ? "💎" : "💀"; }
                   return (
                     <button key={idx} disabled={isDrawing || chestStates.some(s => s === 'opened' || s === 'shaking')} onClick={() => startChestDraw(idx)} className={`h-24 pixel-border rounded flex flex-col items-center justify-center text-4xl ${chestStates[idx] === 'shaking' ? 'chest-shake bg-orange-800' : 'bg-slate-800'} ${chestStates[idx] === 'opened' ? 'bg-black' : ''}`}>
                       <span>{chestEmoji}</span>
